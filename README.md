@@ -11,7 +11,7 @@ Over the summer of 2020, this repository will track my progress against the summ
 The schedule of the current code-along, started on 16 June 2020, is:
 
 - [x] [Week 1 - Parts 0 & 1: Setting up Python and libtcod, drawing an @, and moving around](https://old.reddit.com/r/roguelikedev/comments/ha1zty/so_it_begins_roguelikedev_does_the_complete/)
-- [ ] Week 2 - Parts 2 & 3: The object system and generating your first map
+- [x] [Week 2 - Parts 2 & 3: The object system and generating your first map](https://old.reddit.com/r/roguelikedev/comments/he3lfo/roguelikedev_does_the_complete_roguelike_tutorial/)
 - [ ] Week 3 - Parts 4 & 5: Field of view, placing enemies, and attacking
 - [ ] Week 4 - Parts 6 & 7: Combat damage and building the interface
 - [ ] Week 5 - Parts 8 & 9: Items, inventory and ranged targeting
@@ -22,7 +22,17 @@ The schedule of the current code-along, started on 16 June 2020, is:
 
 ## Latest Screenshots
 
-![Week1](Images/week1.gif?raw-true)
+Week 1
+
+![Week1](Images/week1.gif?raw=true)
+
+Week 2
+
+![Week2](Images/week2.png?raw=true)
+
+## Demo
+
+[Playable on Itch.io](https://berubejd.itch.io/roguelike)
 
 ## Resources
 
@@ -37,6 +47,8 @@ Everything used during this code-along is properly licensed for use.
 ### Source
 
 - [Super Dungeon Delve by Ben Coleman](https://github.com/benc-uk/super-dungeon-delve)
+- [Dungeon Based on Paper Dungeon Maker by 0x72](https://0x72.itch.io/paperdungeonmaker)
+- [Original Algorithm by Mike Anderson](http://www.roguebasin.com/index.php?title=Dungeon-Building_Algorithm)
 
 ### Assets
 
