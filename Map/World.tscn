@@ -398,12 +398,18 @@ cell_size = Vector2( 16, 16 )
 format = 1
 script = ExtResource( 4 )
 
-[node name="Darkness" type="CanvasModulate" parent="."]
-color = Color( 0.392157, 0.392157, 0.392157, 1 )
+[node name="Entities" type="YSort" parent="Map"]
 
-[node name="YSort" type="YSort" parent="."]
+[node name="Player" parent="Map/Entities" instance=ExtResource( 3 )]
 
-[node name="Player" parent="YSort" instance=ExtResource( 3 )]
+[node name="Bones" type="YSort" parent="Map/Entities"]
 
-[node name="Mob" parent="YSort" instance=ExtResource( 2 )]
+[node name="Decorations" type="YSort" parent="Map/Entities"]
+
+[node name="Mobs" type="YSort" parent="Map/Entities"]
+
+[node name="Mob" parent="Map/Entities/Mobs" instance=ExtResource( 2 )]
 position = Vector2( -28.0593, -34.7131 )
+
+[node name="Darkness" type="CanvasModulate" parent="."]
+color = Color( 0.188235, 0.188235, 0.188235, 1 )

@@ -54,3 +54,4 @@ Everything used during this code-along is properly licensed for use.
 
 - [Dungeon Tileset by Pixel_Poem](https://pixel-poem.itch.io/dungeon-assetpuck)
 - [Dungeon Tileset 2 by 0x72](https://0x72.itch.io/dungeontileset-ii)
+- [Simple Dungeon Crawler 16x16 Pixel Art Asset Pack by o_lobster](https://o-lobster.itch.io/simple-dungeon-crawler-16x16-pixel-pack)

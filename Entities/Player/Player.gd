@@ -7,6 +7,7 @@ export var MAX_SPEED = 60
 onready var camera = $Camera2D
 onready var sprite = $Sprite
 onready var weapon = $WeaponPivot
+onready var pointer = $WeaponPivot/TempPointer
 
 var velocity = Vector2.ZERO
 
@@ -31,6 +32,11 @@ func _process(_delta):
 	if Input.is_action_just_released('wheel_up') and camera.zoom.x > 1 and camera.zoom.y > 1:
 		camera.zoom.x -= 0.25
 		camera.zoom.y -= 0.25
+		
+#	if Input.is_action_just_pressed("clicked"):
+#		var world = get_world_2d().get_direct_space_state()
+#		var results = world.intersect_point(pointer.global_position)
+#		print(pointer.global_position, " ", results)
 		
 	# Gather key input into new input_vector
 	input_vector.x = Input.get_action_strength("move_right") - Input.get_action_strength("move_left")

@@ -1,0 +1,32 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Entities/Decoration/Sprites/TorchSide/side_torch_4.png" type="Texture" id=1]
+[ext_resource path="res://Entities/Decoration/Sprites/TorchSide/side_torch_1.png" type="Texture" id=2]
+[ext_resource path="res://Entities/Decoration/Sprites/TorchSide/side_torch_2.png" type="Texture" id=3]
+[ext_resource path="res://Entities/Decoration/Sprites/TorchSide/side_torch_3.png" type="Texture" id=4]
+[ext_resource path="res://Lights/Light.tscn" type="PackedScene" id=6]
+
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [ ExtResource( 2 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 1 ) ],
+"loop": true,
+"name": "default",
+"speed": 3.0
+} ]
+
+[node name="TorchRight" type="Node2D"]
+z_index = 1
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+position = Vector2( 10.5, 5.5 )
+scale = Vector2( 0.7, 0.7 )
+frames = SubResource( 1 )
+frame = 1
+playing = true
+flip_h = true
+
+[node name="Light" parent="." instance=ExtResource( 6 )]
+position = Vector2( 13.373, 5.5 )
+z_index = 1
+texture_scale = 0.07
+color = Color( 0.882353, 0.533333, 0.411765, 1 )

@@ -13,15 +13,15 @@
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
-"frames": [ ExtResource( 2 ), ExtResource( 6 ), ExtResource( 1 ), ExtResource( 5 ) ],
-"loop": true,
-"name": "Walk",
-"speed": 5.0
-}, {
 "frames": [ ExtResource( 3 ), ExtResource( 4 ) ],
 "loop": true,
 "name": "Idle",
 "speed": 2.0
+}, {
+"frames": [ ExtResource( 2 ), ExtResource( 6 ), ExtResource( 1 ), ExtResource( 5 ) ],
+"loop": true,
+"name": "Walk",
+"speed": 5.0
 } ]
 
 [sub_resource type="CapsuleShape2D" id=2]
@@ -55,7 +55,7 @@ current = true
 
 [node name="Light" parent="." instance=ExtResource( 8 )]
 texture = ExtResource( 9 )
-texture_scale = 0.2
+texture_scale = 0.15
 
 [node name="WeaponPivot" type="Position2D" parent="."]
 position = Vector2( 1.41702, 3.13272 )

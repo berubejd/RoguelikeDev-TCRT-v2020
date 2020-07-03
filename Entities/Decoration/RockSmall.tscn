@@ -1,0 +1,24 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Entities/Decoration/Sprites/Other/stones_small.png" type="Texture" id=1]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 6.08391, 4.09628 )
+
+[sub_resource type="OccluderPolygon2D" id=2]
+polygon = PoolVector2Array( -1.99802, -2.75001, -0.582207, -4.04784, 1.42353, -4.16582, 2.83934, -3.28094, -1.99802, 2.32332, -3.6498, 2.38231, -3.23685, 1.55642, -1.64407, 1.43843, 1.6595, -2.57304 )
+
+[node name="RockSmall" type="StaticBody2D"]
+
+[node name="Sprite" type="Sprite" parent="."]
+position = Vector2( 8, 8 )
+texture = ExtResource( 1 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+position = Vector2( 8, 10.4014 )
+shape = SubResource( 1 )
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+position = Vector2( 8, 7.63935 )
+occluder = SubResource( 2 )

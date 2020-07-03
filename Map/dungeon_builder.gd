@@ -79,7 +79,6 @@ func add_room(x, y, w, h):
 	}
 
 	if not in_limits(room):
-		print("Room outside limits")
 		return
 		
 	rooms.push_back(room)
@@ -99,7 +98,6 @@ func add_random_corridor(room, length, connecting):
 	
 	var readyWalls = room["readyWalls"]
 	if readyWalls.size() == 0:
-		print("Room failed: No walls available")
 		return false
 
 	# Select a wall to create a corridor from and remove it so we don't use it again
@@ -172,7 +170,6 @@ func add_random_corridor(room, length, connecting):
 			break
 		
 	if touchedAnotherRoom or not connecting:
-	# if touchedAnotherRoom and connecting:
 		for i in range(0, todo.size()):
 			var t = todo[i]
 			_set_data(t["x"], t["y"], t["val"])

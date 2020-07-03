@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Lights/Light.tscn" type="PackedScene" id=6]
+
+[node name="TorchBottom" type="Node2D"]
+
+[node name="Light" parent="." instance=ExtResource( 6 )]
+position = Vector2( 8, 13 )
+texture_scale = 0.07
+color = Color( 0.882353, 0.533333, 0.411765, 1 )
