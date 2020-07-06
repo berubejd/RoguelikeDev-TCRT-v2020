@@ -21,13 +21,14 @@ _global_script_class_icons={
 [application]
 
 config/name="Roguelike"
-run/main_scene="res://Map/World.tscn"
+run/main_scene="res://World.tscn"
 boot_splash/image="res://roguelike.png"
 config/icon="res://icon.png"
 
 [autoload]
 
 DungeonBuilder="*res://Map/dungeon_builder.gd"
+Globals="*res://Globals.gd"
 
 [debug]
 
@@ -88,6 +89,9 @@ clicked={
 
 2d_physics/layer_1="World"
 2d_physics/layer_2="Player"
+2d_physics/layer_3="Mob"
+2d_physics/layer_6="PlayerWeapon"
+2d_physics/layer_7="MobWeapon"
 
 [rendering]
 

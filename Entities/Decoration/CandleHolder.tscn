@@ -1,9 +1,10 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Entities/Decoration/Sprites/CandleHolder/candlestick_2_4.png" type="Texture" id=1]
 [ext_resource path="res://Entities/Decoration/Sprites/CandleHolder/candlestick_2_3.png" type="Texture" id=2]
 [ext_resource path="res://Entities/Decoration/Sprites/CandleHolder/candlestick_2_2.png" type="Texture" id=3]
 [ext_resource path="res://Entities/Decoration/Sprites/CandleHolder/candlestick_2_1.png" type="Texture" id=4]
+[ext_resource path="res://Entities/Decoration/Flame.gd" type="Script" id=5]
 [ext_resource path="res://Lights/Light.tscn" type="PackedScene" id=6]
 
 [sub_resource type="SpriteFrames" id=1]
@@ -18,11 +19,11 @@ animations = [ {
 extents = Vector2( 4, 3.42194 )
 
 [node name="CandleHolder" type="StaticBody2D"]
+script = ExtResource( 5 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 position = Vector2( 8, 8 )
 frames = SubResource( 1 )
-frame = 1
 playing = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

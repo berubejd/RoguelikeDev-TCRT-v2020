@@ -34,6 +34,8 @@ height = 10.8727
 
 [node name="Player" type="KinematicBody2D"]
 position = Vector2( 8, 8 )
+collision_layer = 2
+collision_mask = 5
 script = ExtResource( 10 )
 __meta__ = {
 "_edit_group_": true
@@ -42,7 +44,6 @@ __meta__ = {
 [node name="Sprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 1 )
 animation = "Idle"
-frame = 1
 playing = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -54,15 +55,18 @@ shape = SubResource( 2 )
 current = true
 
 [node name="Light" parent="." instance=ExtResource( 8 )]
+position = Vector2( 0, 2 )
 texture = ExtResource( 9 )
 texture_scale = 0.15
 
 [node name="WeaponPivot" type="Position2D" parent="."]
 position = Vector2( 1.41702, 3.13272 )
 
-[node name="Area2D" type="Area2D" parent="WeaponPivot"]
+[node name="Weapon" type="Area2D" parent="WeaponPivot"]
+collision_layer = 32
+collision_mask = 4
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="WeaponPivot/Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WeaponPivot/Weapon"]
 position = Vector2( 8.72594, 0 )
 shape = SubResource( 3 )
 disabled = true

@@ -1,0 +1,81 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://Fonts/ThaleahFat.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://Effects/Bubble.gd" type="Script" id=2]
+
+[sub_resource type="DynamicFont" id=1]
+outline_size = 1
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 1 )
+
+[sub_resource type="Animation" id=2]
+resource_name = "Alert"
+length = 3.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("Alert:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5, 1, 1.5, 2, 2.5, 3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ false, true, false, true, false, true, false ]
+}
+
+[sub_resource type="Animation" id=3]
+resource_name = "Chase"
+length = 1.5
+tracks/0/type = "value"
+tracks/0/path = NodePath("Chase:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5, 1, 1.5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ true, false, true, false ]
+}
+
+[node name="Bubble" type="Node2D"]
+z_index = 1
+script = ExtResource( 2 )
+
+[node name="Alert" type="Label" parent="."]
+visible = false
+margin_left = -6.82016
+margin_top = -24.236
+margin_right = 9.17984
+margin_bottom = -9.23597
+custom_fonts/font = SubResource( 1 )
+custom_colors/font_color = Color( 0.956863, 0.776471, 0.231373, 1 )
+custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
+text = "?"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Chase" type="Label" parent="."]
+visible = false
+margin_left = -6.82016
+margin_top = -24.236
+margin_right = 9.17984
+margin_bottom = -9.23597
+custom_fonts/font = SubResource( 1 )
+custom_colors/font_color = Color( 0.956863, 0.776471, 0.231373, 1 )
+custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
+text = "!"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/Alert = SubResource( 2 )
+anims/Chase = SubResource( 3 )

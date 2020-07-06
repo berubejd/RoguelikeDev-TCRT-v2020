@@ -1,0 +1,52 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://Lights/Light.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Entities/Decoration/Sprites/Other/SmallShadow.png" type="Texture" id=2]
+[ext_resource path="res://Entities/Decoration/Fountain.gd" type="Script" id=3]
+[ext_resource path="res://Entities/Decoration/Sprites/Other/fountain.png" type="Texture" id=4]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 5.93288, 5.78033 )
+
+[sub_resource type="OccluderPolygon2D" id=2]
+cull_mode = 1
+polygon = PoolVector2Array( 2.14048, 13.3379, 5.51751, 11.3514, 10.4837, 11.3514, 13.5297, 13.6028, 11.6094, 15.523, 4.39183, 15.523 )
+
+[sub_resource type="RectangleShape2D" id=3]
+
+[node name="Fountain" type="StaticBody2D"]
+script = ExtResource( 3 )
+
+[node name="Sprite" type="Sprite" parent="."]
+position = Vector2( 8, 8 )
+texture = ExtResource( 4 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+position = Vector2( 7.912, 9.945 )
+shape = SubResource( 1 )
+
+[node name="Light" parent="." instance=ExtResource( 1 )]
+position = Vector2( 7.98346, 4.84092 )
+scale = Vector2( 2.71823, 1.8792 )
+texture_scale = 0.01
+color = Color( 0.529412, 0.596078, 0.913725, 1 )
+energy = 1.2
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+visible = false
+occluder = SubResource( 2 )
+
+[node name="Shadow" type="Sprite" parent="."]
+position = Vector2( 8.24394, 14.1372 )
+scale = Vector2( 1.88068, 1.05794 )
+texture = ExtResource( 2 )
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2( 7.81353, 8.80678 )
+shape = SubResource( 3 )
+[connection signal="body_entered" from="Area2D" to="." method="_on_Area2D_body_entered" flags=6]

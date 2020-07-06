@@ -141,7 +141,8 @@ func add_random_corridor(room, length, connecting):
 		y += dirY
 
 		# Ensure we're not outside of the map (This pad is to ensure we can create a room at the end of this)
-		var pad = 5
+		# Getting some dead-end corridors?  Upped to 8 from 5...
+		var pad = 8
 
 		if not in_limits({ "x": x, "y": y - pad, "w": 1, "h": 1}):
 			return

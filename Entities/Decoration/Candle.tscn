@@ -1,10 +1,12 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Entities/Decoration/Sprites/Candle/candlestick_2.png" type="Texture" id=1]
 [ext_resource path="res://Entities/Decoration/Sprites/Candle/candlestick_1.png" type="Texture" id=2]
 [ext_resource path="res://Entities/Decoration/Sprites/Candle/candlestick_3.png" type="Texture" id=3]
 [ext_resource path="res://Entities/Decoration/Sprites/Candle/candlestick_0.png" type="Texture" id=4]
+[ext_resource path="res://Entities/Decoration/Flame.gd" type="Script" id=5]
 [ext_resource path="res://Lights/Light.tscn" type="PackedScene" id=6]
+
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
@@ -15,11 +17,11 @@ animations = [ {
 } ]
 
 [node name="Candle" type="Node2D"]
+script = ExtResource( 5 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 position = Vector2( 8, 4 )
 frames = SubResource( 1 )
-frame = 1
 playing = true
 
 [node name="Light" parent="." instance=ExtResource( 6 )]
