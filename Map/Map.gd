@@ -12,18 +12,18 @@ const GRID_SIZE = 16
 var dungeon
 
 # Dungeon complexity
-export (int) var complexity = 1
+export (int) var complexity: = 1
 
 # Room size range
-export (int) var min_room_size = 4
-export (int) var max_room_size = 10
+export (int) var min_room_size: = 4
+export (int) var max_room_size: = 10
 
 # Corridor size range
-export (int) var min_corridor_length = 5
-export (int) var max_corridor_length = 15
+export (int) var min_corridor_length: = 5
+export (int) var max_corridor_length: = 15
 
 # Monster count
-export (int) var max_monsters_per_room = 3
+export (int) var max_monsters_per_room: = 3
 
 # Instance a random number generator with range
 var rng = RandomNumberGenerator.new()
@@ -81,47 +81,47 @@ func _ready():
 	rng.randomize()
 	dungeon = Dungeon_Builder.new()
 	
-	dungeon.add_room(-4, -4, 8, 8)
+	dungeon.add_room(Rect2(-4, -4, 8, 8))
 	
 	for _i in range(complexity * 8):
-		var newRoom = dungeon.add_random_corridor(dungeon.get_random_room(), rng.randi_range(min_corridor_length, max_corridor_length), false)
-		if newRoom:
+		var new_room = dungeon.add_random_corridor(dungeon.get_random_room(), rng.randi_range(min_corridor_length, max_corridor_length), false)
+		if new_room:
 			# Attempt to create room at end of corridor
 			var w = rng.randi_range(min_room_size, max_room_size);
 			var h = rng.randi_range(min_room_size, max_room_size);
-			dungeon.add_room(newRoom["x"], newRoom["y"], w, h)
+			dungeon.add_room(Rect2(new_room.x, new_room.y, w, h))
 
 	for _i in range(10 + complexity * 2):
-		var _newRoom = dungeon.add_random_corridor(dungeon.get_random_room(), rng.randi_range(10, 20), true)
+		var _new_room = dungeon.add_random_corridor(dungeon.get_random_room(), rng.randi_range(10, 20), true)
 
 	# "Completed" dungeon generation
 	print("Total rooms created: " + str(dungeon.rooms.size()))
 	print("Total corridor tiles created: " + str(dungeon.corridors.size()))
 
 	# Try adding corridors first to see if it resolves the strange "corner missing" issue
-	for room in dungeon.corridors:
-		_add_floor(room["x"], room["y"], 1, 1)
-		_add_walls(room["x"], room["y"], 1, 1)
+	for corridor_cell in dungeon.corridors:
+		_add_floor(Rect2(corridor_cell.x, corridor_cell.y, 1, 1))
+		_add_walls(Rect2(corridor_cell.x, corridor_cell.y, 1, 1))
 
 	# Add rooms and corridors to tilemap
 	for room in dungeon.rooms:
-		_add_floor(room["x"], room["y"], room["w"], room["h"])
-		_add_walls(room["x"], room["y"], room["w"], room["h"])
+		_add_floor(room["room"])
+		_add_walls(room["room"])
 
 	# Rerunning this room because I am losing a corner for some reason.  Come back and fix this.
-	_add_walls(dungeon.rooms[0]["x"], dungeon.rooms[0]["y"], dungeon.rooms[0]["w"], dungeon.rooms[0]["h"])
+	_add_walls(dungeon.rooms[0]["room"])
 
 	# Set up start room
 	start_room = dungeon.rooms[randi() % len(dungeon.rooms)]
 
 	# Decorate rooms
 	for room in dungeon.rooms:
-		var add_mobs = true
+		var add_mobs: = true
 		
 		if room == start_room:
 			add_mobs = false
 		
-		_populate_room(room["x"], room["y"], room["w"], room["h"], add_mobs)
+		_populate_room(room["room"], add_mobs)
 
 	# Add exit	
 	while true:
@@ -130,31 +130,31 @@ func _ready():
 			break
 	
 	# Place exit
-	var exit_cell = _get_random_floor_cell(exit_room["x"], exit_room["y"], exit_room["w"], exit_room["h"], true, true)
-	var exit_result = _place_object(EXIT, $Darkness, exit_cell.x, exit_cell.y)
+	var exit_cell = _get_random_floor_cell(exit_room["room"], true, true)
+	var exit_result = _place_object(EXIT, $Darkness, exit_cell)
 	if not exit_result:
 		print("F*CK")
 
 
 # Add floor tiles to tilemap based on generated dungeon map
-func _add_floor(left, top, width, height):
-	for y in range(top, top + height):
-		for x in range(left, left + width):
+func _add_floor(room: Rect2):
+	for y in range(room.position.y, room.end.y):
+		for x in range(room.position.x, room.end.x):
 			set_cell(x, y, TILE_IDX_FLOOR, false, false, false, Vector2(rng.randi_range(0, 3), rng.randi_range(0, 2)))
 
 
 # Add walls to tilemap given assigned tile index
-func _add_walls(left, top, width, height):
-	for y in range(top - 1, top + height + 1):
-		for x in range(left - 1, left + width + 1):
+func _add_walls(room: Rect2):
+	for y in range(room.position.y - 1, room.end.y + 1):
+		for x in range(room.position.x - 1, room.end.x + 1):
 			if not get_cell(x, y) == TILE_IDX_FLOOR:
 				# Wall space is only 1 tile wide so remove and replace with a floor
 				if get_cell(x - 1, y) == TILE_IDX_FLOOR and get_cell(x+1, y) == TILE_IDX_FLOOR:
-					_add_floor(x, y, 1, 1)
-					continue				
+					_add_floor(Rect2(x, y, 1, 1))
+					continue
 				if get_cell(x, y - 1) == TILE_IDX_FLOOR and get_cell(x, y+1) == TILE_IDX_FLOOR:
-					_add_floor(x, y, 1, 1)
-					continue		
+					_add_floor(Rect2(x, y, 1, 1))
+					continue
 
 				# Normal walls
 
@@ -210,7 +210,7 @@ func _add_walls(left, top, width, height):
 
 
 # Add appropriate torch to given wall
-func _add_torch(x, y, facing):
+func _add_torch(position, facing):
 	var torch_node
 	
 	match facing:
@@ -223,11 +223,11 @@ func _add_torch(x, y, facing):
 		"n":
 			torch_node = TORCH_SOUTH
 
-	_place_object(torch_node, decorations, x, y)
+	_place_object(torch_node, decorations, position)
 
 
 # Place decorations within a given room
-func _populate_room(left, top, width, height, add_mobs = true):
+func _populate_room(room: Rect2, add_mobs = true):
 	# Determine what type of room this is
 	var room_type = rng.randi_range(0, 10)
 	
@@ -249,25 +249,23 @@ func _populate_room(left, top, width, height, add_mobs = true):
 		room_monsters = [GENERIC_MOB]
 		
 		# Place a single cauldron in labs
-		var random_tile = _get_random_floor_cell(left, top, width, height, true)
-		_place_object(CAULDRON, decorations, random_tile.x, random_tile.y)
+		var random_tile = _get_random_floor_cell(room, true)
+		_place_object(CAULDRON, decorations, random_tile)
 	else:
 		room_type = "library"
 		room_monsters = [GENERIC_MOB]
 
 	# Decorate room based on tile and room type
-	for y in range(top - 1, top + height + 2):
-		for x in range(left - 1, left + width + 2):
+	for y in range(room.position.y - 1, room.end.y + 2):
+		for x in range(room.position.x - 1, room.end.x + 2):
 			match get_cell(x, y):
 				TILE_IDX_FLOOR:
 					# Exit early since we won't be placing anything
-					if room_type == "empty" or not _is_clear(x * GRID_SIZE + 8, y * GRID_SIZE + 8):
+					if room_type == "empty" or not _is_clear(Vector2(x * GRID_SIZE + 8, y * GRID_SIZE + 8)):
 						continue
 
-					var near_corridor = _nearby_corridor(x, y)
-					var near_wall = _nearby_wall(x, y)
-
-					var decoration
+					var near_corridor = _nearby_corridor(Vector2(x, y))
+					var near_wall = _nearby_wall(Vector2(x, y))
 
 					match room_type:
 						"ruins":
@@ -277,19 +275,19 @@ func _populate_room(left, top, width, height, add_mobs = true):
 								if near_wall:
 									if chance <= 10:
 										ROCKS.shuffle()
-										_place_object(ROCKS[0], decorations, x, y)
+										_place_object(ROCKS[0], decorations, Vector2(x, y))
 
 								else:
 									if chance == 100:
 										# Still to common so cut it in half again rather than increase the random range
 										if rng.randf() > 0.5:
-											_place_object(FOUNTAIN, decorations, x, y)
+											_place_object(FOUNTAIN, decorations, Vector2(x, y))
 
 										continue
 
 									elif chance <= 6:
 										ROCKS.shuffle()
-										_place_object(ROCKS[0], decorations, x, y)
+										_place_object(ROCKS[0], decorations, Vector2(x, y))
 										continue
 
 									elif chance <= 16:
@@ -300,7 +298,7 @@ func _populate_room(left, top, width, height, add_mobs = true):
 										if rng.randf() > 0.5:
 											flip = true
 
-										_place_object(BONES[0], bones, x, y, flip)
+										_place_object(BONES[0], bones, Vector2(x, y), flip)
 
 						"storage":
 							if not near_corridor and not near_wall:
@@ -308,7 +306,7 @@ func _populate_room(left, top, width, height, add_mobs = true):
 								
 								if chance <= 10:
 									STORAGE.shuffle()
-									_place_object(STORAGE[0], decorations, x, y)
+									_place_object(STORAGE[0], decorations, Vector2(x, y))
 									continue
 
 								elif chance <= 13:
@@ -320,45 +318,45 @@ func _populate_room(left, top, width, height, add_mobs = true):
 									if rng.randf() > 0.5:
 										flip = true
 
-									_place_object(BONES[0], bones, x, y, flip)
+									_place_object(BONES[0], bones, Vector2(x, y), flip)
 
 						"lab":
 							if not near_corridor:
 								var chance = rng.randi_range(1, 100)
 								
 								if not near_wall:
-									if height > 5 and width > 5:
+									if room.size.y > 5 and room.size.x > 5:
 										if (
-											(x == left + 1 or x == left + width - 2) and
-											(y == top + 1 or y == top + height - 2)
+											(x == room.position.x + 1 or x == room.end.x - 2) and
+											(y == room.position.y + 1 or y == room.end.y - 2)
 										):
-											_place_object(CANDLEHOLDER, decorations, x, y)
+											_place_object(CANDLEHOLDER, decorations, Vector2(x, y))
 											continue
 										else:
-											if x == left + (width / 2) - 1 and y == top + (height / 2):
-												if _is_clear(x + 1, y) and _is_clear(x + 2, y):
-													_place_object(TABLE_LARGE, decorations, x, y)
-													_place_object(CANDLEHOLDER, decorations, x + 2, y)
+											if x == room.position.x + (room.size.x / 2) - 1 and y == room.position.y + (room.size.y / 2):
+												if _is_clear(Vector2(x + 1, y)) and _is_clear(Vector2(x + 2, y)):
+													_place_object(TABLE_LARGE, decorations, Vector2(x, y))
+													_place_object(CANDLEHOLDER, decorations, Vector2(x + 2, y))
 									else:
-										if x == left + int(width / 2) - 1 and y == top + int(height / 2):
-											if _is_clear(x + 1, y):
-												_place_object(TABLE_LARGE, decorations, x, y)
+										if x == room.position.x + int(room.size.x / 2) - 1 and y == room.position.y + int(room.size.y / 2):
+											if _is_clear(Vector2(x + 1, y)):
+												_place_object(TABLE_LARGE, decorations, Vector2(x, y))
 										elif chance <= 4:
-											_place_object(CANDLEHOLDER, decorations, x, y)
+											_place_object(CANDLEHOLDER, decorations, Vector2(x, y))
 											continue
 
 						"library":
 							if (
 								# Not the top row but the bottom is okay because of the way bookshelf collision is set up
-								y > top and y < top + height and 
+								y > room.position.y and y < room.end.y and 
 								# Not along the side walls
-								x > left and x < left + width - 1 and 
+								x > room.position.x and x < room.end.x - 1 and 
 								# Every other row
-								not int(top - y) % 2 == 0 # and
+								not int(room.position.y - y) % 2 == 0 # and
 								):
 
-								var row_width = width - 2
-								var shelf_pos = int(x - left)
+								var row_width = room.size.x - 2
+								var shelf_pos = int(x - room.position.x)
 								var table_space = false
 								var table_offset = 0
 
@@ -409,149 +407,159 @@ func _populate_room(left, top, width, height, add_mobs = true):
 									# Determined to be a potential spot for a table above
 									table_space and
 									# Check next tile is clear, as well
-									_is_clear((x + 1) * GRID_SIZE + 8, y * GRID_SIZE + 8) and
+									_is_clear(Vector2((x + 1) * GRID_SIZE + 8, y * GRID_SIZE + 8)) and
 									# Perform corridor verification for the space after the end of the table
-									not _is_corridor(x + 2, y) and
+									not _is_corridor(Vector2(x + 2, y)) and
 									# Perform wall verification for the space after the end of the table
 									not get_cell(x + 2, y) == TILE_IDX_WALL and
 									# We don't want *all* tables just because it could be one...
 									rng.randi_range(1, 100) < 20
 									):
 
-									decoration = TABLE_LARGE.instance()
+									var decoration = TABLE_LARGE.instance()
 									
 									# Place this directly due to the offset on the y position
 									decoration.position.x = x * GRID_SIZE + table_offset
 									decoration.position.y = y * GRID_SIZE - 6
 									decorations.add_child(decoration)
 								else:
-									if _is_clear(x * GRID_SIZE + 8, y * GRID_SIZE + 8):
+									if _is_clear(Vector2(x * GRID_SIZE + 8, y * GRID_SIZE + 8)):
 										var flip = false
 									
 										if rng.randf() > 0.85:
 											flip = true
 										
-										_place_object(BOOKSHELF, decorations, x, y, flip)
+										_place_object(BOOKSHELF, decorations, Vector2(x, y), flip)
 
 				TILE_IDX_WALL:
 					# Southern facing wall
 					if get_cell(x, y + 1) == TILE_IDX_FLOOR:
-						if _is_corridor(x + 1, y) or _is_corridor(x - 1, y):
-							if rng.randf() <= 1: #0.5:
-								_add_torch(x, y, "s")
+						if _is_corridor(Vector2(x + 1, y)) or _is_corridor(Vector2(x - 1, y)):
+							_add_torch(Vector2(x, y), "s")
 
 					# Northern facing wall
 					if get_cell(x, y - 1) == TILE_IDX_FLOOR:
-						if _is_corridor(x + 1, y) or _is_corridor(x - 1, y):
-							if rng.randf() <= 1: #0.5:
-								_add_torch(x, y - 1, "n")
+						if _is_corridor(Vector2(x + 1, y)) or _is_corridor(Vector2(x - 1, y)):
+							_add_torch(Vector2(x, y - 1), "n")
 
 					# Eastern facing wall
 					if get_cell(x + 1, y) == TILE_IDX_FLOOR:
-						if _is_corridor(x, y + 1) or _is_corridor(x, y - 1):
-							if rng.randf() <= 1: #0.5:
-								_add_torch(x + 1, y, "e")
+						if _is_corridor(Vector2(x, y + 1)) or _is_corridor(Vector2(x, y - 1)):
+							_add_torch(Vector2(x + 1, y), "e")
 
 					# Western facing wall
 					if get_cell(x - 1, y) == TILE_IDX_FLOOR:
-						if _is_corridor(x, y + 1) or _is_corridor(x, y - 1):
-							if rng.randf() <= 1: #0.5:
-								_add_torch(x - 1, y, "w")
+						if _is_corridor(Vector2(x, y + 1)) or _is_corridor(Vector2(x, y - 1)):
+							_add_torch(Vector2(x - 1, y), "w")
 
 	# Populate room with monsters
 	if add_mobs:
-		var room_sq = width * height
+		var room_sq = room.size.x * room.size.y
 		var max_sq = pow(max_room_size, 2)
 		var max_monsters = ceil((room_sq / max_sq) * max_monsters_per_room)
 		
 		for _monster in range(max_monsters):
-			var monster_cell = _get_random_floor_cell(left, top, width, height, true, false, true)
+			var monster_cell = _get_random_floor_cell(room, true, false, true)
 			room_monsters.shuffle()
-			_place_object(room_monsters[0], mobs, monster_cell.x, monster_cell.y)
+			_place_object(room_monsters[0], mobs, monster_cell)
 
 
 # Return a random floor cell within a specific range
-func _get_random_floor_cell(left, top, width, height, clear_check = false, avoid_corridor = true, avoid_wall = false):
+func _get_random_floor_cell(room: Rect2, clear_check: bool = false, avoid_corridor: bool = true, avoid_wall: bool = false):
 	# Build an array of all floor tiles inside given rect
 	var cells = []
 	var chosen_cell
-	for y in range(top, top + height):
-		for x in range(left, left + width):
-			if get_cell(x, y) == TILE_IDX_FLOOR: cells.push_back({"x": x, "y": y})
+	for y in range(room.position.y, room.end.y):
+		for x in range(room.position.x, room.end.x):
+			if get_cell(x, y) == TILE_IDX_FLOOR:
+				cells.push_back(Vector2(x, y))
 			
 	# Pick one at random
 	while true:
 		chosen_cell = cells[rng.randi_range(0, cells.size() - 1)]
 		
-		if clear_check and not _is_clear(chosen_cell.x * GRID_SIZE + 8, chosen_cell.y * GRID_SIZE + 8):
+		if clear_check and not _is_clear(Vector2(chosen_cell.x * GRID_SIZE + 8, chosen_cell.y * GRID_SIZE + 8)):
 			continue
 
-		if avoid_corridor and _nearby_corridor(chosen_cell.x, chosen_cell.y):
+		if avoid_corridor and _nearby_corridor(Vector2(chosen_cell.x, chosen_cell.y)):
 			continue
 
-		if avoid_wall and _nearby_wall(chosen_cell.x, chosen_cell.y):
+		if avoid_wall and _nearby_wall(Vector2(chosen_cell.x, chosen_cell.y)):
 			continue
 
 		return chosen_cell
 
 
 # Check if the target position is free of collision objects
-func _is_clear(x, y, report_collision = false):
+func _is_clear(position: Vector2, report_collision: bool = false):
 	var world = get_world_2d().get_direct_space_state()
-	var results = world.intersect_point(Vector2(x, y))
+	var results = world.intersect_point(position)
 	
 	if not results:
 		return true
 	else:
 		if report_collision:
-			print(x, ":", y, " ", results)
+			print(position.x, ":", position.y, " ", results)
 
 		return false
 
 
 # Check for corridor at specific x, y coordinates
-func _is_corridor(x, y):
-	if  dungeon._get_data(x, y) && dungeon._get_data(x, y).get("isCorridor"):
+func _is_corridor(position: Vector2):
+	if  dungeon.get_data(position.x, position.y) && dungeon.get_data(position.x, position.y).get("isCorridor"):
 		return true
 	else:
 		return false
 
 
 # Check for wall at specific x, y coordinates
-func _is_wall(x, y):
-	if get_cell(x, y) == TILE_IDX_WALL:
+func _is_wall(position: Vector2):
+	if get_cellv(position) == TILE_IDX_WALL:
 		return true
 	else:
 		return false
 
 
 # Check for corridor in cardinal direction
-func _nearby_corridor(x, y):
-	if _is_corridor(x, y - 1) or _is_corridor(x, y + 1) or _is_corridor(x - 1, y) or _is_corridor(x + 1, y):
+func _nearby_corridor(position: Vector2):
+#	if _is_corridor(x, y - 1) or _is_corridor(x, y + 1) or _is_corridor(x - 1, y) or _is_corridor(x + 1, y):
+	if (
+		_is_corridor(Vector2(position.x, position.y - 1)) or
+		_is_corridor(Vector2(position.x, position.y + 1)) or
+		_is_corridor(Vector2(position.x - 1, position.y)) or
+		_is_corridor(Vector2(position.x + 1, position.y))
+	):
+#	if _is_corridor(position + Vector2.UP) or _is_corridor(position + Vector2.DOWN) or _is_corridor(position + Vector2.LEFT) or _is_corridor(position + Vector2.RIGHT):
 		return true
 	else:
 		return false
 
 
 # Check for wall in cardinal directions
-func _nearby_wall(x, y):
-	# if get_cell(x, y - 1) == TILE_IDX_WALL or get_cell(x, y + 1) == TILE_IDX_WALL or get_cell(x - 1, y) == TILE_IDX_WALL or get_cell(x + 1, y) == TILE_IDX_WALL:
-	if _is_wall(x, y - 1) or _is_wall(x, y + 1) or _is_wall(x - 1, y) or _is_wall(x + 1, y):
+func _nearby_wall(position: Vector2):
+#	if _is_wall(x, y - 1) or _is_wall(x, y + 1) or _is_wall(x - 1, y) or _is_wall(x + 1, y):
+	if (
+		_is_wall(Vector2(position.x, position.y - 1)) or
+		_is_wall(Vector2(position.x, position.y + 1)) or
+		_is_wall(Vector2(position.x - 1, position.y)) or
+		_is_wall(Vector2(position.x + 1, position.y))
+	):
+#	if _is_wall(position + Vector2.UP) or _is_wall(position + Vector2.DOWN) or _is_wall(position + Vector2.LEFT) or _is_wall(position + Vector2.RIGHT):
 		return true
 	else:
 		return false
 
 
 # Place object on the map
-func _place_object(object_scene, object_group, x, y, flip = false):
-	if not _is_clear(x * GRID_SIZE + 8, y * GRID_SIZE + 8):
+func _place_object(object_scene, object_group, position: Vector2, flip: bool = false):
+	if not _is_clear(Vector2(position.x * GRID_SIZE + 8, position.y * GRID_SIZE + 8)):
 		print("Blocking placement from _place_object")
 		return false
 
 	var new_object = object_scene.instance()
 
-	new_object.position.x = x * GRID_SIZE
-	new_object.position.y = y * GRID_SIZE
+	new_object.position.x = position.x * GRID_SIZE
+	new_object.position.y = position.y * GRID_SIZE
 
 	if flip and new_object.get_node_or_null("Sprite"):
 		new_object.get_node("Sprite").flip_h = true
@@ -559,4 +567,3 @@ func _place_object(object_scene, object_group, x, y, flip = false):
 	object_group.add_child(new_object)
 	
 	return true
-

@@ -27,7 +27,6 @@ config/icon="res://slime.png"
 
 [autoload]
 
-DungeonBuilder="*res://Map/dungeon_builder.gd"
 Globals="*res://Globals.gd"
 
 [debug]

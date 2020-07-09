@@ -30,7 +30,7 @@ func create_map():
 
 	# Place player in start room and attach to $Map
 	var start_room = $Map.start_room
-	var player_cell = Globals.map._get_random_floor_cell(start_room["x"], start_room["y"], start_room["w"], start_room["h"], true, true, true)
+	var player_cell = Globals.map._get_random_floor_cell(start_room["room"], true, true, true)
 	Globals.player.position.x = player_cell.x * Globals.map.GRID_SIZE
 	Globals.player.position.y = player_cell.y * Globals.map.GRID_SIZE
 
