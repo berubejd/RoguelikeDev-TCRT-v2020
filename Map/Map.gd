@@ -78,6 +78,8 @@ var exit_room
 
 
 func _ready():
+	pause_mode = Node.PAUSE_MODE_STOP
+
 	rng.randomize()
 	dungeon = Dungeon_Builder.new()
 	
@@ -261,7 +263,7 @@ func _populate_room(room: Rect2, add_mobs = true):
 			match get_cell(x, y):
 				TILE_IDX_FLOOR:
 					# Exit early since we won't be placing anything
-					if room_type == "empty" or not _is_clear(Vector2(x * GRID_SIZE + 8, y * GRID_SIZE + 8)):
+					if room_type == "empty" or not _is_clear(map_to_world(Vector2(x, y)) + Vector2(8, 8)):
 						continue
 
 					var near_corridor = _nearby_corridor(Vector2(x, y))
@@ -332,11 +334,11 @@ func _populate_room(room: Rect2, add_mobs = true):
 										):
 											_place_object(CANDLEHOLDER, decorations, Vector2(x, y))
 											continue
-										else:
-											if x == room.position.x + (room.size.x / 2) - 1 and y == room.position.y + (room.size.y / 2):
-												if _is_clear(Vector2(x + 1, y)) and _is_clear(Vector2(x + 2, y)):
-													_place_object(TABLE_LARGE, decorations, Vector2(x, y))
-													_place_object(CANDLEHOLDER, decorations, Vector2(x + 2, y))
+
+										if x == room.position.x + int(room.size.x / 2) - 1 and y == room.position.y + int(room.size.y / 2):
+											if _is_clear(Vector2(x + 1, y)) and _is_clear(Vector2(x + 2, y)):
+												_place_object(TABLE_LARGE, decorations, Vector2(x, y))
+												_place_object(CANDLEHOLDER, decorations, Vector2(x + 2, y))
 									else:
 										if x == room.position.x + int(room.size.x / 2) - 1 and y == room.position.y + int(room.size.y / 2):
 											if _is_clear(Vector2(x + 1, y)):
@@ -423,7 +425,7 @@ func _populate_room(room: Rect2, add_mobs = true):
 									decoration.position.y = y * GRID_SIZE - 6
 									decorations.add_child(decoration)
 								else:
-									if _is_clear(Vector2(x * GRID_SIZE + 8, y * GRID_SIZE + 8)):
+									if _is_clear(map_to_world(Vector2(x, y)) + Vector2(8, 8)):
 										var flip = false
 									
 										if rng.randf() > 0.85:
@@ -478,7 +480,7 @@ func _get_random_floor_cell(room: Rect2, clear_check: bool = false, avoid_corrid
 	while true:
 		chosen_cell = cells[rng.randi_range(0, cells.size() - 1)]
 		
-		if clear_check and not _is_clear(Vector2(chosen_cell.x * GRID_SIZE + 8, chosen_cell.y * GRID_SIZE + 8)):
+		if clear_check and not _is_clear(map_to_world(Vector2(chosen_cell.x, chosen_cell.y)) + Vector2(8, 8)):
 			continue
 
 		if avoid_corridor and _nearby_corridor(Vector2(chosen_cell.x, chosen_cell.y)):
@@ -506,7 +508,7 @@ func _is_clear(position: Vector2, report_collision: bool = false):
 
 # Check for corridor at specific x, y coordinates
 func _is_corridor(position: Vector2):
-	if  dungeon.get_data(position.x, position.y) && dungeon.get_data(position.x, position.y).get("isCorridor"):
+	if dungeon.get_data(position.x, position.y) && dungeon.get_data(position.x, position.y).get("isCorridor"):
 		return true
 	else:
 		return false
@@ -522,14 +524,7 @@ func _is_wall(position: Vector2):
 
 # Check for corridor in cardinal direction
 func _nearby_corridor(position: Vector2):
-#	if _is_corridor(x, y - 1) or _is_corridor(x, y + 1) or _is_corridor(x - 1, y) or _is_corridor(x + 1, y):
-	if (
-		_is_corridor(Vector2(position.x, position.y - 1)) or
-		_is_corridor(Vector2(position.x, position.y + 1)) or
-		_is_corridor(Vector2(position.x - 1, position.y)) or
-		_is_corridor(Vector2(position.x + 1, position.y))
-	):
-#	if _is_corridor(position + Vector2.UP) or _is_corridor(position + Vector2.DOWN) or _is_corridor(position + Vector2.LEFT) or _is_corridor(position + Vector2.RIGHT):
+	if _is_corridor(position + Vector2.UP) or _is_corridor(position + Vector2.DOWN) or _is_corridor(position + Vector2.LEFT) or _is_corridor(position + Vector2.RIGHT):
 		return true
 	else:
 		return false
@@ -537,14 +532,7 @@ func _nearby_corridor(position: Vector2):
 
 # Check for wall in cardinal directions
 func _nearby_wall(position: Vector2):
-#	if _is_wall(x, y - 1) or _is_wall(x, y + 1) or _is_wall(x - 1, y) or _is_wall(x + 1, y):
-	if (
-		_is_wall(Vector2(position.x, position.y - 1)) or
-		_is_wall(Vector2(position.x, position.y + 1)) or
-		_is_wall(Vector2(position.x - 1, position.y)) or
-		_is_wall(Vector2(position.x + 1, position.y))
-	):
-#	if _is_wall(position + Vector2.UP) or _is_wall(position + Vector2.DOWN) or _is_wall(position + Vector2.LEFT) or _is_wall(position + Vector2.RIGHT):
+	if _is_wall(position + Vector2.UP) or _is_wall(position + Vector2.DOWN) or _is_wall(position + Vector2.LEFT) or _is_wall(position + Vector2.RIGHT):
 		return true
 	else:
 		return false
@@ -552,14 +540,13 @@ func _nearby_wall(position: Vector2):
 
 # Place object on the map
 func _place_object(object_scene, object_group, position: Vector2, flip: bool = false):
-	if not _is_clear(Vector2(position.x * GRID_SIZE + 8, position.y * GRID_SIZE + 8)):
+	if not _is_clear(map_to_world(position) + Vector2(8, 8)):
 		print("Blocking placement from _place_object")
 		return false
 
 	var new_object = object_scene.instance()
 
-	new_object.position.x = position.x * GRID_SIZE
-	new_object.position.y = position.y * GRID_SIZE
+	new_object.position = map_to_world(position)
 
 	if flip and new_object.get_node_or_null("Sprite"):
 		new_object.get_node("Sprite").flip_h = true

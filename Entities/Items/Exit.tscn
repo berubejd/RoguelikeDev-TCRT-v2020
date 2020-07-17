@@ -4,7 +4,7 @@
 [ext_resource path="res://Entities/Items/Exit.gd" type="Script" id=2]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 7.04472, 7.03444 )
+extents = Vector2( 4, 4 )
 
 [node name="Exit" type="Area2D"]
 collision_layer = 0

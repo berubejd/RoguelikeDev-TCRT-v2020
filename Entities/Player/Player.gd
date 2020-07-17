@@ -12,10 +12,16 @@ onready var pointer = $WeaponPivot/TempPointer
 
 var velocity = Vector2.ZERO
 
+var defense = 2
+var max_health = 30 setget update_max_health
+var health = max_health setget update_health
+var power = 5
+
 
 func _ready():
 	# Hide Mouse
 	# Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
+	update_health(-5)
 	pass
 
 
@@ -36,10 +42,8 @@ func _process(_delta):
 
 	# Not going to handle weapons this way...
 	if Input.is_action_just_pressed("clicked"):
-#		var world = get_world_2d().get_direct_space_state()
-#		var results = world.intersect_point(pointer.global_position)
-#		print(pointer.global_position, " ", results)
 		weapon_area.disabled = false
+		update_health(-5)
 
 	if Input.is_action_just_released("clicked"):
 		weapon_area.disabled = true
@@ -66,3 +70,15 @@ func _process(_delta):
 		velocity = velocity.move_toward(Vector2.ZERO, FRICTION)
 	
 	velocity = move_and_slide(velocity)
+
+
+func update_health(value):
+	health += value
+	get_tree().call_group("player_update", "update_health", health, max_health)
+	print("update_health called from update_health")
+
+
+func update_max_health(value):
+	max_health = value
+	get_tree().call_group("player_update", "update_health", health, max_health)
+	print("update_health called from update_max_health")

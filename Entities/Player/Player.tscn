@@ -6,7 +6,7 @@
 [ext_resource path="res://Entities/Player/Sprites/Idle/necromancer_idle_anim_f1.png" type="Texture" id=4]
 [ext_resource path="res://Entities/Player/Sprites/Run/necromancer_run_anim_f3.png" type="Texture" id=5]
 [ext_resource path="res://Entities/Player/Sprites/Run/necromancer_run_anim_f1.png" type="Texture" id=6]
-[ext_resource path="res://Entities/Player/Sprites/Temp/crossair_whiteOutline.png" type="Texture" id=7]
+[ext_resource path="res://Entities/Player/Sprites/Temp/crossair_white.png" type="Texture" id=7]
 [ext_resource path="res://Lights/Light.tscn" type="PackedScene" id=8]
 [ext_resource path="res://Lights/Sprites/lantern.png" type="Texture" id=9]
 [ext_resource path="res://Entities/Player/Player.gd" type="Script" id=10]
@@ -44,6 +44,7 @@ __meta__ = {
 [node name="Sprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 1 )
 animation = "Idle"
+frame = 1
 playing = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -72,8 +73,6 @@ shape = SubResource( 3 )
 disabled = true
 
 [node name="TempPointer" type="Sprite" parent="WeaponPivot"]
-visible = false
-light_mask = 0
 position = Vector2( 11.903, 0 )
 scale = Vector2( 0.2, 0.2 )
 texture = ExtResource( 7 )

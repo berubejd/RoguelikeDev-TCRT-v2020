@@ -60,8 +60,8 @@ func add_room(new_room: Rect2):
 
 	rooms.push_back(room)
 
-	for x in range(new_room.position.x, new_room.size.x):
-		for y in range(new_room.position.y, new_room.size.y):
+	for x in range(new_room.position.x, new_room.end.x):
+		for y in range(new_room.position.y, new_room.end.y):
 			_set_data(x, y, room)
 
 
@@ -84,7 +84,7 @@ func add_random_corridor(room, length: int, connecting: bool):
 
 	# Set up the direction to send corridor based on chosen wall
 	var starting_room: Rect2 = room["room"]
-	
+
 	if k == "n":
 		position = Vector2(floor(starting_room.position.x + starting_room.size.x / 2), starting_room.position.y)
 		direction = Vector2.UP
@@ -98,7 +98,7 @@ func add_random_corridor(room, length: int, connecting: bool):
 		direction = Vector2.RIGHT
 
 	if k == "w":
-		position = Vector2(starting_room.position.x, floor(starting_room.position.y + starting_room.end.y / 2))
+		position = Vector2(starting_room.position.x, floor(starting_room.position.y + starting_room.size.y / 2))
 		direction = Vector2.LEFT
 
 	# Check to see if the new corridor is going to intersect anything
@@ -110,7 +110,6 @@ func add_random_corridor(room, length: int, connecting: bool):
 
 		# Ensure we are not outside the map
 		if not in_limits(Rect2(position.x, position.y, 1, 1).grow(padding)):
-			print("Outside")
 			return
 
 		# Grab room data, if available
