@@ -21,7 +21,7 @@ _global_script_class_icons={
 [application]
 
 config/name="Roguelike"
-run/main_scene="res://World.tscn"
+run/main_scene="res://Main.tscn"
 boot_splash/image="res://roguelike.png"
 config/icon="res://slime.png"
 

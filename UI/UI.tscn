@@ -44,7 +44,7 @@ __meta__ = {
 modulate = Color( 1, 1, 1, 0.4 )
 margin_left = 8.0
 margin_top = 8.0
-margin_right = 78.0
+margin_right = 8.0
 margin_bottom = 21.0
 rect_min_size = Vector2( 0, 13 )
 texture = ExtResource( 9 )
@@ -57,7 +57,7 @@ __meta__ = {
 [node name="CurrentHealth" type="TextureRect" parent="Health"]
 margin_left = 8.0
 margin_top = 8.0
-margin_right = 50.0
+margin_right = 8.0
 margin_bottom = 21.0
 rect_min_size = Vector2( 0, 13 )
 texture = SubResource( 1 )

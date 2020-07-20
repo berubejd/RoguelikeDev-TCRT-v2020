@@ -13,7 +13,7 @@ The schedule of the current code-along, started on 16 June 2020, is:
 - [x] [Week 1 - Parts 0 & 1: Setting up Python and libtcod, drawing an @, and moving around](https://old.reddit.com/r/roguelikedev/comments/ha1zty/so_it_begins_roguelikedev_does_the_complete/)
 - [x] [Week 2 - Parts 2 & 3: The object system and generating your first map](https://old.reddit.com/r/roguelikedev/comments/he3lfo/roguelikedev_does_the_complete_roguelike_tutorial/)
 - [x] [Week 3 - Parts 4 & 5: Field of view, placing enemies, and attacking](https://old.reddit.com/r/roguelikedev/comments/hif9df/roguelikedev_does_the_complete_roguelike_tutorial/)
-- [ ] Week 4 - Parts 6 & 7: Combat damage and building the interface
+- [x] [Week 4 - Parts 6 & 7: Combat damage and building the interface](https://old.reddit.com/r/roguelikedev/comments/hmn5tb/week_4_parts_6_7_combat_damage_and_building_the/)
 - [ ] Week 5 - Parts 8 & 9: Items, inventory and ranged targeting
 - [ ] Week 6 - Parts 10 & 11: Save/load and leveling up
 - [ ] Week 7 - Parts 12 & 13: Monster/item progression and equipment
@@ -33,6 +33,10 @@ Week 2
 Week 3
 
 ![Week3](Images/week3.png?raw=true)
+
+Week 4
+
+![Week4](Images/week4.png?raw=true)
 
 ## Demo
 

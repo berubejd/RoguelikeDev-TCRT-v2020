@@ -11,31 +11,37 @@ enum {
 	ATTACK
 }
 
-# This needs to come out, too
 const hit_effect = preload("res://Effects/HitEffect.tscn")
 
 export var ACCELERATION = 5
 export var FRICTION = 3
-export var MAX_HEALTH = 3
+export var MAX_HEALTH = 10
 export var MAX_SPEED = 20
 export (int) var WAIT_SECS = 5
 export (int) var WALK_SECS = 4
 
 onready var alert_timer = $Aggro/AlertTimer
+onready var attack_timer = $Weapon/WeaponPivot/Weapon/AttackTimer
 onready var animation = $Sprite
 onready var animation_player = $AnimationPlayer
 onready var bubble = $Bubble
 onready var bubble_player = $Bubble/AnimationPlayer
+onready var hit_timer = $HitTimer
 onready var state = HIDDEN if animation.animation == "Hidden" else IDLE
 onready var stun_timer = $HitBox/StunTimer
 onready var wander_timer = $WanderTimer
 onready var weapon = $Weapon/WeaponPivot
+onready var weapon_shape = $Weapon/WeaponPivot/Weapon/CollisionShape2D
 
-var current_health = MAX_HEALTH
-var motion = Vector2.ZERO
+var attacker_direction: Vector2
+var current_health: int = MAX_HEALTH setget update_health
+var defense: int = 0
+var death = preload("res://Effects/Explosion.tscn")
+var power: int = 3
 var target
-var walking_direction
-
+var target_list: Array
+var velocity: = Vector2.ZERO
+var walking_direction: Vector2
 
 func _ready():
 	randomize()
@@ -49,7 +55,7 @@ func _physics_process(_delta):
 			pass
 
 		IDLE:
-			motion = motion.move_toward(Vector2.ZERO, FRICTION)
+			velocity = velocity.move_toward(Vector2.ZERO, FRICTION)
 
 		WALK:
 			if is_on_wall():
@@ -57,34 +63,56 @@ func _physics_process(_delta):
 				walking_direction = Vector2(rand_range(-1.0, 1.0), rand_range(-1.0, 1.0)).normalized()
 				wander_timer.start(1)
 
-			motion = motion.move_toward(walking_direction * MAX_SPEED, ACCELERATION)
+			velocity = velocity.move_toward(walking_direction * MAX_SPEED, ACCELERATION)
 
 		HIT:
 			if stun_timer.is_stopped():
 				state = CHASE
 			else:
-				motion = motion.move_toward(Vector2.ZERO, FRICTION)
+				velocity = velocity.move_toward(Vector2.ZERO, FRICTION)
 
 		DEATH:
-			pass
+			# audiostream.stream = load("Some death resource")
+			# audiostream.play()
+
+			if animation.frames.has_animation("Death"):
+				animation.play("Death")
+			else:
+				queue_free()
+
+				var death_instance = death.instance()
+				death_instance.position = global_position
+				death_instance.modulate = Color('55cf40')
+				death_instance.emitting = true
+				get_tree().get_root().find_node("Effects", true, false).add_child(death_instance)
 
 		ALERT:
 			# This should verify player is "seeable" or their trail is then transition with that target else go back to idle
 			state = CHASE
+			weapon_shape.disabled = false
 
 		CHASE:
 			if target:
+				weapon.look_at(target.position)
 				walking_direction = (target.position - position).normalized()
-				motion = motion.move_toward(walking_direction * MAX_SPEED, ACCELERATION) 
+				velocity = velocity.move_toward(walking_direction * MAX_SPEED, ACCELERATION) 
 			else:
 				# This would go to ALERT to try to find player
 				state = IDLE
+				weapon_shape.disabled = true
 
 		ATTACK:
-			pass
+			if attack_timer.is_stopped() and target_list.size():
+				for body in target_list:
+					damage_target(body)
 
-	animate()	
-	motion = move_and_slide(motion)
+				attack_timer.start(1)
+
+			if not target_list.size():
+				state = CHASE
+
+	animate()
+	velocity = move_and_slide(velocity)
 
 
 func _on_Timer_timeout():
@@ -112,10 +140,10 @@ func animate():
 	if current_animation == 'Hit' or current_animation == 'Emerge' or current_animation == 'Death':
 		return
 
-	if motion != Vector2.ZERO:
+	if velocity != Vector2.ZERO:
 		# Face sprite in direction of movement if were moving left or right
-		if ! motion.x == 0:
-			if motion.x < 0:
+		if ! velocity.x == 0:
+			if velocity.x < 0:
 				animation.flip_h = true
 			else:
 				animation.flip_h = false
@@ -145,18 +173,16 @@ func finished_animation():
 	animation.play("Idle")
 
 
-func hit(direction, damage=1):
-	current_health -= damage
+func damage_taken(direction):
+	play_hit_effect()
+
 	if current_health <= 0:
 		state = DEATH
-		# audiostream.stream = load("Some death resource")
-		# audiostream.play()
-		if animation.frames.has_animation("Death"):
-			animation.play("Death")
-		else:
-			queue_free()
+		return
 	else:
-		motion = direction * 100
+		hit_timer.start(1)
+		
+		velocity = direction * 100
 		if animation.frames.has_animation("Hit"):
 			animation.play("Hit")
 		elif animation_player.has_animation("Hit"):
@@ -187,17 +213,50 @@ func _on_Aggro_body_exited(_body):
 	# bubble.clear()
 
 
-func _on_HitBox_area_entered(area):
-	var knockback_direction = (position - area.global_position).normalized()
-	# This is all garbage
+func play_hit_effect():
 	var effect = hit_effect.instance()
 	var main = get_tree().current_scene
 	main.add_child(effect)
 	effect.global_position = global_position
-	hit(knockback_direction)
-	stun()
 
 
 func stun(duration: = 0.3):
 	stun_timer.start(duration)
 	state = HIT
+
+
+func damage_target(body):
+	body.attacker_direction = (body.global_position - position).normalized()
+	body.current_health -= power
+
+
+func _on_Weapon_body_entered(body):
+	if not body in target_list:
+		target_list.append(body)
+		state = ATTACK
+
+		if attack_timer.is_stopped():
+			damage_target(body)
+			attack_timer.start(1)
+
+
+func _on_Weapon_body_exited(body):
+	if body in target_list:
+		target_list.erase(body)
+
+
+func update_health(value):
+	if hit_timer.is_stopped() and value <= current_health:
+		current_health = value
+
+		var knockback_direction: Vector2
+
+		if attacker_direction:
+			knockback_direction = attacker_direction
+		else:
+			knockback_direction = (position - target.global_position).normalized()
+
+		damage_taken(knockback_direction)
+		
+		if not state == DEATH:
+			stun()

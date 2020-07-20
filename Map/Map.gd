@@ -545,8 +545,8 @@ func _place_object(object_scene, object_group, position: Vector2, flip: bool = f
 		return false
 
 	var new_object = object_scene.instance()
-
-	new_object.position = map_to_world(position)
+	
+	new_object.global_position = map_to_world(position)
 
 	if flip and new_object.get_node_or_null("Sprite"):
 		new_object.get_node("Sprite").flip_h = true

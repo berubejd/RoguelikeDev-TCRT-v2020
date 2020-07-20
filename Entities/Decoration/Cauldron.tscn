@@ -16,8 +16,8 @@ animations = [ {
 } ]
 
 [sub_resource type="CapsuleShape2D" id=2]
-radius = 4.58025
-height = 6.3634
+radius = 5.14148
+height = 5.77006
 
 [sub_resource type="OccluderPolygon2D" id=3]
 cull_mode = 1
@@ -28,12 +28,11 @@ polygon = PoolVector2Array( -6.69359, -4.72556, -2.41421, -7.46155, 2.63686, -7.
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 position = Vector2( 8, 8 )
 frames = SubResource( 1 )
-frame = 2
+frame = 4
 playing = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
-position = Vector2( 8, 11.851 )
+position = Vector2( 7.99753, 10.939 )
 rotation = -1.57079
 shape = SubResource( 2 )
 

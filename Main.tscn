@@ -1,10 +1,9 @@
 [gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://UI/UI.tscn" type="PackedScene" id=1]
-[ext_resource path="res://World.gd" type="Script" id=2]
+[ext_resource path="res://Main.gd" type="Script" id=2]
 
 [sub_resource type="Animation" id=1]
-resource_name = "Fade"
 tracks/0/type = "value"
 tracks/0/path = NodePath("ColorRect:color")
 tracks/0/interp = 1
@@ -18,9 +17,13 @@ tracks/0/keys = {
 "values": [ Color( 0, 0, 0, 0 ), Color( 0, 0, 0, 1 ) ]
 }
 
-[node name="World" type="Node2D"]
+[node name="Main" type="Node2D"]
 pause_mode = 2
 script = ExtResource( 2 )
+
+[node name="Levels" type="Node" parent="."]
+
+[node name="Effects" type="Node" parent="."]
 
 [node name="UI" parent="." instance=ExtResource( 1 )]
 

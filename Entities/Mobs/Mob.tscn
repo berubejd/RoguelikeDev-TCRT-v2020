@@ -8,77 +8,77 @@
 [ext_resource path="res://Entities/Mobs/Sprites/Temp/crossair_whiteOutline.png" type="Texture" id=7]
 [ext_resource path="res://Entities/Mobs/Mob.gd" type="Script" id=10]
 
-[sub_resource type="CapsuleShape2D" id=15]
+[sub_resource type="CapsuleShape2D" id=1]
 radius = 3.71988
 height = 8.00758
 
-[sub_resource type="ShaderMaterial" id=1]
+[sub_resource type="ShaderMaterial" id=2]
 resource_local_to_scene = true
 shader = ExtResource( 5 )
 shader_param/active = false
 
-[sub_resource type="AtlasTexture" id=2]
-atlas = ExtResource( 2 )
-region = Rect2( 0, 0, 16, 16 )
-
 [sub_resource type="AtlasTexture" id=3]
 atlas = ExtResource( 2 )
-region = Rect2( 16, 0, 16, 16 )
+region = Rect2( 0, 0, 16, 16 )
 
 [sub_resource type="AtlasTexture" id=4]
 atlas = ExtResource( 2 )
-region = Rect2( 32, 0, 16, 16 )
+region = Rect2( 16, 0, 16, 16 )
 
 [sub_resource type="AtlasTexture" id=5]
 atlas = ExtResource( 2 )
-region = Rect2( 48, 0, 16, 16 )
+region = Rect2( 32, 0, 16, 16 )
 
 [sub_resource type="AtlasTexture" id=6]
 atlas = ExtResource( 2 )
-region = Rect2( 64, 0, 16, 16 )
+region = Rect2( 48, 0, 16, 16 )
 
 [sub_resource type="AtlasTexture" id=7]
 atlas = ExtResource( 2 )
-region = Rect2( 80, 0, 16, 16 )
+region = Rect2( 64, 0, 16, 16 )
 
 [sub_resource type="AtlasTexture" id=8]
-atlas = ExtResource( 3 )
-region = Rect2( 0, 0, 16, 16 )
+atlas = ExtResource( 2 )
+region = Rect2( 80, 0, 16, 16 )
 
 [sub_resource type="AtlasTexture" id=9]
 atlas = ExtResource( 3 )
-region = Rect2( 16, 0, 16, 16 )
+region = Rect2( 0, 0, 16, 16 )
 
 [sub_resource type="AtlasTexture" id=10]
 atlas = ExtResource( 3 )
-region = Rect2( 32, 0, 16, 16 )
+region = Rect2( 16, 0, 16, 16 )
 
 [sub_resource type="AtlasTexture" id=11]
 atlas = ExtResource( 3 )
-region = Rect2( 48, 0, 16, 16 )
+region = Rect2( 32, 0, 16, 16 )
 
 [sub_resource type="AtlasTexture" id=12]
 atlas = ExtResource( 3 )
-region = Rect2( 64, 0, 16, 16 )
+region = Rect2( 48, 0, 16, 16 )
 
 [sub_resource type="AtlasTexture" id=13]
 atlas = ExtResource( 3 )
+region = Rect2( 64, 0, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=14]
+atlas = ExtResource( 3 )
 region = Rect2( 80, 0, 16, 16 )
 
-[sub_resource type="SpriteFrames" id=14]
+[sub_resource type="SpriteFrames" id=15]
 animations = [ {
-"frames": [ SubResource( 2 ), SubResource( 3 ), SubResource( 4 ), SubResource( 5 ), SubResource( 6 ), SubResource( 7 ) ],
+"frames": [ SubResource( 3 ), SubResource( 4 ), SubResource( 5 ), SubResource( 6 ), SubResource( 7 ), SubResource( 8 ) ],
 "loop": true,
 "name": "Idle",
 "speed": 4.0
 }, {
-"frames": [ SubResource( 8 ), SubResource( 9 ), SubResource( 10 ), SubResource( 11 ), SubResource( 12 ), SubResource( 13 ) ],
+"frames": [ SubResource( 9 ), SubResource( 10 ), SubResource( 11 ), SubResource( 12 ), SubResource( 13 ), SubResource( 14 ) ],
 "loop": true,
 "name": "Walk",
 "speed": 8.0
 } ]
 
-[sub_resource type="Animation" id=19]
+[sub_resource type="Animation" id=16]
 resource_name = "Hit"
 length = 0.2
 tracks/0/type = "value"
@@ -94,15 +94,15 @@ tracks/0/keys = {
 "values": [ true, false ]
 }
 
-[sub_resource type="CapsuleShape2D" id=16]
-radius = 4.56866
-height = 10.8727
-
 [sub_resource type="CapsuleShape2D" id=17]
+radius = 5.0
+height = 6.0
+
+[sub_resource type="CapsuleShape2D" id=18]
 radius = 7.375
 height = 5.80199
 
-[sub_resource type="CircleShape2D" id=18]
+[sub_resource type="CircleShape2D" id=19]
 radius = 56.5849
 
 [node name="Mob" type="KinematicBody2D"]
@@ -117,17 +117,17 @@ __meta__ = {
 [node name="Collision" type="CollisionShape2D" parent="."]
 position = Vector2( 0, 3.1327 )
 rotation = -1.57079
-shape = SubResource( 15 )
+shape = SubResource( 1 )
 
 [node name="Sprite" type="AnimatedSprite" parent="."]
-material = SubResource( 1 )
-frames = SubResource( 14 )
+material = SubResource( 2 )
+frames = SubResource( 15 )
 animation = "Idle"
 frame = 5
 playing = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/Hit = SubResource( 19 )
+anims/Hit = SubResource( 16 )
 
 [node name="WanderTimer" type="Timer" parent="."]
 wait_time = 3.0
@@ -138,26 +138,29 @@ texture_scale = 0.02
 color = Color( 0.113725, 0.831373, 0.105882, 1 )
 energy = 1.15
 
-[node name="Weapon" type="Node" parent="."]
+[node name="Weapon" type="Node2D" parent="."]
 
 [node name="WeaponPivot" type="Position2D" parent="Weapon"]
-visible = false
-position = Vector2( 9.41702, 11.1327 )
+position = Vector2( 0, 3 )
 
 [node name="Weapon" type="Area2D" parent="Weapon/WeaponPivot"]
-collision_layer = 64
+collision_layer = 0
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Weapon/WeaponPivot/Weapon"]
-position = Vector2( 8.72594, 0 )
-shape = SubResource( 16 )
+position = Vector2( 4, -1 )
+shape = SubResource( 17 )
 disabled = true
 
-[node name="TempPointer" type="Sprite" parent="Weapon/WeaponPivot"]
+[node name="WeaponSprite" type="Sprite" parent="Weapon/WeaponPivot/Weapon"]
+visible = false
 light_mask = 0
 position = Vector2( 11.903, 0 )
 scale = Vector2( 0.2, 0.2 )
 texture = ExtResource( 7 )
+
+[node name="AttackTimer" type="Timer" parent="Weapon/WeaponPivot/Weapon"]
+one_shot = true
 
 [node name="HitBox" type="Area2D" parent="."]
 visible = false
@@ -165,7 +168,7 @@ collision_layer = 4
 collision_mask = 64
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
-shape = SubResource( 17 )
+shape = SubResource( 18 )
 
 [node name="StunTimer" type="Timer" parent="HitBox"]
 one_shot = true
@@ -176,13 +179,17 @@ collision_layer = 0
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Aggro"]
-shape = SubResource( 18 )
+shape = SubResource( 19 )
 
 [node name="AlertTimer" type="Timer" parent="Aggro"]
 one_shot = true
 
 [node name="Bubble" parent="." instance=ExtResource( 4 )]
+
+[node name="HitTimer" type="Timer" parent="."]
+one_shot = true
 [connection signal="timeout" from="WanderTimer" to="." method="_on_Timer_timeout"]
-[connection signal="area_entered" from="HitBox" to="." method="_on_HitBox_area_entered"]
+[connection signal="body_entered" from="Weapon/WeaponPivot/Weapon" to="." method="_on_Weapon_body_entered"]
+[connection signal="body_exited" from="Weapon/WeaponPivot/Weapon" to="." method="_on_Weapon_body_exited"]
 [connection signal="body_entered" from="Aggro" to="." method="_on_Aggro_body_entered"]
 [connection signal="body_exited" from="Aggro" to="." method="_on_Aggro_body_exited"]
