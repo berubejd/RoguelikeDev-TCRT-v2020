@@ -47,7 +47,6 @@ func create_map():
 
 
 func map_exited():
-	print("Entered")
 	# Pause the game and fade out
 	get_tree().paused = true
 	animation.play("Fade")

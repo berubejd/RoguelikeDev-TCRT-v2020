@@ -1,0 +1,78 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Inventory/Slot.gd" type="Script" id=1]
+[ext_resource path="res://Fonts/DefaultFont.tres" type="DynamicFont" id=2]
+
+[sub_resource type="StyleBoxFlat" id=1]
+resource_local_to_scene = true
+bg_color = Color( 0.6, 0.6, 0.6, 0 )
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 0.239216, 0.215686, 0.215686, 1 )
+anti_aliasing = false
+
+[sub_resource type="Animation" id=2]
+resource_name = "Blink"
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:custom_styles/panel:border_color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 0.239216, 0.215686, 0.215686, 1 ) ]
+}
+
+[node name="Slot" type="Panel" groups=[
+"InventorySlot",
+]]
+margin_right = 18.0
+margin_bottom = 18.0
+rect_min_size = Vector2( 18, 18 )
+mouse_filter = 1
+custom_styles/panel = SubResource( 1 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TypeLabel" type="Label" parent="."]
+margin_left = 1.0
+margin_top = 13.2188
+margin_right = 65.0
+margin_bottom = 28.2188
+rect_scale = Vector2( 0.25, 0.25 )
+custom_fonts/font = ExtResource( 2 )
+custom_colors/font_color = Color( 0.239216, 0.215686, 0.215686, 1 )
+text = "Type"
+align = 1
+valign = 1
+clip_text = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="KeyLabel" type="Label" parent="."]
+margin_left = 12.6953
+margin_top = 1.03311
+margin_right = 29.6953
+margin_bottom = 16.0331
+rect_scale = Vector2( 0.25, 0.25 )
+custom_fonts/font = ExtResource( 2 )
+custom_colors/font_color = Color( 0.239216, 0.215686, 0.215686, 1 )
+text = "#"
+align = 1
+valign = 1
+clip_text = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/Blink = SubResource( 2 )

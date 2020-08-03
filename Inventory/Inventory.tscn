@@ -1,0 +1,328 @@
+[gd_scene load_steps=23 format=2]
+
+[ext_resource path="res://Inventory/Bag.gd" type="Script" id=1]
+[ext_resource path="res://Inventory/Tooltip.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Inventory/Inventory.gd" type="Script" id=3]
+[ext_resource path="res://Inventory/Sprites/recycle.png" type="Texture" id=4]
+[ext_resource path="res://Inventory/Slot.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Inventory/Recycle.gd" type="Script" id=6]
+
+[sub_resource type="StyleBoxFlat" id=1]
+resource_local_to_scene = true
+bg_color = Color( 0.6, 0.6, 0.6, 0 )
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 0.239216, 0.215686, 0.215686, 1 )
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id=2]
+resource_local_to_scene = true
+bg_color = Color( 0.6, 0.6, 0.6, 0 )
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 0.239216, 0.215686, 0.215686, 1 )
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id=3]
+resource_local_to_scene = true
+bg_color = Color( 0.6, 0.6, 0.6, 0 )
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 0.239216, 0.215686, 0.215686, 1 )
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id=4]
+resource_local_to_scene = true
+bg_color = Color( 0.6, 0.6, 0.6, 0 )
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 0.239216, 0.215686, 0.215686, 1 )
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id=5]
+resource_local_to_scene = true
+bg_color = Color( 0.6, 0.6, 0.6, 0 )
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 0.239216, 0.215686, 0.215686, 1 )
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id=6]
+resource_local_to_scene = true
+bg_color = Color( 0.6, 0.6, 0.6, 0 )
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 0.239216, 0.215686, 0.215686, 1 )
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id=7]
+resource_local_to_scene = true
+bg_color = Color( 0.6, 0.6, 0.6, 0 )
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 0.239216, 0.215686, 0.215686, 1 )
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id=8]
+resource_local_to_scene = true
+bg_color = Color( 0.6, 0.6, 0.6, 0 )
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 0.239216, 0.215686, 0.215686, 1 )
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id=9]
+resource_local_to_scene = true
+bg_color = Color( 0.6, 0.6, 0.6, 0 )
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 0.239216, 0.215686, 0.215686, 1 )
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id=10]
+resource_local_to_scene = true
+bg_color = Color( 0.6, 0.6, 0.6, 0 )
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 0.239216, 0.215686, 0.215686, 1 )
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id=11]
+resource_local_to_scene = true
+bg_color = Color( 0.6, 0.6, 0.6, 0 )
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 0.239216, 0.215686, 0.215686, 1 )
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id=12]
+resource_local_to_scene = true
+bg_color = Color( 0.6, 0.6, 0.6, 0 )
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 0.239216, 0.215686, 0.215686, 1 )
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id=13]
+resource_local_to_scene = true
+bg_color = Color( 0.6, 0.6, 0.6, 0 )
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 0.239216, 0.215686, 0.215686, 1 )
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id=14]
+resource_local_to_scene = true
+bg_color = Color( 0.6, 0.6, 0.6, 0 )
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 0.239216, 0.215686, 0.215686, 1 )
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id=15]
+resource_local_to_scene = true
+bg_color = Color( 0.6, 0.6, 0.6, 0 )
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 0.239216, 0.215686, 0.215686, 1 )
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id=16]
+resource_local_to_scene = true
+bg_color = Color( 0.6, 0.6, 0.6, 0 )
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 0.239216, 0.215686, 0.215686, 1 )
+anti_aliasing = false
+
+[node name="Inventory" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 0.235977
+margin_right = 0.235962
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HotBar" type="GridContainer" parent="."]
+margin_left = 113.0
+margin_top = 158.0
+margin_right = 207.0
+margin_bottom = 176.0
+custom_constants/vseparation = 1
+custom_constants/hseparation = 1
+columns = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Main_Hand" parent="HotBar" instance=ExtResource( 5 )]
+custom_styles/panel = SubResource( 1 )
+slotType = 6
+
+[node name="Off_Hand" parent="HotBar" instance=ExtResource( 5 )]
+margin_left = 19.0
+margin_right = 37.0
+custom_styles/panel = SubResource( 2 )
+slotType = 7
+
+[node name="Slot" parent="HotBar" instance=ExtResource( 5 )]
+self_modulate = Color( 1, 1, 1, 0.6 )
+margin_left = 38.0
+margin_right = 56.0
+custom_styles/panel = SubResource( 3 )
+
+[node name="Potion" parent="HotBar" instance=ExtResource( 5 )]
+margin_left = 57.0
+margin_right = 75.0
+custom_styles/panel = SubResource( 4 )
+slotType = 8
+keyBind = 49
+
+[node name="Food" parent="HotBar" instance=ExtResource( 5 )]
+margin_left = 76.0
+margin_right = 94.0
+custom_styles/panel = SubResource( 5 )
+slotType = 9
+keyBind = 50
+
+[node name="Equipment" type="GridContainer" parent="."]
+margin_left = 278.563
+margin_top = 5.32433
+margin_right = 296.563
+margin_bottom = 99.3243
+custom_constants/vseparation = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Head" parent="Equipment" instance=ExtResource( 5 )]
+custom_styles/panel = SubResource( 6 )
+slotType = 1
+
+[node name="Chest" parent="Equipment" instance=ExtResource( 5 )]
+margin_top = 19.0
+margin_bottom = 37.0
+custom_styles/panel = SubResource( 7 )
+slotType = 3
+
+[node name="Back" parent="Equipment" instance=ExtResource( 5 )]
+margin_top = 38.0
+margin_bottom = 56.0
+custom_styles/panel = SubResource( 8 )
+slotType = 2
+
+[node name="Ring" parent="Equipment" instance=ExtResource( 5 )]
+margin_top = 57.0
+margin_bottom = 75.0
+custom_styles/panel = SubResource( 9 )
+slotType = 5
+
+[node name="Feet" parent="Equipment" instance=ExtResource( 5 )]
+margin_top = 76.0
+margin_bottom = 94.0
+custom_styles/panel = SubResource( 10 )
+slotType = 4
+
+[node name="Bag" type="GridContainer" parent="."]
+margin_left = 297.936
+margin_top = 4.74685
+margin_right = 315.936
+margin_bottom = 117.747
+custom_constants/vseparation = 1
+custom_constants/hseparation = 1
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Slot1" parent="Bag" instance=ExtResource( 5 )]
+custom_styles/panel = SubResource( 11 )
+
+[node name="Slot2" parent="Bag" instance=ExtResource( 5 )]
+margin_top = 19.0
+margin_bottom = 37.0
+custom_styles/panel = SubResource( 12 )
+
+[node name="Slot3" parent="Bag" instance=ExtResource( 5 )]
+margin_top = 38.0
+margin_bottom = 56.0
+custom_styles/panel = SubResource( 13 )
+
+[node name="Slot4" parent="Bag" instance=ExtResource( 5 )]
+margin_top = 57.0
+margin_bottom = 75.0
+custom_styles/panel = SubResource( 14 )
+
+[node name="Slot5" parent="Bag" instance=ExtResource( 5 )]
+margin_top = 76.0
+margin_bottom = 94.0
+custom_styles/panel = SubResource( 15 )
+
+[node name="Slot6" parent="Bag" instance=ExtResource( 5 )]
+margin_top = 95.0
+margin_bottom = 113.0
+custom_styles/panel = SubResource( 16 )
+
+[node name="Tooltip" parent="." instance=ExtResource( 2 )]
+
+[node name="Recycle" type="TextureRect" parent="."]
+self_modulate = Color( 1, 1, 1, 0.6 )
+margin_left = 280.0
+margin_top = 101.0
+margin_right = 296.0
+margin_bottom = 117.0
+texture = ExtResource( 4 )
+script = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}

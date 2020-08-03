@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Effects/LightningBeam/LightningBeam.gd" type="Script" id=1]
+
+[sub_resource type="CircleShape2D" id=1]
+radius = 128.0
+
+[node name="LightningBeam2D" type="RayCast2D"]
+show_behind_parent = true
+enabled = true
+cast_to = Vector2( 50, 0 )
+collision_mask = 2147483652
+script = ExtResource( 1 )
+
+[node name="JumpArea" type="Area2D" parent="."]
+visible = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="JumpArea"]
+shape = SubResource( 1 )

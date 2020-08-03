@@ -404,4 +404,6 @@ color = Color( 0.188235, 0.188235, 0.188235, 1 )
 
 [node name="Decorations" type="YSort" parent="Entities"]
 
+[node name="Items" type="YSort" parent="Entities"]
+
 [node name="Mobs" type="YSort" parent="Entities"]

@@ -67,9 +67,13 @@ const EXIT = preload("res://Entities/Items/Exit.tscn")
 # Monsters
 const GENERIC_MOB = preload("res://Entities/Mobs/Mob.tscn")
 
+# Items
+const POTION_HEALTH = preload("res://Entities/Items/potion_health.tscn")
+
 # Entity group pointers
 onready var decorations = $Entities/Decorations
 onready var bones = $Entities/Bones
+onready var items = $Entities/Items
 onready var mobs = $Entities/Mobs
 
 # Start and Exit level rooms
@@ -251,8 +255,12 @@ func _populate_room(room: Rect2, add_mobs = true):
 		room_monsters = [GENERIC_MOB]
 		
 		# Place a single cauldron in labs
-		var random_tile = _get_random_floor_cell(room, true)
-		_place_object(CAULDRON, decorations, random_tile)
+		var cauldron_cell = _get_random_floor_cell(room, true)
+		_place_object(CAULDRON, decorations, cauldron_cell)
+
+		# Place a single potion as well
+		var potion_cell = _get_random_floor_cell(room, true, false, true)
+		_place_object(POTION_HEALTH, items, potion_cell)
 	else:
 		room_type = "library"
 		room_monsters = [GENERIC_MOB]

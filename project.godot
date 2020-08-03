@@ -13,9 +13,21 @@ _global_script_classes=[ {
 "class": "Dungeon_Builder",
 "language": "GDScript",
 "path": "res://Map/dungeon_builder.gd"
+}, {
+"base": "TextureRect",
+"class": "Item",
+"language": "GDScript",
+"path": "res://Inventory/Item.gd"
+}, {
+"base": "Panel",
+"class": "Slot",
+"language": "GDScript",
+"path": "res://Inventory/Slot.gd"
 } ]
 _global_script_class_icons={
-"Dungeon_Builder": ""
+"Dungeon_Builder": "",
+"Item": "",
+"Slot": ""
 }
 
 [application]
@@ -28,6 +40,9 @@ config/icon="res://slime.png"
 [autoload]
 
 Globals="*res://Globals.gd"
+AudioManager="*res://Sound/AudioManager.tscn"
+Inventory="*res://Inventory/Autoloads/Inventory.gd"
+InventorySignals="*res://Inventory/Autoloads/InventorySignals.gd"
 
 [debug]
 
@@ -83,12 +98,18 @@ clicked={
 "events": [ Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"button_mask":0,"position":Vector2( 0, 0 ),"global_position":Vector2( 0, 0 ),"factor":1.0,"button_index":1,"pressed":false,"doubleclick":false,"script":null)
  ]
 }
+r_clicked={
+"deadzone": 0.5,
+"events": [ Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"button_mask":0,"position":Vector2( 0, 0 ),"global_position":Vector2( 0, 0 ),"factor":1.0,"button_index":2,"pressed":false,"doubleclick":false,"script":null)
+ ]
+}
 
 [layer_names]
 
 2d_physics/layer_1="World"
 2d_physics/layer_2="Player"
 2d_physics/layer_3="Mob"
+2d_physics/layer_4="Items"
 2d_physics/layer_6="PlayerWeapon"
 2d_physics/layer_7="MobWeapon"
 

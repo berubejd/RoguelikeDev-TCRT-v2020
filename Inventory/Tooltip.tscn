@@ -1,0 +1,91 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Fonts/DefaultFont.tres" type="DynamicFont" id=1]
+[ext_resource path="res://Inventory/Tooltip.gd" type="Script" id=2]
+
+[node name="Tooltip" type="Popup"]
+self_modulate = Color( 0.376471, 0.407843, 0.419608, 1 )
+margin_left = 226.0
+margin_top = 131.0
+margin_right = 316.0
+margin_bottom = 176.0
+rect_min_size = Vector2( 45, 45 )
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel" type="Panel" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_min_size = Vector2( 45, 45 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label_name" type="Label" parent="Panel"]
+margin_left = 2.0
+margin_top = 2.0
+margin_right = 174.0
+margin_bottom = 17.0
+rect_min_size = Vector2( 172, 8 )
+rect_scale = Vector2( 0.5, 0.5 )
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+text = "Item Name"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label_type" type="Label" parent="Panel"]
+margin_top = 9.0
+margin_right = 257.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 172, 8 )
+rect_scale = Vector2( 0.35, 0.35 )
+size_flags_horizontal = 3
+size_flags_vertical = 7
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color = Color( 0.756863, 0.756863, 0.756863, 1 )
+text = "Type"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label_description" type="Label" parent="Panel"]
+margin_left = 4.0
+margin_top = 20.0
+margin_right = 209.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 205, 43 )
+rect_scale = Vector2( 0.4, 0.4 )
+size_flags_horizontal = 3
+size_flags_vertical = 6
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+text = "Short Description Here"
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label_value" type="Label" parent="Panel"]
+margin_left = 4.0
+margin_top = 38.0
+margin_right = 280.0
+margin_bottom = 53.0
+rect_min_size = Vector2( 276, 8 )
+rect_scale = Vector2( 0.3, 0.3 )
+size_flags_horizontal = 3
+size_flags_vertical = 6
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+text = "Value: 10 g"
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}

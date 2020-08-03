@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://UI/Sprites/heart-full-7.png" type="Texture" id=1]
 [ext_resource path="res://UI/Sprites/heart-full-8.png" type="Texture" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://UI/Sprites/heart-full-6.png" type="Texture" id=8]
 [ext_resource path="res://UI/Sprites/heart-smaller.png" type="Texture" id=9]
 [ext_resource path="res://UI/UI.gd" type="Script" id=10]
+[ext_resource path="res://Inventory/Inventory.tscn" type="PackedScene" id=11]
 
 [sub_resource type="AnimatedTexture" id=1]
 frames = 8
@@ -66,3 +67,5 @@ stretch_mode = 2
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="Inventory" parent="." instance=ExtResource( 11 )]

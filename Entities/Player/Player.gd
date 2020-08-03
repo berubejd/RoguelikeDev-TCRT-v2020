@@ -15,11 +15,14 @@ export var MAX_SPEED = 60
 onready var animation_player = $AnimationPlayer
 onready var camera = $Camera2D
 onready var hit_timer = $HitTimer
+onready var spell = $WeaponPivot/LightningBeam2D
+onready var spell_timer = $WeaponPivot/LightningBeam2D/AttackTimer
 onready var sprite = $Sprite
 onready var state = NORMAL
 onready var stun_timer = $StunTimer
 onready var weapon = $WeaponPivot
 onready var weapon_area = $WeaponPivot/Weapon/CollisionShape2D
+onready var weapon_sprite = $WeaponPivot/Weapon/WeaponSprite
 onready var weapon_timer = $WeaponPivot/Weapon/AttackTimer
 onready var weapon_animation = $WeaponPivot/Weapon/AnimationPlayer
 onready var pointer = $WeaponPivot/Weapon/WeaponSprite
@@ -40,6 +43,9 @@ func _ready():
 func _physics_process(_delta):
 	match state:
 		DEATH:
+			# Remove any remaining movement when dead
+			velocity = Vector2.ZERO
+			
 			# audiostream.stream = load("Some death resource")
 			# audiostream.play()
 
@@ -60,6 +66,17 @@ func _physics_process(_delta):
 
 			# Rotate weapon pivot to direction of mouse
 			weapon.look_at(get_global_mouse_position())
+			
+			# This sucks... All of this weapon stuff.
+#			if weapon.rotation_degrees > 360:
+#				weapon.rotation_degrees -= 360
+#			elif weapon.rotation_degrees < 0:
+#				weapon.rotation_degrees += 360
+
+#			if weapon.rotation_degrees >= 180:
+#				weapon.z_index = -1
+#			else:
+#				weapon.z_index = 0
 
 			# Zoom for testing
 			if Input.is_action_just_released("wheel_down"):
@@ -72,11 +89,22 @@ func _physics_process(_delta):
 
 			if Input.is_action_just_pressed("clicked"):
 				if weapon_timer.is_stopped():
-					weapon_timer.start(.2)
+					weapon_timer.start()
 					weapon_animation.play("Attack")
 
 			if Input.is_action_just_released("clicked"):
 				weapon_area.disabled = true
+
+			if Input.is_action_just_pressed("r_clicked"):
+				if spell_timer.is_stopped():
+					spell_timer.start()
+					
+					# Shouldn't be hardcoded... This all sucks, too.  This should be bound to the inventory slot.
+					var orig_text = weapon_sprite.texture
+					weapon_sprite.texture = load("res://Inventory/Sprites/Item_23.png")
+					spell.shoot()
+					yield(get_tree().create_timer(1), "timeout")
+					weapon_sprite.texture = orig_text
 
 			# Gather key input into new input_vector
 			input_vector.x = Input.get_action_strength("move_right") - Input.get_action_strength("move_left")

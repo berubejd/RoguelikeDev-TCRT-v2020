@@ -254,7 +254,8 @@ func update_health(value):
 		if attacker_direction:
 			knockback_direction = attacker_direction
 		else:
-			knockback_direction = (position - target.global_position).normalized()
+			if target:
+				knockback_direction = (position - target.global_position).normalized()
 
 		damage_taken(knockback_direction)
 		
