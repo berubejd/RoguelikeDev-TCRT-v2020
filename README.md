@@ -14,7 +14,7 @@ The schedule of the current code-along, started on 16 June 2020, is:
 - [x] [Week 2 - Parts 2 & 3: The object system and generating your first map](https://old.reddit.com/r/roguelikedev/comments/he3lfo/roguelikedev_does_the_complete_roguelike_tutorial/)
 - [x] [Week 3 - Parts 4 & 5: Field of view, placing enemies, and attacking](https://old.reddit.com/r/roguelikedev/comments/hif9df/roguelikedev_does_the_complete_roguelike_tutorial/)
 - [x] [Week 4 - Parts 6 & 7: Combat damage and building the interface](https://old.reddit.com/r/roguelikedev/comments/hmn5tb/week_4_parts_6_7_combat_damage_and_building_the/)
-- [ ] Week 5 - Parts 8 & 9: Items, inventory and ranged targeting
+- [x] [Week 5 - Parts 8 & 9: Items, inventory and ranged targeting](https://old.reddit.com/r/roguelikedev/comments/hqtl8e/roguelikedev_does_the_complete_roguelike_tutorial/)
 - [ ] Week 6 - Parts 10 & 11: Save/load and leveling up
 - [ ] Week 7 - Parts 12 & 13: Monster/item progression and equipment
 - [ ] Week 8: Sharing your game
@@ -37,6 +37,10 @@ Week 3
 Week 4
 
 ![Week4](Images/week4.png?raw=true)
+
+Week 5
+
+![Week5](Images/week5.png?raw=true)
 
 ## Demo
 
@@ -63,4 +67,6 @@ Everything used during this code-along is properly licensed for use.
 - [Dungeon Tileset by Pixel_Poem](https://pixel-poem.itch.io/dungeon-assetpuck)
 - [Dungeon Tileset 2 by 0x72](https://0x72.itch.io/dungeontileset-ii)
 - [Simple Dungeon Crawler 16x16 Pixel Art Asset Pack by o_lobster](https://o-lobster.itch.io/simple-dungeon-crawler-16x16-pixel-pack)
+- [16x16 RPG Item Pack by Alex's Assets](https://alexs-assets.itch.io/16x16-rpg-item-pack)
+- [16x16 RPG Item Pack 2 by Alex's Assets](https://alexs-assets.itch.io/16x16-rpg-item-pack-2)
 - Additional custom assets by Irina Petrukevich
