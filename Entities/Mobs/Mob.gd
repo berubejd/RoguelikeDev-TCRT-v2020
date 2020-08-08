@@ -19,6 +19,7 @@ export var MAX_HEALTH = 10
 export var MAX_SPEED = 20
 export (int) var WAIT_SECS = 5
 export (int) var WALK_SECS = 4
+export (int) var xp_value = 35
 
 onready var alert_timer = $Aggro/AlertTimer
 onready var attack_timer = $Weapon/WeaponPivot/Weapon/AttackTimer

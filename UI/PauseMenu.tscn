@@ -1,0 +1,306 @@
+[gd_scene load_steps=15 format=2]
+
+[ext_resource path="res://Fonts/ThaleahFat.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://UI/PauseMenu.gd" type="Script" id=2]
+[ext_resource path="res://UI/ButtonStyleHover.tres" type="StyleBox" id=3]
+[ext_resource path="res://UI/ButtonStyleDisabled.tres" type="StyleBox" id=4]
+[ext_resource path="res://UI/ButtonStylePressed.tres" type="StyleBox" id=5]
+[ext_resource path="res://UI/ButtonStyleNormal.tres" type="StyleBox" id=6]
+[ext_resource path="res://UI/StatButtons.tscn" type="PackedScene" id=7]
+[ext_resource path="res://UI/TransitionLayer.tscn" type="PackedScene" id=8]
+[ext_resource path="res://UI/StatContainer.tscn" type="PackedScene" id=9]
+
+[sub_resource type="DynamicFont" id=1]
+size = 48
+outline_size = 1
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=2]
+font_data = ExtResource( 1 )
+
+[sub_resource type="StyleBoxFlat" id=3]
+bg_color = Color( 1, 1, 1, 1 )
+border_width_top = 1
+border_color = Color( 1, 1, 1, 1 )
+
+[sub_resource type="DynamicFont" id=4]
+outline_size = 1
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 1 )
+
+[sub_resource type="Animation" id=5]
+resource_name = "Pulse"
+length = 1.5
+loop = true
+step = 0.25
+tracks/0/type = "value"
+tracks/0/path = NodePath("Popup/Label:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.75, 1.5 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0.25098 ), Color( 1, 1, 1, 1 ) ]
+}
+
+[node name="PauseMenu" type="Node"]
+script = ExtResource( 2 )
+
+[node name="PopupLayer" type="CanvasLayer" parent="."]
+pause_mode = 2
+
+[node name="Popup" type="Popup" parent="PopupLayer"]
+visible = true
+anchor_right = 1.0
+anchor_bottom = 1.0
+popup_exclusive = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="PopupLayer/Popup"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0, 0, 0, 0.6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="PopupLayer/Popup"]
+self_modulate = Color( 1, 1, 1, 0.780345 )
+margin_top = 20.0
+margin_right = 320.0
+margin_bottom = 64.0
+custom_fonts/font = SubResource( 1 )
+text = "Paused"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LevelLabel" type="Label" parent="PopupLayer/Popup"]
+margin_left = 12.0
+margin_top = 65.0
+margin_right = 142.0
+margin_bottom = 80.0
+custom_fonts/font = SubResource( 2 )
+text = "Level x"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HSeparator" type="HSeparator" parent="PopupLayer/Popup"]
+margin_left = 14.0
+margin_top = 81.0
+margin_right = 141.0
+margin_bottom = 85.0
+rect_min_size = Vector2( 0, 1 )
+custom_styles/separator = SubResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HealthContainer" parent="PopupLayer/Popup" instance=ExtResource( 9 )]
+stat = "Health"
+node_name = "Player"
+variable_1 = "current_health"
+variable_2 = "max_health"
+
+[node name="HealthButtons" parent="PopupLayer/Popup" instance=ExtResource( 7 )]
+anchor_left = 0.0344828
+anchor_top = 0.133331
+anchor_right = 0.0344828
+anchor_bottom = 0.133331
+margin_left = 116.966
+margin_top = 64.8602
+margin_right = 129.966
+margin_bottom = 77.8602
+parent = "HealthContainer"
+increment = 20
+node_name = "Player"
+points_variable = "level_points"
+
+[node name="AttackContainer" parent="PopupLayer/Popup" instance=ExtResource( 9 )]
+margin_top = 105.86
+margin_bottom = 120.86
+stat = "Attack"
+node_name = "Player"
+variable_1 = "power"
+
+[node name="AttackButtons" parent="PopupLayer/Popup" instance=ExtResource( 7 )]
+anchor_left = 0.303448
+anchor_top = 0.133333
+anchor_right = 0.303448
+anchor_bottom = 0.133333
+margin_left = 30.8965
+margin_top = 84.0
+margin_right = 43.8965
+margin_bottom = 97.0
+parent = "AttackContainer"
+increment = 1
+node_name = "Player"
+points_variable = "level_points"
+
+[node name="DefenseContainer" parent="PopupLayer/Popup" instance=ExtResource( 9 )]
+margin_top = 124.86
+margin_bottom = 139.86
+stat = "Defense"
+node_name = "Player"
+variable_1 = "defense"
+
+[node name="DefenseButtons" parent="PopupLayer/Popup" instance=ExtResource( 7 )]
+anchor_left = 0.361702
+anchor_top = 0.133333
+anchor_right = 0.361702
+anchor_bottom = 0.133333
+margin_left = 12.2553
+margin_top = 103.0
+margin_right = 25.2553
+margin_bottom = 116.0
+parent = "DefenseContainer"
+increment = 1
+node_name = "Player"
+points_variable = "level_points"
+
+[node name="SpeedContainer" parent="PopupLayer/Popup" instance=ExtResource( 9 )]
+margin_top = 143.86
+margin_bottom = 158.86
+stat = "Speed"
+node_name = "Player"
+variable_1 = "max_speed"
+
+[node name="SpeedButtons" parent="PopupLayer/Popup" instance=ExtResource( 7 )]
+anchor_left = 0.344828
+anchor_top = 0.133333
+anchor_right = 0.344828
+anchor_bottom = 0.133333
+margin_left = 17.6552
+margin_top = 122.0
+margin_right = 30.6552
+margin_bottom = 135.0
+parent = "SpeedContainer"
+increment = 10
+node_name = "Player"
+points_variable = "level_points"
+
+[node name="PointsLabel" type="Label" parent="PopupLayer/Popup"]
+margin_left = 12.0
+margin_top = 164.0
+margin_right = 198.0
+margin_bottom = 179.0
+rect_scale = Vector2( 0.7, 0.7 )
+custom_fonts/font = SubResource( 2 )
+text = "Points to Spend: 0"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MenuLabel" type="Label" parent="PopupLayer/Popup"]
+margin_left = 168.0
+margin_top = 65.0
+margin_right = 298.0
+margin_bottom = 80.0
+custom_fonts/font = SubResource( 2 )
+text = "Options"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HSeparator2" type="HSeparator" parent="PopupLayer/Popup"]
+margin_left = 170.0
+margin_top = 81.0
+margin_right = 297.0
+margin_bottom = 85.0
+rect_min_size = Vector2( 0, 1 )
+custom_styles/separator = SubResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ResumeButton" type="Button" parent="PopupLayer/Popup"]
+margin_left = 169.0
+margin_top = 94.0
+margin_right = 299.0
+margin_bottom = 109.0
+rect_min_size = Vector2( 130, 0 )
+focus_neighbour_bottom = NodePath("../LoadButton")
+mouse_default_cursor_shape = 2
+custom_styles/hover = ExtResource( 3 )
+custom_styles/pressed = ExtResource( 5 )
+custom_styles/focus = ExtResource( 3 )
+custom_styles/disabled = ExtResource( 4 )
+custom_styles/normal = ExtResource( 6 )
+custom_fonts/font = SubResource( 4 )
+text = "Resume Game"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LoadButton" type="Button" parent="PopupLayer/Popup"]
+margin_left = 169.0
+margin_top = 115.0
+margin_right = 299.0
+margin_bottom = 130.0
+focus_neighbour_top = NodePath("../ResumeButton")
+focus_neighbour_bottom = NodePath("../MainButton")
+mouse_default_cursor_shape = 2
+custom_styles/hover = ExtResource( 3 )
+custom_styles/pressed = ExtResource( 5 )
+custom_styles/focus = ExtResource( 3 )
+custom_styles/disabled = ExtResource( 4 )
+custom_styles/normal = ExtResource( 6 )
+custom_fonts/font = SubResource( 4 )
+text = "Load Game"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MainButton" type="Button" parent="PopupLayer/Popup"]
+margin_left = 169.0
+margin_top = 136.0
+margin_right = 299.0
+margin_bottom = 151.0
+focus_neighbour_top = NodePath("../LoadButton")
+mouse_default_cursor_shape = 2
+custom_styles/hover = ExtResource( 3 )
+custom_styles/pressed = ExtResource( 5 )
+custom_styles/focus = ExtResource( 3 )
+custom_styles/disabled = ExtResource( 4 )
+custom_styles/normal = ExtResource( 6 )
+custom_fonts/font = SubResource( 4 )
+text = "QuiT to Main Menu"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="PopupLayer"]
+anims/Pulse = SubResource( 5 )
+
+[node name="TransitionLayer" parent="." instance=ExtResource( 8 )]
+pause_mode = 2
+[connection signal="focus_entered" from="PopupLayer/Popup/ResumeButton" to="." method="_on_ResumeButton_entered"]
+[connection signal="focus_exited" from="PopupLayer/Popup/ResumeButton" to="." method="_on_control_exited"]
+[connection signal="mouse_entered" from="PopupLayer/Popup/ResumeButton" to="." method="_on_ResumeButton_entered"]
+[connection signal="mouse_exited" from="PopupLayer/Popup/ResumeButton" to="." method="_on_control_exited"]
+[connection signal="pressed" from="PopupLayer/Popup/ResumeButton" to="." method="_on_ResumeButton_pressed"]
+[connection signal="focus_entered" from="PopupLayer/Popup/LoadButton" to="." method="_on_LoadButton_entered"]
+[connection signal="focus_exited" from="PopupLayer/Popup/LoadButton" to="." method="_on_control_exited"]
+[connection signal="mouse_entered" from="PopupLayer/Popup/LoadButton" to="." method="_on_LoadButton_entered"]
+[connection signal="mouse_exited" from="PopupLayer/Popup/LoadButton" to="." method="_on_control_exited"]
+[connection signal="pressed" from="PopupLayer/Popup/LoadButton" to="." method="_on_LoadButton_pressed"]
+[connection signal="focus_entered" from="PopupLayer/Popup/MainButton" to="." method="_on_MainButton_entered"]
+[connection signal="focus_exited" from="PopupLayer/Popup/MainButton" to="." method="_on_control_exited"]
+[connection signal="mouse_entered" from="PopupLayer/Popup/MainButton" to="." method="_on_MainButton_entered"]
+[connection signal="mouse_exited" from="PopupLayer/Popup/MainButton" to="." method="_on_control_exited"]
+[connection signal="pressed" from="PopupLayer/Popup/MainButton" to="." method="_on_MainButton_pressed"]

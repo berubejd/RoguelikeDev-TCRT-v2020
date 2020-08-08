@@ -1,4 +1,5 @@
 extends KinematicBody2D
+class_name Player
 
 enum {
 	DEATH,
@@ -7,10 +8,12 @@ enum {
 	ATTACK
 }
 
-export var ACCELERATION = 10
-export var FRICTION = 3
-export var KNOCKBACK = 60
-export var MAX_SPEED = 60
+export (int) var ACCELERATION = 10
+export (int) var FRICTION = 3
+export (int) var KNOCKBACK = 60
+export (int) var max_speed = 60
+export (int) var level_up_base = 200
+export (int) var level_up_factor = 150
 
 onready var animation_player = $AnimationPlayer
 onready var camera = $Camera2D
@@ -30,14 +33,33 @@ onready var pointer = $WeaponPivot/Weapon/WeaponSprite
 var velocity = Vector2.ZERO
 
 var attacker_direction: Vector2
+var power: int = 5
 var defense: int = 2
 var max_health: int = 30 setget update_max_health
 var current_health: int = max_health setget update_health
-var power: int = 5
+var level: int = 1
+var level_points: int = 0
+var xp: int = 0 setget add_xp
+
+# warning-ignore:unused_signal
+signal spell_result(result)
 
 
 func _ready():
+	if Globals.save_data:
+		load_state(Globals.save_data[name])
+		var _ret = Globals.save_data.erase(name)
+	else:
+		InventorySignals.emit_signal("init_inventory")
+
 	update_health(current_health)
+
+	# Signal UI to update
+	UiSignals.emit_signal("update_health", current_health, max_health)
+	UiSignals.emit_signal("update_experience", level, xp, experience_to_next_level())
+
+# warning-ignore:return_value_discarded
+	connect("spell_result", self, "spell_result")
 
 
 func _physics_process(_delta):
@@ -58,8 +80,6 @@ func _physics_process(_delta):
 					var _ret = animation_player.connect("animation_finished", self, "transition")
 			else:
 				transition()
-
-
 
 		NORMAL:
 			var input_vector = Vector2.ZERO
@@ -102,7 +122,9 @@ func _physics_process(_delta):
 					# Shouldn't be hardcoded... This all sucks, too.  This should be bound to the inventory slot.
 					var orig_text = weapon_sprite.texture
 					weapon_sprite.texture = load("res://Inventory/Sprites/Item_23.png")
+
 					spell.shoot()
+
 					yield(get_tree().create_timer(1), "timeout")
 					weapon_sprite.texture = orig_text
 
@@ -121,7 +143,7 @@ func _physics_process(_delta):
 
 				# Play walk animation as we're moving
 				sprite.play("Walk")
-				velocity = velocity.move_toward(input_vector * MAX_SPEED, ACCELERATION)
+				velocity = velocity.move_toward(input_vector * max_speed, ACCELERATION)
 			else:
 				# No movement so go back to idle
 				sprite.play("Idle")
@@ -137,6 +159,25 @@ func _physics_process(_delta):
 	velocity = move_and_slide(velocity)
 
 
+func add_xp(value):
+	xp += value
+	
+	if xp > experience_to_next_level():
+		xp -= experience_to_next_level()
+		level += 1
+		level_points += 1
+
+		# Signal SaveGame that there is a player change that needs to trigger a save
+		SaveGame.emit_signal("save_game")
+
+	# Signal UI to update experience UI
+	UiSignals.emit_signal("update_experience", level, xp, experience_to_next_level())
+
+
+func experience_to_next_level():
+	return level_up_base + level * level_up_factor
+
+
 func damage_taken(direction):
 	if current_health <= 0:
 		state = DEATH
@@ -148,6 +189,12 @@ func damage_taken(direction):
 			animation_player.play("Hit")
 		# audiostream.stream = load("res://Sound/Hurt.wav")
 		# audiostream.play()
+
+
+func spell_result(result):
+	if result.hit:
+		if result.current_health == null or result.current_health <= 0:
+			add_xp(result.xp_value)
 
 
 func update_health(value):
@@ -165,17 +212,23 @@ func update_health(value):
 
 
 	current_health = int(clamp(current_health, 0, max_health)) # Casting to int to alleviate 'narrowing conversion' warning
-	get_tree().call_group("player_update", "update_health", current_health, max_health)
+	UiSignals.emit_signal("update_health", current_health, max_health)
 
 
 func update_max_health(value):
+	# Add the new health gained to current_health, as well
+	current_health += value - max_health
 	max_health = value
-	get_tree().call_group("player_update", "update_health", current_health, max_health)
+	UiSignals.emit_signal("update_health", current_health, max_health)
 
 
 func _on_Weapon_body_entered(body):
 	body.attacker_direction = (body.global_position - position).normalized()
 	body.current_health -= power
+
+	# If target is out of health then award xp to player
+	if body.current_health <= 0:
+		add_xp(body.xp_value)
 
 
 func stun(duration: = 0.3):
@@ -185,4 +238,39 @@ func stun(duration: = 0.3):
 
 func transition(_anim="None"):
 	if state == DEATH:
-		get_tree().get_root().find_node("Main", true, false).map_exited()
+		# Temporary until death screen is in
+		get_tree().get_root().find_node("Main", true, false).level_transition()
+
+
+func save_state():
+	var data = {
+		"position": {
+			"x": position.x,
+			"y": position.y
+		},
+		"current_health": current_health,
+		"defense": defense,
+		"level": level,
+		"level_points": level_points,
+		"max_health": max_health,
+		"max_speed": max_speed,
+		"power": power,
+		"xp": xp
+	}
+
+	return data
+
+
+func load_state(data):
+	for attribute in data:
+		if attribute == "position":
+			position = Vector2(data["position"]["x"], data["position"]["y"])
+		elif attribute == "current_health":
+			# Need to avoid the setter on current_health so set directly and call player_update
+			current_health = data[attribute]
+			UiSignals.emit_signal("update_health", current_health, max_health)
+		else:
+			set(attribute, data[attribute])
+
+	# Trigger the inventory load now so that any signals will be called on the player
+	InventorySignals.emit_signal("load_inventory")

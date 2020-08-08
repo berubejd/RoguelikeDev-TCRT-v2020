@@ -1,0 +1,101 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Fonts/ThaleahFat.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://UI/StatButtons.gd" type="Script" id=2]
+
+[sub_resource type="DynamicFont" id=1]
+outline_size = 1
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 1 )
+
+[node name="StatButtons" type="Control"]
+anchor_right = 0.041
+anchor_bottom = 0.072
+margin_right = -0.120001
+margin_bottom = 0.0402966
+rect_min_size = Vector2( 13, 13 )
+mouse_filter = 2
+mouse_default_cursor_shape = 2
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RemoveStat" type="ColorRect" parent="."]
+visible = false
+margin_right = 11.0
+margin_bottom = 11.0
+mouse_filter = 1
+color = Color( 0.615686, 0.0588235, 0.0588235, 1 )
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="RemoveStat"]
+margin_left = 1.18149
+margin_top = -3.34248
+margin_right = 11.1815
+margin_bottom = 11.6575
+rect_scale = Vector2( 1.15, 1.1 )
+custom_fonts/font = SubResource( 1 )
+text = "-"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="RemoveStat"]
+show_behind_parent = true
+margin_left = -1.25
+margin_top = -0.586
+margin_right = 11.75
+margin_bottom = 12.414
+color = Color( 0, 0, 0, 1 )
+
+[node name="AddStat" type="ColorRect" parent="."]
+visible = false
+anchor_right = 0.846
+anchor_bottom = 0.846
+margin_right = 0.00199986
+margin_bottom = 0.00174809
+mouse_filter = 1
+mouse_default_cursor_shape = 2
+color = Color( 0.278431, 0.627451, 0.247059, 1 )
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="AddStat"]
+margin_left = 1.12248
+margin_top = -2.28062
+margin_right = 11.1225
+margin_bottom = 12.7194
+custom_fonts/font = SubResource( 1 )
+text = "+"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="AddStat"]
+show_behind_parent = true
+anchor_left = -0.114
+anchor_top = -0.053
+anchor_right = 1.068
+anchor_bottom = 1.129
+margin_left = 0.00400007
+margin_top = -0.00299996
+margin_right = 0.0019989
+margin_bottom = -0.00500107
+mouse_filter = 1
+color = Color( 0, 0, 0, 1 )
+[connection signal="gui_input" from="RemoveStat" to="." method="_on_RemoveStat_gui_input"]
+[connection signal="mouse_entered" from="RemoveStat" to="." method="_on_RemoveStat_mouse_entered"]
+[connection signal="mouse_exited" from="RemoveStat" to="." method="_on_RemoveStat_mouse_exited"]
+[connection signal="gui_input" from="AddStat" to="." method="_on_AddStat_gui_input"]
+[connection signal="mouse_entered" from="AddStat" to="." method="_on_AddStat_mouse_entered"]
+[connection signal="mouse_exited" from="AddStat" to="." method="_on_AddStat_mouse_exited"]

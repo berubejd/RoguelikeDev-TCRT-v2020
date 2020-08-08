@@ -13,6 +13,7 @@ var dungeon
 
 # Dungeon complexity
 export (int) var complexity: = 1
+export (int) var level_scale: = 3
 
 # Room size range
 export (int) var min_room_size: = 4
@@ -77,32 +78,42 @@ onready var items = $Entities/Items
 onready var mobs = $Entities/Mobs
 
 # Start and Exit level rooms
-var start_room
-var exit_room
+var start_room = null
+var exit_room = null
+var exit_cell = null
+
+# SaveGame map references
+var entities = null
 
 
 func _ready():
 	pause_mode = Node.PAUSE_MODE_STOP
 
+# warning-ignore:integer_division
+	var scaled_complexity = complexity + floor(Globals.dungeon_level / level_scale)
+
 	rng.randomize()
 	dungeon = Dungeon_Builder.new()
 	
-	dungeon.add_room(Rect2(-4, -4, 8, 8))
+	if not Globals.save_data:
+		dungeon.add_room(Rect2(-4, -4, 8, 8))
+		
+		for _i in range(scaled_complexity * 8):
+			var new_room = dungeon.add_random_corridor(dungeon.get_random_room(), rng.randi_range(min_corridor_length, max_corridor_length), false)
+			if new_room:
+				# Attempt to create room at end of corridor
+				var w = rng.randi_range(min_room_size, max_room_size);
+				var h = rng.randi_range(min_room_size, max_room_size);
+				dungeon.add_room(Rect2(new_room.x, new_room.y, w, h))
 	
-	for _i in range(complexity * 8):
-		var new_room = dungeon.add_random_corridor(dungeon.get_random_room(), rng.randi_range(min_corridor_length, max_corridor_length), false)
-		if new_room:
-			# Attempt to create room at end of corridor
-			var w = rng.randi_range(min_room_size, max_room_size);
-			var h = rng.randi_range(min_room_size, max_room_size);
-			dungeon.add_room(Rect2(new_room.x, new_room.y, w, h))
-
-	for _i in range(10 + complexity * 2):
-		var _new_room = dungeon.add_random_corridor(dungeon.get_random_room(), rng.randi_range(10, 20), true)
-
-	# "Completed" dungeon generation
-	print("Total rooms created: " + str(dungeon.rooms.size()))
-	print("Total corridor tiles created: " + str(dungeon.corridors.size()))
+		for _i in range(10 + scaled_complexity * 2):
+			var _new_room = dungeon.add_random_corridor(dungeon.get_random_room(), rng.randi_range(10, 20), true)
+	
+		# "Completed" dungeon generation
+		print("Total rooms created: " + str(dungeon.rooms.size()))
+		print("Total corridor tiles created: " + str(dungeon.corridors.size()))
+	else:
+		load_state(Globals.save_data[name])
 
 	# Try adding corridors first to see if it resolves the strange "corner missing" issue
 	for corridor_cell in dungeon.corridors:
@@ -114,32 +125,41 @@ func _ready():
 		_add_floor(room["room"])
 		_add_walls(room["room"])
 
-	# Rerunning this room because I am losing a corner for some reason.  Come back and fix this.
+	# Rerunning this room because I am losing a corner for some reason.  Come back and fix this since it still doesn't work.
 	_add_walls(dungeon.rooms[0]["room"])
 
 	# Set up start room
-	start_room = dungeon.rooms[randi() % len(dungeon.rooms)]
+	if not start_room:
+		start_room = dungeon.rooms[randi() % len(dungeon.rooms)]
 
 	# Decorate rooms
-	for room in dungeon.rooms:
-		var add_mobs: = true
-		
-		if room == start_room:
-			add_mobs = false
-		
-		_populate_room(room["room"], add_mobs)
+	if not entities:
+		for room in dungeon.rooms:
+			var add_mobs: = true
+			
+			if room == start_room:
+				add_mobs = false
+			
+			_populate_room(room["room"], add_mobs)
+	else:
+		load_entities(Globals.save_data[name])
 
 	# Add exit	
-	while true:
-		exit_room = dungeon.rooms[randi() % len(dungeon.rooms)]
-		if not exit_room == start_room:
-			break
-	
-	# Place exit
-	var exit_cell = _get_random_floor_cell(exit_room["room"], true, true)
+	if not exit_cell:
+		while true:
+			exit_room = dungeon.rooms[randi() % len(dungeon.rooms)]
+			if not exit_room == start_room:
+				break
+		
+		# Place exit
+		exit_cell = _get_random_floor_cell(exit_room["room"], true, true)
+
 	var exit_result = _place_object(EXIT, $Darkness, exit_cell)
 	if not exit_result:
 		print("F*CK")
+
+	if Globals.save_data.has(name):
+		var _ret = Globals.save_data.erase(name)
 
 
 # Add floor tiles to tilemap based on generated dungeon map
@@ -562,3 +582,76 @@ func _place_object(object_scene, object_group, position: Vector2, flip: bool = f
 	object_group.add_child(new_object)
 	
 	return true
+
+
+func load_entities(data):
+	for entity in data["entities"]:
+		var current_entity = data["entities"][entity]
+		var new_entity = load(current_entity["resource"])
+		var new_group = find_node(current_entity["group"])
+		var new_position = world_to_map(Vector2(current_entity["position"]["x"], current_entity["position"]["y"]))
+
+		_place_object(new_entity, new_group, new_position, current_entity["flip"])
+
+
+func save_state():
+	var data = {
+		"dungeon_level": Globals.dungeon_level,
+		"rooms": dungeon.rooms,
+		"corridors": dungeon.corridors,
+		"start_room": start_room,
+		"exit_room": exit_room,
+		"exit_cell": exit_cell,
+		"entities": {}
+	}
+
+	for entity_group in $Entities.get_children():
+		if not entity_group is Player:
+			for child in entity_group.get_children():
+				data["entities"][child.name] = {
+					"resource": child.filename,
+					"group": entity_group.name,
+					"position": {
+						"x": child.position.x,
+						"y": child.position.y
+					},
+					"flip": true if child.get_node_or_null("Sprite") and child.get_node("Sprite").flip_h else false
+				}
+
+	return data
+
+
+func load_state(data):
+	# Regex for Vector2
+	var r_vect2 = RegEx.new()
+	r_vect2.compile("(-?\\d+), (-?\\d+)")
+
+	# Regex for Rect2
+	var r_rect2 = RegEx.new()
+	r_rect2.compile("(-?\\d+), (-?\\d+), (-?\\d+), (-?\\d+)")
+	
+	for attribute in data:
+		if attribute == "dungeon_level":
+			Globals.dungeon_level = data[attribute]
+		elif attribute == "rooms":
+			var new_room
+			for room in data[attribute]:
+				var result = r_rect2.search(room["room"])
+				new_room = Rect2(result.get_string(1), result.get_string(2), result.get_string(3), result.get_string(4))
+				room["room"] = new_room
+			dungeon.rooms = data[attribute]
+		elif attribute == "corridors":
+			var new_corridors = []
+			for cell in data[attribute]:
+				var result = r_vect2.search(cell)
+				new_corridors.append(Vector2(result.get_string(1), result.get_string(2)))
+			dungeon.corridors = new_corridors
+		elif attribute == "exit_room" or attribute == "start_room":
+			var result = r_rect2.search(data[attribute]["room"])
+			data[attribute]["room"] = Rect2(result.get_string(1), result.get_string(2), result.get_string(3), result.get_string(4))
+			set(attribute, data[attribute])
+		elif attribute == "exit_cell":
+			var result = r_vect2.search(data[attribute])
+			exit_cell = Vector2(result.get_string(1), result.get_string(2))
+		else:
+			set(attribute, data[attribute])

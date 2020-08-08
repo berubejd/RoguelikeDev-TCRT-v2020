@@ -1,0 +1,149 @@
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://Fonts/ThaleahFat.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://UI/Start.gd" type="Script" id=2]
+[ext_resource path="res://UI/ButtonStyleDisabled.tres" type="StyleBox" id=3]
+[ext_resource path="res://UI/ButtonStyleNormal.tres" type="StyleBox" id=4]
+[ext_resource path="res://UI/ButtonStylePressed.tres" type="StyleBox" id=5]
+[ext_resource path="res://UI/ButtonStyleHover.tres" type="StyleBox" id=6]
+[ext_resource path="res://UI/TransitionLayer.tscn" type="PackedScene" id=7]
+
+[sub_resource type="DynamicFont" id=1]
+size = 32
+outline_size = 1
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 1 )
+
+[sub_resource type="Theme" id=2]
+
+[sub_resource type="DynamicFont" id=3]
+outline_size = 1
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=4]
+outline_size = 1
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 1 )
+
+[node name="Start" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Menu" type="Control" parent="CanvasLayer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Title" type="Label" parent="CanvasLayer/Menu"]
+margin_left = -1.0
+margin_top = 27.0
+margin_right = 320.0
+margin_bottom = 69.0
+rect_scale = Vector2( 1, 1.2 )
+custom_fonts/font = SubResource( 1 )
+text = "Something Something"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="NewGame" type="Button" parent="CanvasLayer/Menu"]
+margin_left = 80.0
+margin_top = 93.0
+margin_right = 240.0
+margin_bottom = 111.0
+focus_neighbour_bottom = NodePath("../LoadGame")
+mouse_default_cursor_shape = 2
+theme = SubResource( 2 )
+custom_styles/hover = ExtResource( 6 )
+custom_styles/pressed = ExtResource( 5 )
+custom_styles/focus = ExtResource( 6 )
+custom_styles/disabled = ExtResource( 3 )
+custom_styles/normal = ExtResource( 4 )
+custom_fonts/font = SubResource( 3 )
+text = "New Game"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LoadGame" type="Button" parent="CanvasLayer/Menu"]
+margin_left = 80.0
+margin_top = 114.0
+margin_right = 240.0
+margin_bottom = 132.0
+focus_neighbour_top = NodePath("../NewGame")
+focus_neighbour_bottom = NodePath("../QuitGame")
+mouse_default_cursor_shape = 2
+theme = SubResource( 2 )
+custom_styles/hover = ExtResource( 6 )
+custom_styles/pressed = ExtResource( 5 )
+custom_styles/focus = ExtResource( 6 )
+custom_styles/disabled = ExtResource( 3 )
+custom_styles/normal = ExtResource( 4 )
+custom_fonts/font = SubResource( 3 )
+text = "Load Game"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="QuitGame" type="Button" parent="CanvasLayer/Menu"]
+margin_left = 80.0
+margin_top = 135.0
+margin_right = 240.0
+margin_bottom = 153.0
+focus_neighbour_top = NodePath("../LoadGame")
+mouse_default_cursor_shape = 2
+theme = SubResource( 2 )
+custom_styles/hover = ExtResource( 6 )
+custom_styles/pressed = ExtResource( 5 )
+custom_styles/focus = ExtResource( 6 )
+custom_styles/disabled = ExtResource( 3 )
+custom_styles/normal = ExtResource( 4 )
+custom_fonts/font = SubResource( 3 )
+text = "Quit"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="InfoLabel" type="Label" parent="CanvasLayer/Menu"]
+margin_left = 3.0
+margin_top = 157.0
+margin_right = 630.0
+margin_bottom = 198.0
+rect_scale = Vector2( 0.5, 0.5 )
+custom_fonts/font = SubResource( 4 )
+text = "berubejd - 2020"
+align = 1
+valign = 1
+clip_text = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Camera2D" type="Camera2D" parent="."]
+current = true
+zoom = Vector2( 1.5, 1.5 )
+
+[node name="CameraMovement" type="Tween" parent="Camera2D"]
+
+[node name="TransitionLayer" parent="." instance=ExtResource( 7 )]
+[connection signal="focus_entered" from="CanvasLayer/Menu/NewGame" to="." method="_on_NewGame_entered"]
+[connection signal="focus_exited" from="CanvasLayer/Menu/NewGame" to="." method="_on_control_exited"]
+[connection signal="mouse_entered" from="CanvasLayer/Menu/NewGame" to="." method="_on_NewGame_entered"]
+[connection signal="mouse_exited" from="CanvasLayer/Menu/NewGame" to="." method="_on_control_exited"]
+[connection signal="pressed" from="CanvasLayer/Menu/NewGame" to="." method="_on_NewGame_pressed"]
+[connection signal="focus_entered" from="CanvasLayer/Menu/LoadGame" to="." method="_on_LoadGame_entered"]
+[connection signal="focus_exited" from="CanvasLayer/Menu/LoadGame" to="." method="_on_control_exited"]
+[connection signal="mouse_entered" from="CanvasLayer/Menu/LoadGame" to="." method="_on_LoadGame_entered"]
+[connection signal="mouse_exited" from="CanvasLayer/Menu/LoadGame" to="." method="_on_control_exited"]
+[connection signal="pressed" from="CanvasLayer/Menu/LoadGame" to="." method="_on_LoadGame_pressed"]
+[connection signal="focus_entered" from="CanvasLayer/Menu/QuitGame" to="." method="_on_QuitGame_entered"]
+[connection signal="focus_exited" from="CanvasLayer/Menu/QuitGame" to="." method="_on_control_exited"]
+[connection signal="mouse_entered" from="CanvasLayer/Menu/QuitGame" to="." method="_on_QuitGame_entered"]
+[connection signal="mouse_exited" from="CanvasLayer/Menu/QuitGame" to="." method="_on_control_exited"]
+[connection signal="pressed" from="CanvasLayer/Menu/QuitGame" to="." method="_on_QuitGame_pressed"]

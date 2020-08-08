@@ -388,7 +388,9 @@ polygons = [ PoolIntArray( 0, 1, 2, 3 ) ]
 1/shapes = [  ]
 1/z_index = 0
 
-[node name="Map" type="TileMap"]
+[node name="Map" type="TileMap" groups=[
+"Backup",
+]]
 pause_mode = 1
 tile_set = SubResource( 61 )
 cell_size = Vector2( 16, 16 )

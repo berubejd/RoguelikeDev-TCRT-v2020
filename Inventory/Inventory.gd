@@ -12,18 +12,17 @@ onready var bag = $Bag
 func _ready():
 # warning-ignore:return_value_discarded
 	InventorySignals.connect("pickup_item", self, "pickup_item")
-	
-	pickup_item("slightly bent dagger")
-	pickup_item("wand of striking")
-	pickup_item("one-half ring")
-	pickup_item("meat", false)
+# warning-ignore:return_value_discarded
+	InventorySignals.connect("init_inventory", self, "award_initial_inventory")
+# warning-ignore:return_value_discarded
+	InventorySignals.connect("load_inventory", self, "load_inventory")
 
 
 func _process(_delta):
 	pass
 
 
-func pickup_item(item_id, autoequip = true):
+func pickup_item(item_id, autoequip = true, save = true):
 	var type = Inventory.get_item(item_id)["type"]
 	var slot = null
 	
@@ -42,6 +41,51 @@ func pickup_item(item_id, autoequip = true):
 		item_instance.initialize(item_id)
 		slot.add_item(item_instance)
 
+		if save:
+			SaveGame.emit_signal("save_game")
+
 		return true
 	else:
 		return false
+
+
+func award_initial_inventory():
+	# Create inventory items on a new game
+	pickup_item("slightly bent dagger", true, false)
+	pickup_item("wand of striking", true, false)
+	pickup_item("one-half ring", true, false)
+	pickup_item("meat", false, false)
+	SaveGame.emit_signal("save_game")
+
+
+func load_inventory():
+	var data = Globals.save_data[name]
+
+	if data:
+		load_state(data)
+
+	var _ret = Globals.save_data.erase(name)
+
+
+func save_state():
+	var data = {}
+
+	for _slot in get_tree().get_nodes_in_group("InventorySlot"):
+		if _slot.item:
+			data[_slot.name] = _slot.item.id
+
+	return data
+
+
+func load_state(data):
+	for slot_name in data.keys():
+		var _slot = find_node(slot_name)
+		if _slot:
+			var item_instance = item_preload.instance()
+			item_instance.initialize(data[slot_name])
+			
+			if _slot.item:
+				var old_item = _slot.clear_slot()
+				old_item.queue_free()
+
+			_slot.add_item(item_instance)
