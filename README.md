@@ -65,7 +65,7 @@ Everything used during this code-along is properly licensed for use.
 - [Super Dungeon Delve by Ben Coleman](https://github.com/benc-uk/super-dungeon-delve)
 - [Dungeon Based on Paper Dungeon Maker by 0x72](https://0x72.itch.io/paperdungeonmaker)
 - [Original Algorithm by Mike Anderson](http://www.roguebasin.com/index.php?title=Dungeon-Building_Algorithm)
-- [Godot Visual Effects by GDQest](https://github.com/GDQuest/godot-visual-effects)
+- [Godot Visual Effects by GDQuest](https://github.com/GDQuest/godot-visual-effects)
 
 ### Assets
 
