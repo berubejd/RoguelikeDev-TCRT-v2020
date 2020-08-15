@@ -123,7 +123,7 @@ margin_top = 64.8602
 margin_right = 129.966
 margin_bottom = 77.8602
 parent = "HealthContainer"
-increment = 20
+increment = 10
 node_name = "Player"
 points_variable = "level_points"
 

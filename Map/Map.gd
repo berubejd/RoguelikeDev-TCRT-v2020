@@ -24,7 +24,8 @@ export (int) var min_corridor_length: = 5
 export (int) var max_corridor_length: = 15
 
 # Monster count
-export (int) var max_monsters_per_room: = 3
+# export (int) var max_monsters_per_room: = 3
+var max_monsters_per_room
 
 # Instance a random number generator with range
 var rng = RandomNumberGenerator.new()
@@ -88,6 +89,8 @@ var entities = null
 
 func _ready():
 	pause_mode = Node.PAUSE_MODE_STOP
+	
+	max_monsters_per_room = _from_dungeon_level([[2, 0], [3, 4], [5, 6]], Globals.dungeon_level)
 
 # warning-ignore:integer_division
 	var scaled_complexity = complexity + floor(Globals.dungeon_level / level_scale)
@@ -255,35 +258,25 @@ func _add_torch(position, facing):
 # Place decorations within a given room
 func _populate_room(room: Rect2, add_mobs = true):
 	# Determine what type of room this is
-	var room_type = rng.randi_range(0, 10)
-	
-	# Hold list of possible monsters for the room
-	var room_monsters: Array
-	
-	# Yes, I am re-using this variable.  Ewwww.
-	if room_type <= 1:
-		room_type = "empty"
-		room_monsters = [GENERIC_MOB]
-	elif room_type <= 6:
-		room_type = "ruins"
-		room_monsters = [GENERIC_MOB]
-	elif room_type <= 8:
-		room_type = "storage"
-		room_monsters = [GENERIC_MOB]
-	elif room_type == 9:
-		room_type = "lab"
-		room_monsters = [GENERIC_MOB]
-		
-		# Place a single cauldron in labs
-		var cauldron_cell = _get_random_floor_cell(room, true)
-		_place_object(CAULDRON, decorations, cauldron_cell)
+	var room_chance = {"ruins": 50, "storage": 20, "lab": 10, "library": 10, "empty": 10}
+	var room_type = _random_choice_from_dict(room_chance)
 
-		# Place a single potion as well
-		var potion_cell = _get_random_floor_cell(room, true, false, true)
-		_place_object(POTION_HEALTH, items, potion_cell)
-	else:
-		room_type = "library"
-		room_monsters = [GENERIC_MOB]
+	# Hold list of possible monsters for the room
+	var room_monsters: Dictionary
+
+	match room_type:
+		"ruins", "storage", "library", "empty":
+			room_monsters = {GENERIC_MOB: 100}
+		"lab":
+			room_monsters = {GENERIC_MOB: 100}
+			
+			# Place a single cauldron in labs
+			var cauldron_cell = _get_random_floor_cell(room, true)
+			_place_object(CAULDRON, decorations, cauldron_cell)
+	
+			# Place a single potion as well
+			var potion_cell = _get_random_floor_cell(room, true, false, true)
+			_place_object(POTION_HEALTH, items, potion_cell)
 
 	# Decorate room based on tile and room type
 	for y in range(room.position.y - 1, room.end.y + 2):
@@ -490,8 +483,10 @@ func _populate_room(room: Rect2, add_mobs = true):
 		
 		for _monster in range(max_monsters):
 			var monster_cell = _get_random_floor_cell(room, true, false, true)
-			room_monsters.shuffle()
-			_place_object(room_monsters[0], mobs, monster_cell)
+			# room_monsters.shuffle()
+			# _place_object(room_monsters[0], mobs, monster_cell)
+			var monster = _random_choice_from_dict(room_monsters)
+			_place_object(monster, mobs, monster_cell)
 
 
 # Return a random floor cell within a specific range
@@ -582,6 +577,47 @@ func _place_object(object_scene, object_group, position: Vector2, flip: bool = f
 	object_group.add_child(new_object)
 	
 	return true
+
+
+func _random_choice_index(chances):
+	var random_chance = rng.randi_range(1, _sum(chances))
+
+	var running_sum = 0
+	var choice = 0
+	for w in chances:
+		running_sum += w
+
+		if random_chance <= running_sum:
+			return choice
+		choice += 1
+
+
+func _random_choice_from_dict(choice_dict):
+	var choices = Array(choice_dict.keys())
+	var chances = Array(choice_dict.values())
+
+	return choices[_random_choice_index(chances)]
+
+
+func _from_dungeon_level(table, dungeon_level):
+	var t_table = table.duplicate(true)
+	t_table.invert()
+
+	for element in t_table:
+		var value = element[0]
+		var level = element[1]
+		
+		if dungeon_level >= level:
+			return value
+
+	return 0
+
+
+func _sum(array):
+	var sum = 0
+	for element in array:
+		sum += element
+	return sum
 
 
 func load_entities(data):

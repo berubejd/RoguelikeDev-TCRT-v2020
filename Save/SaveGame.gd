@@ -12,6 +12,9 @@ func _ready():
 
 
 func save_game():
+	# Wait for an idle frame to make sure all the signals (and associated yields) have completed
+	yield(get_tree(), "idle_frame")
+
 	# Open or create new save file
 	var save_file = File.new()
 	save_file.open(SAVE_PATH, File.WRITE)
@@ -24,6 +27,9 @@ func save_game():
 	for node in backup_list:
 		# Save the requested node's information under a key representing their node path
 		save_dict[node.name] = node.save_state()
+
+		if node.name == "Inventory":
+			print(save_dict[node.name])
 
 	# Store the collected information into the file in JSON format
 	save_file.store_line(to_json(save_dict))

@@ -88,4 +88,4 @@ func load_state(data):
 				var old_item = _slot.clear_slot()
 				old_item.queue_free()
 
-			_slot.add_item(item_instance)
+			yield(_slot.add_item(item_instance), "completed")

@@ -49,7 +49,7 @@ func shoot():
 			yield(get_tree().create_timer(flash_time), "timeout")
 
 		if _primary_body.current_health:
-			_primary_body.current_health -= 10
+			_primary_body.current_health -= 8
 
 		player.emit_signal("spell_result", {
 			"hit": true,

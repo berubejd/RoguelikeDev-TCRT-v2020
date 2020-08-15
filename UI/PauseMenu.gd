@@ -40,6 +40,7 @@ func pause_game():
 
 	# Disable other UI elements
 	UiSignals.emit_signal("hide_ui")
+	InventorySignals.emit_signal("hide_tooltip")
 
 	# Disable player input.  Necessary?
 	var player = get_tree().get_root().find_node("Player", true, false)
@@ -111,7 +112,7 @@ func _on_LoadButton_pressed():
 	var old_main = get_tree().get_current_scene()
 
 	# Load, configure, and add the main instance
-	var main = load("res://Main.tscn");
+	var main = load("res://Main.tscn")
 	var main_instance = main.instance()
 	main_instance.load_saved_game = true
 	main_instance.connect("tree_entered", get_tree(), "set_current_scene", [main_instance], CONNECT_ONESHOT)

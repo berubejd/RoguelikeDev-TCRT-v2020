@@ -12,10 +12,11 @@ enum {
 }
 
 const hit_effect = preload("res://Effects/HitEffect.tscn")
+const floating_text = preload("res://Effects/FloatingText.tscn")
 
 export var ACCELERATION = 5
 export var FRICTION = 3
-export var MAX_HEALTH = 10
+export var MAX_HEALTH = 15
 export var MAX_SPEED = 20
 export (int) var WAIT_SECS = 5
 export (int) var WALK_SECS = 4
@@ -38,7 +39,7 @@ var attacker_direction: Vector2
 var current_health: int = MAX_HEALTH setget update_health
 var defense: int = 0
 var death = preload("res://Effects/Explosion.tscn")
-var power: int = 3
+var power: int = 5
 var target
 var target_list: Array
 var velocity: = Vector2.ZERO
@@ -248,6 +249,22 @@ func _on_Weapon_body_exited(body):
 
 func update_health(value):
 	if hit_timer.is_stopped() and value <= current_health:
+		# Set and display floating text
+		var border_color = Color.black
+		var health_change = value - current_health
+	
+		# If change is 0 it is probably the setget firing during ready
+		if not health_change == 0:
+			# Determine border color
+			if health_change < 0:
+				border_color = Color.red
+			else:
+				border_color = Color.darkgreen
+		
+			var floating_text_instance = floating_text.instance()
+			floating_text_instance.initialize(str(health_change), border_color)
+			add_child(floating_text_instance)
+
 		current_health = value
 
 		var knockback_direction: Vector2

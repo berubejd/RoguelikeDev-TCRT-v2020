@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Inventory/Slot.gd" type="Script" id=1]
 [ext_resource path="res://Fonts/DefaultFont.tres" type="DynamicFont" id=2]
+[ext_resource path="res://Inventory/Sprites/square.png" type="Texture" id=3]
 
 [sub_resource type="StyleBoxFlat" id=1]
 resource_local_to_scene = true
@@ -73,6 +74,26 @@ clip_text = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="ZIndexController" type="Node2D" parent="."]
+z_index = 5
+
+[node name="CooldownDisplay" type="TextureProgress" parent="ZIndexController"]
+margin_left = 1.0
+margin_top = 1.0
+margin_right = 17.0
+margin_bottom = 17.0
+rect_min_size = Vector2( 16, 16 )
+mouse_filter = 2
+texture_progress = ExtResource( 3 )
+fill_mode = 3
+tint_progress = Color( 0.188235, 0.164706, 0.164706, 0.8 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CooldownTimer" type="Timer" parent="."]
+one_shot = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/Blink = SubResource( 2 )

@@ -21,18 +21,12 @@ func _ready():
 		if Globals.save_data:
 			# Set dungeon level 1 lower to account for the 'level_reveal' increment
 			Globals.dungeon_level = Globals.save_data["Map"]["dungeon_level"] - 1
-			load_saved_game = false
 		else:
 			print("Something went wrong.")
 			get_tree().quit()
 
 	randomize()
 	new_game_transition()
-
-
-func _process(_delta):
-	if Input.is_action_just_pressed("ui_accept"):
-		SaveGame.save_game()
 
 
 func create_map():
@@ -68,14 +62,19 @@ func create_map():
 	Globals.player.position = Globals.map.map_to_world(player_cell) + Vector2(8, 8)
 	$Map/Entities.add_child(Globals.player)
 
-	# Map generation complete so save
-	SaveGame.emit_signal("save_game")
+	# Map generation complete so save if not loading a savegame
+	if not load_saved_game:
+		SaveGame.emit_signal("save_game")
 
 
 func new_game_transition():
 	# Set screen to black rather than fade in
 	transition_layer_color.color = Color("000000")
 
+	# Reset level in case we are requesting a new game from the main menu after a previous game
+	if not load_saved_game:
+		Globals.dungeon_level = 0
+	
 	# Increment and display dungeon level
 	yield(level_reveal(), "completed")
 	
@@ -84,6 +83,10 @@ func new_game_transition():
 
 	# Fade in and unpause the game
 	yield(level_fade_in(), "completed")
+
+	# The game has started to remove the load_saved_game flag
+	if load_saved_game:
+		load_saved_game = false
 
 
 func level_transition():

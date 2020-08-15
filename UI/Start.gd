@@ -94,7 +94,7 @@ func _on_LoadGame_pressed():
 	animation.play("Fade")
 	yield(animation, "animation_finished")
 	
-	var main = load("res://Main.tscn");
+	var main = load("res://Main.tscn")
 	var main_instance = main.instance()
 	main_instance.load_saved_game = true
 	main_instance.connect("tree_entered", get_tree(), "set_current_scene", [main_instance], CONNECT_ONESHOT)

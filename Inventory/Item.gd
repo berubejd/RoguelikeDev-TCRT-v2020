@@ -15,7 +15,10 @@ class_name Item
 #		"stack_limit": 1,
 #		"description": "This is a well-worn apprentice's wand."
 #		"value": 10,
-#		"click": [ "shoot", [5, 1] ]
+#		"click": [ "shoot", [5, 1] ],
+#		"cooldown": 20.0,
+#		"bonus": "spell_power",
+#		"bonus_amount": 1
 #	},
 
 # Define item variables
@@ -30,6 +33,9 @@ var value: int = 0
 var has_action: bool = false
 var action: String = ""
 var action_params: Array = []
+var action_cooldown: float = 0.0
+var bonus: String = ""
+var bonus_amount: int = 0
 
 # Define item manipulation variables
 var held: = false
@@ -61,6 +67,11 @@ func initialize(item_id):
 		has_action = true
 		action = temp_item["click"][0]
 		action_params = temp_item["click"][1]
+		action_cooldown = temp_item["cooldown"]
+
+	if temp_item["bonus"]:
+		bonus = temp_item["bonus"]
+		bonus_amount = temp_item["bonus_amount"]
 
 
 func _process(_delta):

@@ -123,6 +123,7 @@ shape = SubResource( 1 )
 material = SubResource( 2 )
 frames = SubResource( 15 )
 animation = "Idle"
+frame = 2
 playing = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]

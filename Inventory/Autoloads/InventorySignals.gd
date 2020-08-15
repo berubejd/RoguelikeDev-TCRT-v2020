@@ -15,3 +15,9 @@ signal pickup_item(item)
 signal init_inventory()
 #warning-ignore:unused_signal
 signal load_inventory()
+
+# Define equipping signals
+#warning-ignore:unused_signal
+signal item_equipped(item)
+#warning-ignore:unused_signal
+signal item_removed(item)

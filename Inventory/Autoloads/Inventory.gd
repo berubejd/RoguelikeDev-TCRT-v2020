@@ -35,7 +35,10 @@ const ITEMS = {
 		"stack_limit": 1,
 		"description": "It's sharp enough... I guess.",
 		"value": 10,
-		"click": null
+		"click": null,
+		"cooldown": 2.0,
+		"bonus": "power",
+		"bonus_amount": 1
 	},
 	"wand of striking": {
 		"icon": "res://Inventory/Sprites/Item_23.png",
@@ -44,7 +47,10 @@ const ITEMS = {
 		"stack_limit": 1,
 		"description": "Well, it's a fancy stick.",
 		"value": 10,
-		"click": null
+		"click": null,
+		"cooldown": 10.0,
+		"bonus": "spell_power",
+		"bonus_amount": 1
 	},
 	"one-half ring": {
 		"icon": "res://Inventory/Sprites/Item_40.png",
@@ -53,7 +59,10 @@ const ITEMS = {
 		"stack_limit": 1,
 		"description": "A rather plain looking ring.",
 		"value": 10,
-		"click": null
+		"click": null,
+		"cooldown": 0.0,
+		"bonus": "defense",
+		"bonus_amount": 1
 	},
 	"meat": {
 		"icon": "res://Inventory/Sprites/Item_58.png",
@@ -63,9 +72,11 @@ const ITEMS = {
 		"description": "Meat of unknown origin.",
 		"value": 10,
 		"click": [
-			"action_eat",
-			[]
-			]
+			"action_eat", []
+			],
+		"cooldown": 120.0,
+		"bonus": "",
+		"bonus_amount": 0
 	},
 	"potion_health": {
 		"icon": "res://Inventory/Sprites/potion_health.png",
@@ -77,7 +88,10 @@ const ITEMS = {
 		"click": [
 			"action_heal",
 			["Player", 10]
-			]
+			],
+		"cooldown": 20.0,
+		"bonus": "",
+		"bonus_amount": 0
 	},
 }
 
