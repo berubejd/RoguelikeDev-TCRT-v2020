@@ -57,7 +57,7 @@ func award_initial_inventory():
 	yield(pickup_item("slightly bent dagger", true, false), "completed")
 	yield(pickup_item("staff of striking", true, false), "completed")
 	yield(pickup_item("one-half ring", true, false), "completed")
-	yield(pickup_item("meat", false, false), "completed")
+	yield(pickup_item("call lightning", true, false), "completed")
 	SaveGame.emit_signal("save_game")
 
 

@@ -22,8 +22,7 @@ onready var animation_player = $AnimationPlayer
 onready var camera = $Camera2D
 onready var hit_timer = $HitTimer
 onready var pointer = $WeaponPivot/Weapon/WeaponSprite
-onready var spell = $WeaponPivot/LightningBeam2D
-onready var spell_timer = $WeaponPivot/LightningBeam2D/AttackTimer
+onready var spell = $WeaponPivot/Spell
 onready var sprite = $Sprite
 onready var state = NORMAL
 onready var stun_timer = $StunTimer
@@ -62,6 +61,9 @@ var xp: int = 0 setget add_xp
 # Equipped combat items
 var equipped_weapon = null
 var equipped_spell = null
+
+# Only way to actually avoid UI clicks from activating inside the game...
+var play_area = Rect2(1, 1, 277, 156)
 
 # warning-ignore:unused_signal
 signal spell_result(result)
@@ -125,7 +127,7 @@ func _physics_process(_delta):
 				camera.zoom.x -= 0.25
 				camera.zoom.y -= 0.25
 
-			if Input.is_action_just_pressed("clicked"):
+			if Input.is_action_just_pressed("clicked") and play_area.has_point(get_viewport().get_mouse_position()):
 				if equipped_weapon:
 					if equipped_weapon.owner.activate_item_cooldown():
 						weapon_animation.play("Attack")
@@ -137,11 +139,11 @@ func _physics_process(_delta):
 			if Input.is_action_just_released("clicked"):
 				weapon_area.disabled = true
 
-			if Input.is_action_just_pressed("r_clicked"):
-				if spell_timer.is_stopped():
+			if Input.is_action_just_pressed("r_clicked") and play_area.has_point(get_viewport().get_mouse_position()):
+				if equipped_spell and equipped_spell.has_action and equipped_spell.owner.cooldown.is_stopped():
 					weapon.visible = false
-					spell_timer.start()
-					spell.shoot()
+					var _ret = yield(equipped_spell.owner.activate_item(), "completed")
+					weapon.visible = true
 
 			# Gather key input into new input_vector
 			input_vector.x = Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
@@ -211,8 +213,6 @@ func spell_result(result):
 		if result.current_health == null or result.current_health <= 0:
 			add_xp(result.xp_value)
 
-	weapon.visible = true
-
 
 func update_health(value):
 	# No reason to update health since we're dead already
@@ -269,14 +269,14 @@ func set_max_health(value):
 
 
 func get_power():
-	var total_power_base: int
+	var total_base: int
 
 	if equipped_weapon and equipped_weapon.damage:
-		total_power_base = power_base + equipped_weapon.damage
+		total_base = power_base + equipped_weapon.damage
 	else:
-		total_power_base = power_base
+		total_base = power_base
 
-	return total_power_base + power_bonus
+	return total_base + power_bonus
 
 
 func set_power(value):
@@ -284,11 +284,24 @@ func set_power(value):
 
 
 func get_spell_power():
-	return spell_power_base + spell_power_bonus
+	var total_base: int
+
+	if equipped_spell and equipped_spell.action_params:
+		total_base = spell_power_base + equipped_spell.action_params["damage"]
+	else:
+		total_base = spell_power_base
+		
+	return total_base + spell_power_bonus
 
 
 func set_spell_power(value):
-	spell_power_base = value - spell_power_bonus
+
+	if equipped_spell:
+		value = value - equipped_spell.action_params["damage"] - spell_power_bonus
+	else:
+		value = value - spell_power_bonus
+
+	spell_power_base = value
 
 
 func get_defense():

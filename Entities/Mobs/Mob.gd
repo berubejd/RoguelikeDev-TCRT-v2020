@@ -14,10 +14,11 @@ enum {
 const hit_effect = preload("res://Effects/HitEffect.tscn")
 const floating_text = preload("res://Effects/FloatingText.tscn")
 
-export var ACCELERATION = 5
-export var FRICTION = 3
-export var MAX_HEALTH = 15
-export var MAX_SPEED = 20
+export (int) var ACCELERATION = 5
+export (int) var FRICTION = 3
+export (int) var MAX_HEALTH = 15
+export (int) var MAX_SPEED = 20
+export (float) var CHASE_SPEED_BONUS = 1.5
 export (int) var WAIT_SECS = 5
 export (int) var WALK_SECS = 4
 export (int) var xp_value = 35
@@ -97,7 +98,7 @@ func _physics_process(_delta):
 			if target:
 				weapon.look_at(target.position)
 				walking_direction = (target.position - position).normalized()
-				velocity = velocity.move_toward(walking_direction * MAX_SPEED, ACCELERATION) 
+				velocity = velocity.move_toward(walking_direction * MAX_SPEED * CHASE_SPEED_BONUS, ACCELERATION) 
 			else:
 				# This would go to ALERT to try to find player
 				state = IDLE

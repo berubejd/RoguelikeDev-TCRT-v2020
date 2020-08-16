@@ -75,7 +75,7 @@ const ITEMS = {
 		"description": "Meat of unknown origin.",
 		"value": 10,
 		"click": [
-			"action_eat", []
+			"action_eat", {}
 			],
 		"damage": null,
 		"cooldown": 120.0,
@@ -90,8 +90,10 @@ const ITEMS = {
 		"description": "The liquid in this bottle is thick and glows slightly.",
 		"value": 10,
 		"click": [
-			"action_heal",
-			["Player", 4]
+			"action_heal", {
+				"target": "Player",
+				"amount": 4
+				}
 			],
 		"damage": null,
 		"cooldown": 20.0,
@@ -106,10 +108,13 @@ const ITEMS = {
 		"description": "Sort of like static electricity.",
 		"value": 10,
 		"click": [
-			"action_lightning", []
+			"action_lightning", {
+				"distance": 50,
+				"damage": 10
+				}
 			],
 		"damage": null,
-		"cooldown": 10.0,
+		"cooldown": 5.0,
 		"bonus": null,
 		"bonus_amount": null
 	},
@@ -121,10 +126,13 @@ const ITEMS = {
 		"description": "Who doesn't like setting things on fire?",
 		"value": 10,
 		"click": [
-			"action_fireball", []
+			"action_fireball", {
+				"distance": 30,
+				"damage": 4
+				}
 			],
 		"damage": null,
-		"cooldown": 10.0,
+		"cooldown": 7.0,
 		"bonus": null,
 		"bonus_amount": null
 	},

@@ -60,12 +60,14 @@ func _gui_input(event : InputEvent):
 func _unhandled_key_input(event):
 	if event.scancode == keyBind:
 		if event.pressed and not event.is_echo():
-				activate_item(true)
+				var _ret = activate_item(true)
 		else:
 			stylebox.border_color = orig_color
 
 
-func activate_item(from_key = false):
+func activate_item(from_key = false) -> bool:
+	var result: bool = false
+
 	# Highlight border on action
 	stylebox.border_color = clickColor
 
@@ -75,10 +77,14 @@ func activate_item(from_key = false):
 		if item.click():
 			var _ret = activate_item_cooldown()
 
+		result = true
+
 	# Handle border color if this didn't come in via a key bind
 	if not from_key and stylebox.border_color == clickColor:
-		yield(get_tree().create_timer(0.3), "timeout")
+		yield(get_tree().create_timer(0.2), "timeout")
 		stylebox.border_color = orig_color
+
+	return result
 
 
 func activate_item_cooldown() -> bool:

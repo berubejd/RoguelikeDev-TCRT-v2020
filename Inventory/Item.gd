@@ -7,6 +7,9 @@ class_name Item
 # Money for recycled items?
 # Animated textures?
 
+# const FIREBALL = preload("res://Effects/Fireball/Fireball.tscn")
+const LIGHTNING = preload("res://Effects/Lightning/Lightning.tscn")
+
 # Inventory Item Example
 #	"wand": {
 #		"icon": "res://Inventory/Sprites/Item_28.png",
@@ -23,22 +26,6 @@ class_name Item
 #	},
 
 # Define item variables
-#var id: String = ""
-#var icon: String = ""
-#var type = null
-#var type_description: String = ""
-#var stackable: bool = false
-#var stack_limit: int = 1
-#var description: String = ""
-#var value: int = 0
-#var has_action: bool = false
-#var action: String = ""
-#var action_params: Array = []
-#var action_cooldown: float = 0.0
-#var bonus: String = ""
-#var bonus_amount: int = 0
-#var damage: int = 0
-
 var id: String
 var icon: String
 var type
@@ -49,7 +36,7 @@ var description: String
 var value: int
 var has_action: bool
 var action: String
-var action_params: Array = []
+var action_params: Dictionary = {}
 var action_cooldown: float
 var bonus: String
 var bonus_amount: int
@@ -66,6 +53,9 @@ onready var equipment = get_tree().get_root().find_node("Equipment", true, false
 onready var hotbar = get_tree().get_root().find_node("HotBar", true, false)
 onready var recycle = get_tree().get_root().find_node("Recycle", true, false)
 
+# Pointer to the Effects node for the world
+onready var effects = get_tree().get_root().find_node("Effects", true, false)
+
 
 func initialize(item_id):
 	var temp_item = Inventory.get_item(item_id)
@@ -80,7 +70,6 @@ func initialize(item_id):
 	type_description = Inventory.get_type(type)
 
 	texture = load(icon)
-
 
 	if temp_item["click"]:
 		has_action = true
@@ -128,7 +117,7 @@ func _gui_input(event):
 				# Iterate over slots to find if any contain the mouse right now
 				for slot in get_tree().get_nodes_in_group("InventorySlot"):
 					if slot.get_global_rect().has_point(get_global_mouse_position()):
-						var slot_success = slot.add_item(self)
+						var slot_success = yield(slot.add_item(self), "completed")
 
 						if slot_success:
 							# Found new slot and moved item so exit input event before we return the item to the original slot
@@ -143,7 +132,7 @@ func _gui_input(event):
 
 				return_item()
 
-		elif  event.button_index == BUTTON_RIGHT:
+		elif event.button_index == BUTTON_RIGHT:
 			if owner.slotType != Inventory.SlotType.SLOT_DEFAULT:
 				var slot = bag.get_free_slot()
 				if slot:
@@ -184,22 +173,29 @@ func action_eat(_params = null) -> bool:
 
 
 func action_heal(params) -> bool:
-	var target = params[0]
-	var heal_amount = params[1]
-	
-	var target_pointer = get_tree().get_root().find_node(target, true, false)
+	# Params = target, amount
+	var target_pointer = get_tree().get_root().find_node(params["target"], true, false)
 	if target_pointer.current_health:
 		if target_pointer.current_health < target_pointer.max_health:
-			target_pointer.current_health += heal_amount
+			target_pointer.current_health += params["amount"]
 			queue_free()
 			return true
 
 	return false
 
 
-func action_lightning(_params = null) -> bool:
-	return false
+func action_lightning(params) -> bool:
+	# Params = distance, damage
+	var lightning_instance = LIGHTNING.instance()
+	lightning_instance.spell_damage = Globals.player.spell_power
+	lightning_instance.initialize(Globals.player.find_node("Spell").get_global_position(), Globals.player.weapon.rotation_degrees, params["distance"])
+
+	effects.add_child(lightning_instance)
+	lightning_instance.shoot()
+
+	return true
 
 
 func action_fireball(_params = null) -> bool:
+	# Params = distance, damage
 	return false
