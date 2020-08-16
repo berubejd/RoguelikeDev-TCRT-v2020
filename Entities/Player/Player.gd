@@ -5,6 +5,7 @@ const floating_text = preload("res://Effects/FloatingText.tscn")
 
 enum {
 	DEATH,
+	TRANSITION,
 	NORMAL,
 	HIT,
 	ATTACK
@@ -14,22 +15,24 @@ export (int) var ACCELERATION = 10
 export (int) var FRICTION = 3
 export (int) var KNOCKBACK = 60
 export (int) var level_up_base = 200
-export (int) var level_up_factor = 150
+export (int) var level_up_factor = 175
+export (float) var unarmed_cooldown = 0.5
 
 onready var animation_player = $AnimationPlayer
 onready var camera = $Camera2D
 onready var hit_timer = $HitTimer
+onready var pointer = $WeaponPivot/Weapon/WeaponSprite
 onready var spell = $WeaponPivot/LightningBeam2D
 onready var spell_timer = $WeaponPivot/LightningBeam2D/AttackTimer
 onready var sprite = $Sprite
 onready var state = NORMAL
 onready var stun_timer = $StunTimer
+onready var transition_player = $TransitionLayer/AnimationPlayer
 onready var weapon = $WeaponPivot
 onready var weapon_area = $WeaponPivot/Weapon/CollisionShape2D
 onready var weapon_sprite = $WeaponPivot/Weapon/WeaponSprite
 onready var weapon_timer = $WeaponPivot/Weapon/AttackTimer
 onready var weapon_animation = $WeaponPivot/Weapon/AnimationPlayer
-onready var pointer = $WeaponPivot/Weapon/WeaponSprite
 
 var velocity = Vector2.ZERO
 
@@ -37,7 +40,7 @@ var attacker_direction: Vector2
 
 # Stats
 var power setget set_power, get_power
-var power_base: int = 4
+var power_base: int = 2
 var power_bonus: int = 0
 var spell_power setget set_spell_power, get_spell_power
 var spell_power_base: int = 0
@@ -46,7 +49,7 @@ var defense setget set_defense, get_defense
 var defense_base: int = 1
 var defense_bonus: int = 0
 var max_health setget set_max_health, get_max_health
-var max_health_base: int = 30
+var max_health_base: int = 20
 var max_health_bonus: int = 0
 var current_health: int = get_max_health() setget update_health
 var max_speed setget set_max_speed, get_max_speed
@@ -55,6 +58,10 @@ var max_speed_bonus: int = 0
 var level: int = 1
 var level_points: int = 0
 var xp: int = 0 setget add_xp
+
+# Equipped combat items
+var equipped_weapon = null
+var equipped_spell = null
 
 # warning-ignore:unused_signal
 signal spell_result(result)
@@ -95,28 +102,19 @@ func _physics_process(_delta):
 				animation_player.play("Death")
 				# A yield in _process or _physics_process doesn't actually do anything
 				# yield(animation_player, "animation_finished")
-				# Disable loop to allow animation to complete before map_exited() call
 				if not animation_player.is_connected("animation_finished", self, "transition"):
 					var _ret = animation_player.connect("animation_finished", self, "transition")
 			else:
 				transition()
+
+		TRANSITION:
+			pass
 
 		NORMAL:
 			var input_vector = Vector2.ZERO
 
 			# Rotate weapon pivot to direction of mouse
 			weapon.look_at(get_global_mouse_position())
-			
-			# This sucks... All of this weapon stuff.
-#			if weapon.rotation_degrees > 360:
-#				weapon.rotation_degrees -= 360
-#			elif weapon.rotation_degrees < 0:
-#				weapon.rotation_degrees += 360
-
-#			if weapon.rotation_degrees >= 180:
-#				weapon.z_index = -1
-#			else:
-#				weapon.z_index = 0
 
 			# Zoom for testing
 			if Input.is_action_just_released("wheel_down"):
@@ -128,25 +126,22 @@ func _physics_process(_delta):
 				camera.zoom.y -= 0.25
 
 			if Input.is_action_just_pressed("clicked"):
-				if weapon_timer.is_stopped():
-					weapon_timer.start()
-					weapon_animation.play("Attack")
+				if equipped_weapon:
+					if equipped_weapon.owner.activate_item_cooldown():
+						weapon_animation.play("Attack")
+				else:
+					if weapon_timer.is_stopped():
+						weapon_timer.start(unarmed_cooldown)
+						weapon_animation.play("Attack")
 
 			if Input.is_action_just_released("clicked"):
 				weapon_area.disabled = true
 
 			if Input.is_action_just_pressed("r_clicked"):
 				if spell_timer.is_stopped():
+					weapon.visible = false
 					spell_timer.start()
-					
-					# Shouldn't be hardcoded... This all sucks, too.  This should be bound to the inventory slot.
-					var orig_text = weapon_sprite.texture
-					weapon_sprite.texture = load("res://Inventory/Sprites/Item_23.png")
-
 					spell.shoot()
-
-					yield(get_tree().create_timer(1), "timeout")
-					weapon_sprite.texture = orig_text
 
 			# Gather key input into new input_vector
 			input_vector.x = Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
@@ -195,7 +190,7 @@ func add_xp(value):
 
 
 func experience_to_next_level():
-	return level_up_base + level * level_up_factor
+	return level_up_base + (level * level_up_factor)
 
 
 func damage_taken(direction):
@@ -216,10 +211,12 @@ func spell_result(result):
 		if result.current_health == null or result.current_health <= 0:
 			add_xp(result.xp_value)
 
+	weapon.visible = true
+
 
 func update_health(value):
 	# No reason to update health since we're dead already
-	if state == DEATH:
+	if state == DEATH or state == TRANSITION:
 		return
 
 	# Set and display floating text
@@ -272,11 +269,18 @@ func set_max_health(value):
 
 
 func get_power():
-	return power_base + power_bonus
+	var total_power_base: int
+
+	if equipped_weapon and equipped_weapon.damage:
+		total_power_base = power_base + equipped_weapon.damage
+	else:
+		total_power_base = power_base
+
+	return total_power_base + power_bonus
 
 
 func set_power(value):
-	power_base = value - power_bonus
+	power_base = value - power_bonus if not equipped_weapon else value - equipped_weapon.damage - power_bonus
 
 
 func get_spell_power():
@@ -303,6 +307,10 @@ func set_max_speed(value):
 	max_speed_base = value - max_speed_bonus
 
 
+func has_bonus(stat: String) -> int:
+	return get(stat + "_bonus")
+
+
 func _on_Weapon_body_entered(body):
 	body.attacker_direction = (body.global_position - position).normalized()
 	body.current_health -= get_power()
@@ -319,14 +327,30 @@ func stun(duration: = 0.3):
 
 func transition(_anim="None"):
 	if state == DEATH:
-		# Temporary until death screen is in
-		# get_tree().get_root().find_node("Main", true, false).level_transition()
+		# Prevent death animation from replaying
+		state = TRANSITION
+
+		# Fade out and load game over screen
+		transition_player.play("Fade")
+		yield(transition_player, "animation_finished")
 # warning-ignore:return_value_discarded
-		get_tree().change_scene("res://UI/Start.tscn")
+		get_tree().change_scene("res://UI/GameOver.tscn")
 
 
 func equip_item(item):
-	if item and item.bonus:
+	if not item:
+		# This should never happen
+		return
+
+	if item.type == Inventory.SlotType.SLOT_MAIN_HAND:
+		weapon_sprite.texture = load(item.icon)
+		weapon_sprite.visible = true
+		equipped_weapon = item
+
+	if item.type == Inventory.SlotType.SLOT_SPELL:
+		equipped_spell = item
+
+	if item.bonus:
 		match item.bonus:
 			"power":
 				power_bonus += item.bonus_amount
@@ -341,7 +365,18 @@ func equip_item(item):
 
 
 func remove_item(item):
-	if item and item.bonus:
+	if not item:
+		# This should never happen
+		return
+
+	if item.type == Inventory.SlotType.SLOT_MAIN_HAND:
+		weapon_sprite.visible = false
+		equipped_weapon = null
+
+	if item.type == Inventory.SlotType.SLOT_SPELL:
+		equipped_spell = null
+
+	if item.bonus:
 		match item.bonus:
 			"power":
 # warning-ignore:narrowing_conversion

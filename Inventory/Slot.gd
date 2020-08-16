@@ -60,17 +60,38 @@ func _gui_input(event : InputEvent):
 func _unhandled_key_input(event):
 	if event.scancode == keyBind:
 		if event.pressed and not event.is_echo():
-				stylebox.border_color = clickColor
-				if item and item.has_action and cooldown.is_stopped():
-					# Activate item cooldown
-					if item.action_cooldown > 0:
-						item_cooldown = item.action_cooldown
-						cooldown.start(item.action_cooldown)
-
-					# Call item action
-					item.click()
+				activate_item(true)
 		else:
 			stylebox.border_color = orig_color
+
+
+func activate_item(from_key = false):
+	# Highlight border on action
+	stylebox.border_color = clickColor
+
+	# Call attached action if not in cooldown
+	if item and item.has_action and cooldown.is_stopped():
+		# Call item action
+		if item.click():
+			var _ret = activate_item_cooldown()
+
+	# Handle border color if this didn't come in via a key bind
+	if not from_key and stylebox.border_color == clickColor:
+		yield(get_tree().create_timer(0.3), "timeout")
+		stylebox.border_color = orig_color
+
+
+func activate_item_cooldown() -> bool:
+	# If the cooldown timer is running then return false
+	if not cooldown.is_stopped():
+		return false
+
+	# If this item has a cooldown, trigger it
+	if item.action_cooldown > 0:
+		item_cooldown = item.action_cooldown
+		cooldown.start(item.action_cooldown)
+
+	return true
 
 
 func add_item(new_item):

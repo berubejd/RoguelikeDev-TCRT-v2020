@@ -30,5 +30,8 @@ text = "Stat:"
 margin_left = 38.0
 margin_right = 46.0
 margin_bottom = 15.0
+mouse_filter = 1
 custom_fonts/font = SubResource( 2 )
 text = "0"
+[connection signal="mouse_entered" from="Value" to="." method="_on_Value_mouse_entered"]
+[connection signal="mouse_exited" from="Value" to="." method="_on_Value_mouse_exited"]

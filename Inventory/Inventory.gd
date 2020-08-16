@@ -23,6 +23,9 @@ func _process(_delta):
 
 
 func pickup_item(item_id, autoequip = true, save = true):
+	# Make this yieldable and avoid an item which is in progress and isn't completely slotted
+	yield(get_tree(), "idle_frame")
+
 	var type = Inventory.get_item(item_id)["type"]
 	var slot = null
 	
@@ -51,10 +54,10 @@ func pickup_item(item_id, autoequip = true, save = true):
 
 func award_initial_inventory():
 	# Create inventory items on a new game
-	pickup_item("slightly bent dagger", true, false)
-	pickup_item("wand of striking", true, false)
-	pickup_item("one-half ring", true, false)
-	pickup_item("meat", false, false)
+	yield(pickup_item("slightly bent dagger", true, false), "completed")
+	yield(pickup_item("staff of striking", true, false), "completed")
+	yield(pickup_item("one-half ring", true, false), "completed")
+	yield(pickup_item("meat", false, false), "completed")
 	SaveGame.emit_signal("save_game")
 
 

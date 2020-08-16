@@ -212,7 +212,7 @@ __meta__ = {
 custom_styles/panel = SubResource( 1 )
 slotType = 6
 
-[node name="Off_Hand" parent="HotBar" instance=ExtResource( 5 )]
+[node name="Spell" parent="HotBar" instance=ExtResource( 5 )]
 margin_left = 19.0
 margin_right = 37.0
 custom_styles/panel = SubResource( 2 )

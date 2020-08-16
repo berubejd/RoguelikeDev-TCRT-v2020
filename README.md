@@ -74,4 +74,5 @@ Everything used during this code-along is properly licensed for use.
 - [Simple Dungeon Crawler 16x16 Pixel Art Asset Pack by o_lobster](https://o-lobster.itch.io/simple-dungeon-crawler-16x16-pixel-pack)
 - [16x16 RPG Item Pack by Alex's Assets](https://alexs-assets.itch.io/16x16-rpg-item-pack)
 - [16x16 RPG Item Pack 2 by Alex's Assets](https://alexs-assets.itch.io/16x16-rpg-item-pack-2)
+- [Fantasy Icon Pack by Ghazi](https://ghazi.itch.io/fantasy-icon-pack)
 - Additional custom assets by Irina Petrukevich

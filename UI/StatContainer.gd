@@ -15,7 +15,8 @@ onready var value = $Value
 
 var internal_value_1
 var internal_value_2
-
+var value_text
+var value_text_bonus
 
 func _ready():
 	pass
@@ -76,7 +77,31 @@ func update():
 	else:
 		internal_value_2 = 0
 
-	value.text = str(internal_value_1)
+	value_text = str(internal_value_1)
 	
 	if variable_2:
-		value.text = value.text + " / " + str(internal_value_2)
+		value_text = value_text + " / " + str(internal_value_2)
+
+	value.text = value_text
+
+
+	var bonus = node_pointer.has_bonus(variable_2 if variable_2 else variable_1)
+
+	if bonus:
+		if bonus > 0:
+			value.set("custom_colors/font_color", Color.green)
+			value_text_bonus = "+" + str(bonus)
+		elif bonus < 0:
+			value.set("custom_colors/font_color", Color.red)
+			value_text_bonus = str(bonus)
+	else:
+		value.set("custom_colors/font_color", Color.white)
+		value_text_bonus = null
+
+func _on_Value_mouse_entered():
+	if value_text_bonus:
+		value.text = value_text_bonus
+
+
+func _on_Value_mouse_exited():
+	value.text = value_text

@@ -16,26 +16,44 @@ class_name Item
 #		"description": "This is a well-worn apprentice's wand."
 #		"value": 10,
 #		"click": [ "shoot", [5, 1] ],
+#		"damage": 6,
 #		"cooldown": 20.0,
 #		"bonus": "spell_power",
 #		"bonus_amount": 1
 #	},
 
 # Define item variables
-var id: String = ""
-var icon: String = ""
-var type = null
-var type_description: String = ""
-var stackable: bool = false
-var stack_limit: int = 1
-var description: String = ""
-var value: int = 0
-var has_action: bool = false
-var action: String = ""
+#var id: String = ""
+#var icon: String = ""
+#var type = null
+#var type_description: String = ""
+#var stackable: bool = false
+#var stack_limit: int = 1
+#var description: String = ""
+#var value: int = 0
+#var has_action: bool = false
+#var action: String = ""
+#var action_params: Array = []
+#var action_cooldown: float = 0.0
+#var bonus: String = ""
+#var bonus_amount: int = 0
+#var damage: int = 0
+
+var id: String
+var icon: String
+var type
+var type_description: String
+var stackable: bool
+var stack_limit: int
+var description: String
+var value: int
+var has_action: bool
+var action: String
 var action_params: Array = []
-var action_cooldown: float = 0.0
-var bonus: String = ""
-var bonus_amount: int = 0
+var action_cooldown: float
+var bonus: String
+var bonus_amount: int
+var damage: int
 
 # Define item manipulation variables
 var held: = false
@@ -63,15 +81,21 @@ func initialize(item_id):
 
 	texture = load(icon)
 
+
 	if temp_item["click"]:
 		has_action = true
 		action = temp_item["click"][0]
 		action_params = temp_item["click"][1]
+
+	if temp_item["cooldown"]:
 		action_cooldown = temp_item["cooldown"]
 
 	if temp_item["bonus"]:
 		bonus = temp_item["bonus"]
 		bonus_amount = temp_item["bonus_amount"]
+
+	if temp_item["damage"]:
+		damage = temp_item["damage"]
 
 
 func _process(_delta):
@@ -139,20 +163,27 @@ func clear_item():
 	owner = null
 	return old_owner
 
-func click():
-	if has_action:
-		call(action, action_params)
 
+func click() -> bool:
+	var result = false
+
+	if has_action:
+		result = call(action, action_params)
+
+	return result
 
 func return_item():
 	rect_global_position = orig_icon_pos
 
 
-func action_eat(_params = null):
+func action_eat(_params = null) -> bool:
 	print("Nom nom!")
 	queue_free()
+	
+	return true
 
-func action_heal(params):
+
+func action_heal(params) -> bool:
 	var target = params[0]
 	var heal_amount = params[1]
 	
@@ -161,3 +192,14 @@ func action_heal(params):
 		if target_pointer.current_health < target_pointer.max_health:
 			target_pointer.current_health += heal_amount
 			queue_free()
+			return true
+
+	return false
+
+
+func action_lightning(_params = null) -> bool:
+	return false
+
+
+func action_fireball(_params = null) -> bool:
+	return false

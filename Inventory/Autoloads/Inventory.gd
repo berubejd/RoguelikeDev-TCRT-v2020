@@ -8,7 +8,7 @@ enum SlotType {
 	SLOT_FEET,
 	SLOT_RING,
 	SLOT_MAIN_HAND,
-	SLOT_OFF_HAND,
+	SLOT_SPELL,
 	SLOT_POTION,
 	SLOT_FOOD
 }
@@ -36,19 +36,21 @@ const ITEMS = {
 		"description": "It's sharp enough... I guess.",
 		"value": 10,
 		"click": null,
-		"cooldown": 2.0,
+		"damage": 2,
+		"cooldown": .75,
 		"bonus": "power",
 		"bonus_amount": 1
 	},
-	"wand of striking": {
+	"staff of striking": {
 		"icon": "res://Inventory/Sprites/Item_23.png",
-		"type": SlotType.SLOT_OFF_HAND,
+		"type": SlotType.SLOT_MAIN_HAND,
 		"stackable": false,
 		"stack_limit": 1,
 		"description": "Well, it's a fancy stick.",
 		"value": 10,
 		"click": null,
-		"cooldown": 10.0,
+		"damage": 4,
+		"cooldown": 1.2,
 		"bonus": "spell_power",
 		"bonus_amount": 1
 	},
@@ -60,7 +62,8 @@ const ITEMS = {
 		"description": "A rather plain looking ring.",
 		"value": 10,
 		"click": null,
-		"cooldown": 0.0,
+		"damage": null,
+		"cooldown": null,
 		"bonus": "defense",
 		"bonus_amount": 1
 	},
@@ -74,11 +77,12 @@ const ITEMS = {
 		"click": [
 			"action_eat", []
 			],
+		"damage": null,
 		"cooldown": 120.0,
-		"bonus": "",
-		"bonus_amount": 0
+		"bonus": null,
+		"bonus_amount": null
 	},
-	"potion_health": {
+	"potion of health": {
 		"icon": "res://Inventory/Sprites/potion_health.png",
 		"type": SlotType.SLOT_POTION,
 		"stackable": true,
@@ -87,11 +91,42 @@ const ITEMS = {
 		"value": 10,
 		"click": [
 			"action_heal",
-			["Player", 10]
+			["Player", 4]
 			],
+		"damage": null,
 		"cooldown": 20.0,
-		"bonus": "",
-		"bonus_amount": 0
+		"bonus": null,
+		"bonus_amount": null
+	},
+	"call lightning": {
+		"icon": "res://Inventory/Sprites/lightning.png",
+		"type": SlotType.SLOT_SPELL,
+		"stackable": false,
+		"stack_limit": 1,
+		"description": "Sort of like static electricity.",
+		"value": 10,
+		"click": [
+			"action_lightning", []
+			],
+		"damage": null,
+		"cooldown": 10.0,
+		"bonus": null,
+		"bonus_amount": null
+	},
+	"fireball": {
+		"icon": "res://Inventory/Sprites/fireball.png",
+		"type": SlotType.SLOT_SPELL,
+		"stackable": false,
+		"stack_limit": 1,
+		"description": "Who doesn't like setting things on fire?",
+		"value": 10,
+		"click": [
+			"action_fireball", []
+			],
+		"damage": null,
+		"cooldown": 10.0,
+		"bonus": null,
+		"bonus_amount": null
 	},
 }
 
@@ -113,7 +148,7 @@ func get_type(slot_type):
 		4: description = "Feet"
 		5: description = "Ring"
 		6: description = "Main-Hand"
-		7: description = "Off-Hand"
+		7: description = "Spell"
 		8: description = "Potion"
 		9: description = "Food"
 

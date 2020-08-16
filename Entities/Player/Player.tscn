@@ -6,13 +6,13 @@
 [ext_resource path="res://Entities/Player/Sprites/Idle/necromancer_idle_anim_f1.png" type="Texture" id=4]
 [ext_resource path="res://Entities/Player/Sprites/Run/necromancer_run_anim_f3.png" type="Texture" id=5]
 [ext_resource path="res://Entities/Player/Sprites/Run/necromancer_run_anim_f1.png" type="Texture" id=6]
-[ext_resource path="res://Inventory/Sprites/Item_00.png" type="Texture" id=7]
 [ext_resource path="res://Lights/Light.tscn" type="PackedScene" id=8]
 [ext_resource path="res://Lights/Sprites/lantern.png" type="Texture" id=9]
 [ext_resource path="res://Entities/Player/Player.gd" type="Script" id=10]
 [ext_resource path="res://Effects/WhiteColorShader.shader" type="Shader" id=11]
 [ext_resource path="res://Entities/Player/Weapon.gd" type="Script" id=12]
 [ext_resource path="res://Effects/LightningBeam/LightningBeam.tscn" type="PackedScene" id=13]
+[ext_resource path="res://UI/TransitionLayer.tscn" type="PackedScene" id=14]
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 3.71988
@@ -37,7 +37,7 @@ animations = [ {
 
 [sub_resource type="Animation" id=4]
 resource_name = "Death"
-length = 4.0
+length = 3.0
 tracks/0/type = "bezier"
 tracks/0/path = NodePath("Sprite:scale:x")
 tracks/0/interp = 1
@@ -236,14 +236,12 @@ script = ExtResource( 12 )
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WeaponPivot/Weapon"]
 position = Vector2( 11.5668, 0 )
 shape = SubResource( 6 )
-disabled = true
 
 [node name="WeaponSprite" type="Sprite" parent="WeaponPivot/Weapon"]
 show_behind_parent = true
 position = Vector2( 10, 0 )
 rotation = 0.785398
 scale = Vector2( 0.7, 0.7 )
-texture = ExtResource( 7 )
 flip_h = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="WeaponPivot/Weapon"]
@@ -268,4 +266,6 @@ one_shot = true
 
 [node name="HitTimer" type="Timer" parent="."]
 one_shot = true
+
+[node name="TransitionLayer" parent="." instance=ExtResource( 14 )]
 [connection signal="body_entered" from="WeaponPivot/Weapon" to="." method="_on_Weapon_body_entered"]

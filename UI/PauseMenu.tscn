@@ -72,9 +72,9 @@ __meta__ = {
 
 [node name="Label" type="Label" parent="PopupLayer/Popup"]
 self_modulate = Color( 1, 1, 1, 0.780345 )
-margin_top = 20.0
+margin_top = 3.0
 margin_right = 320.0
-margin_bottom = 64.0
+margin_bottom = 60.0
 custom_fonts/font = SubResource( 1 )
 text = "Paused"
 align = 1
@@ -85,9 +85,9 @@ __meta__ = {
 
 [node name="LevelLabel" type="Label" parent="PopupLayer/Popup"]
 margin_left = 12.0
-margin_top = 65.0
+margin_top = 63.0
 margin_right = 142.0
-margin_bottom = 80.0
+margin_bottom = 78.0
 custom_fonts/font = SubResource( 2 )
 text = "Level x"
 align = 1
@@ -98,9 +98,9 @@ __meta__ = {
 
 [node name="HSeparator" type="HSeparator" parent="PopupLayer/Popup"]
 margin_left = 14.0
-margin_top = 81.0
+margin_top = 79.0
 margin_right = 141.0
-margin_bottom = 85.0
+margin_bottom = 83.0
 rect_min_size = Vector2( 0, 1 )
 custom_styles/separator = SubResource( 3 )
 __meta__ = {
@@ -108,6 +108,8 @@ __meta__ = {
 }
 
 [node name="HealthContainer" parent="PopupLayer/Popup" instance=ExtResource( 9 )]
+margin_top = 85.0
+margin_bottom = 100.0
 stat = "Health"
 node_name = "Player"
 variable_1 = "current_health"
@@ -118,18 +120,18 @@ anchor_left = 0.0344828
 anchor_top = 0.133331
 anchor_right = 0.0344828
 anchor_bottom = 0.133331
-margin_left = 116.966
-margin_top = 64.8602
-margin_right = 129.966
-margin_bottom = 77.8602
+margin_left = 116.965
+margin_top = 62.0004
+margin_right = 129.965
+margin_bottom = 75.0004
 parent = "HealthContainer"
 increment = 10
 node_name = "Player"
 points_variable = "level_points"
 
 [node name="AttackContainer" parent="PopupLayer/Popup" instance=ExtResource( 9 )]
-margin_top = 105.86
-margin_bottom = 120.86
+margin_top = 100.0
+margin_bottom = 115.0
 stat = "Attack"
 node_name = "Player"
 variable_1 = "power"
@@ -139,18 +141,39 @@ anchor_left = 0.303448
 anchor_top = 0.133333
 anchor_right = 0.303448
 anchor_bottom = 0.133333
-margin_left = 30.8965
-margin_top = 84.0
-margin_right = 43.8965
-margin_bottom = 97.0
+margin_left = 30.8966
+margin_top = 77.0001
+margin_right = 43.8966
+margin_bottom = 90.0001
 parent = "AttackContainer"
 increment = 1
 node_name = "Player"
 points_variable = "level_points"
 
+[node name="SpellContainer" parent="PopupLayer/Popup" instance=ExtResource( 9 )]
+margin_top = 115.0
+margin_bottom = 130.0
+stat = "Spell Power"
+node_name = "Player"
+variable_1 = "spell_power"
+
+[node name="SpellButtons" parent="PopupLayer/Popup" instance=ExtResource( 7 )]
+anchor_left = 0.303448
+anchor_top = 0.133333
+anchor_right = 0.303448
+anchor_bottom = 0.133333
+margin_left = 30.8966
+margin_top = 92.0001
+margin_right = 43.8966
+margin_bottom = 105.0
+parent = "SpellContainer"
+increment = 1
+node_name = "Player"
+points_variable = "level_points"
+
 [node name="DefenseContainer" parent="PopupLayer/Popup" instance=ExtResource( 9 )]
-margin_top = 124.86
-margin_bottom = 139.86
+margin_top = 130.0
+margin_bottom = 145.0
 stat = "Defense"
 node_name = "Player"
 variable_1 = "defense"
@@ -160,18 +183,18 @@ anchor_left = 0.361702
 anchor_top = 0.133333
 anchor_right = 0.361702
 anchor_bottom = 0.133333
-margin_left = 12.2553
-margin_top = 103.0
-margin_right = 25.2553
-margin_bottom = 116.0
+margin_left = 12.2554
+margin_top = 107.0
+margin_right = 25.2554
+margin_bottom = 120.0
 parent = "DefenseContainer"
 increment = 1
 node_name = "Player"
 points_variable = "level_points"
 
 [node name="SpeedContainer" parent="PopupLayer/Popup" instance=ExtResource( 9 )]
-margin_top = 143.86
-margin_bottom = 158.86
+margin_top = 145.0
+margin_bottom = 160.0
 stat = "Speed"
 node_name = "Player"
 variable_1 = "max_speed"
@@ -181,9 +204,9 @@ anchor_left = 0.344828
 anchor_top = 0.133333
 anchor_right = 0.344828
 anchor_bottom = 0.133333
-margin_left = 17.6552
+margin_left = 17.655
 margin_top = 122.0
-margin_right = 30.6552
+margin_right = 30.655
 margin_bottom = 135.0
 parent = "SpeedContainer"
 increment = 10
@@ -206,9 +229,9 @@ __meta__ = {
 
 [node name="MenuLabel" type="Label" parent="PopupLayer/Popup"]
 margin_left = 168.0
-margin_top = 65.0
+margin_top = 63.0
 margin_right = 298.0
-margin_bottom = 80.0
+margin_bottom = 78.0
 custom_fonts/font = SubResource( 2 )
 text = "Options"
 align = 1
@@ -219,9 +242,9 @@ __meta__ = {
 
 [node name="HSeparator2" type="HSeparator" parent="PopupLayer/Popup"]
 margin_left = 170.0
-margin_top = 81.0
+margin_top = 79.0
 margin_right = 297.0
-margin_bottom = 85.0
+margin_bottom = 83.0
 rect_min_size = Vector2( 0, 1 )
 custom_styles/separator = SubResource( 3 )
 __meta__ = {

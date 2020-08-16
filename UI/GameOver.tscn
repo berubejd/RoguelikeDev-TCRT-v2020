@@ -1,0 +1,64 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://UI/ButtonStylePressed.tres" type="StyleBox" id=1]
+[ext_resource path="res://UI/ButtonStyleNormal.tres" type="StyleBox" id=2]
+[ext_resource path="res://UI/ButtonStyleHover.tres" type="StyleBox" id=3]
+[ext_resource path="res://Fonts/ThaleahFat.ttf" type="DynamicFontData" id=4]
+[ext_resource path="res://UI/GameOver.gd" type="Script" id=5]
+[ext_resource path="res://UI/TransitionLayer.tscn" type="PackedScene" id=6]
+
+[sub_resource type="DynamicFont" id=1]
+font_data = ExtResource( 4 )
+
+[sub_resource type="DynamicFont" id=2]
+outline_size = 1
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 4 )
+
+[node name="GameOver" type="CanvasLayer"]
+script = ExtResource( 5 )
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="."]
+anchor_right = 1.0
+margin_bottom = 141.0
+custom_fonts/font = SubResource( 1 )
+text = "Your tale has ended.
+Now you rest.  Here.  Forever."
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ContinueButton" type="Button" parent="."]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -80.0
+margin_top = -28.0
+margin_right = 80.0
+margin_bottom = -10.0
+custom_styles/hover = ExtResource( 3 )
+custom_styles/pressed = ExtResource( 1 )
+custom_styles/focus = ExtResource( 3 )
+custom_styles/normal = ExtResource( 2 )
+custom_fonts/font = SubResource( 2 )
+text = "Return"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TransitionLayer" parent="." instance=ExtResource( 6 )]
+layer = 2
+[connection signal="mouse_entered" from="ContinueButton" to="." method="_on_ContinueButton_mouse_entered"]
+[connection signal="mouse_exited" from="ContinueButton" to="." method="_on_ContinueButton_mouse_exited"]
+[connection signal="pressed" from="ContinueButton" to="." method="_on_ContinueButton_pressed"]

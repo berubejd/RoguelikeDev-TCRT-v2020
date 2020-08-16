@@ -41,11 +41,11 @@ __meta__ = {
 [node name="Title" type="Label" parent="CanvasLayer/Menu"]
 margin_left = -1.0
 margin_top = 27.0
-margin_right = 320.0
+margin_right = 266.0
 margin_bottom = 69.0
-rect_scale = Vector2( 1, 1.2 )
+rect_scale = Vector2( 1.2, 1.2 )
 custom_fonts/font = SubResource( 1 )
-text = "Something Something"
+text = "Novitiate's Tale"
 align = 1
 valign = 1
 __meta__ = {

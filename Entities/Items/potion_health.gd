@@ -6,5 +6,5 @@ func _ready():
 
 
 func _on_item_body_entered(_body):
-	InventorySignals.emit_signal("pickup_item", "potion_health")
+	InventorySignals.emit_signal("pickup_item", "potion of health")
 	queue_free()
