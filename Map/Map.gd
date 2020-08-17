@@ -71,6 +71,14 @@ const GENERIC_MOB = preload("res://Entities/Mobs/Mob.tscn")
 
 # Items
 const POTION_HEALTH = preload("res://Entities/Items/potion_health.tscn")
+const SCROLLS = [
+	preload("res://Entities/Items/scroll_fireball.tscn"),
+	preload("res://Entities/Items/scroll_lightning.tscn")
+]
+const RANDOM_LOOT = [
+	preload("res://Entities/Items/one_half_ring.tscn"),
+	preload("res://Entities/Items/staff_of_striking.tscn")
+]
 
 # Entity group pointers
 onready var decorations = $Entities/Decorations
@@ -263,20 +271,6 @@ func _populate_room(room: Rect2, add_mobs = true):
 
 	# Hold list of possible monsters for the room
 	var room_monsters: Dictionary
-
-	match room_type:
-		"ruins", "storage", "library", "empty":
-			room_monsters = {GENERIC_MOB: 100}
-		"lab":
-			room_monsters = {GENERIC_MOB: 100}
-			
-			# Place a single cauldron in labs
-			var cauldron_cell = _get_random_floor_cell(room, true)
-			_place_object(CAULDRON, decorations, cauldron_cell)
-	
-			# Place a single potion as well
-			var potion_cell = _get_random_floor_cell(room, true, false, true)
-			_place_object(POTION_HEALTH, items, potion_cell)
 
 	# Decorate room based on tile and room type
 	for y in range(room.position.y - 1, room.end.y + 2):
@@ -475,6 +469,43 @@ func _populate_room(room: Rect2, add_mobs = true):
 						if _is_corridor(Vector2(x, y + 1)) or _is_corridor(Vector2(x, y - 1)):
 							_add_torch(Vector2(x - 1, y), "w")
 
+	# Determine monstors and items for room types
+	match room_type:
+		"ruins", "empty":
+			room_monsters = {GENERIC_MOB: 100}
+		"storage":
+			room_monsters = {GENERIC_MOB: 100}
+
+			# Place a single item in storage 10% of the time
+			var chance = rng.randi_range(1, 100)
+			if chance <= 10:
+				var _cell = _get_random_floor_cell(room, true)
+				RANDOM_LOOT.shuffle()
+				_place_object(RANDOM_LOOT[0], items, _cell)
+				print("Placed random loot")
+		"library":
+			room_monsters = {GENERIC_MOB: 100}
+
+			# Place a single scroll in libraries 20% of the time
+			var chance = rng.randi_range(1, 100)
+			if chance <= 20:
+				var _cell = _get_random_floor_cell(room, true)
+				SCROLLS.shuffle()
+				_place_object(SCROLLS[0], items, _cell)
+				print("Placed scroll")
+		"lab":
+			room_monsters = {GENERIC_MOB: 100}
+
+			var _cell
+
+			# Place a single cauldron in labs
+			_cell = _get_random_floor_cell(room, true)
+			_place_object(CAULDRON, decorations, _cell)
+
+			# Place a single potion as well
+			_cell = _get_random_floor_cell(room, true)
+			_place_object(POTION_HEALTH, items, _cell)
+
 	# Populate room with monsters
 	if add_mobs:
 		var room_sq = room.size.x * room.size.y
@@ -484,7 +515,6 @@ func _populate_room(room: Rect2, add_mobs = true):
 		for _monster in range(max_monsters):
 			var monster_cell = _get_random_floor_cell(room, true, false, true)
 			# room_monsters.shuffle()
-			# _place_object(room_monsters[0], mobs, monster_cell)
 			var monster = _random_choice_from_dict(room_monsters)
 			_place_object(monster, mobs, monster_cell)
 

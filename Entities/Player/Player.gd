@@ -220,24 +220,7 @@ func update_health(value):
 		return
 
 	# Set and display floating text
-	var border_color = Color.black
-	var health_change = value - current_health
-
-	# Verify effect of defense
-	if health_change < 0:
-		health_change = min(health_change + get_defense(), -1)
-
-	# If change is 0 it is probably the setget firing during ready
-	if not health_change == 0:
-		# Determine border color
-		if health_change < 0:
-			border_color = Color.red
-		else:
-			border_color = Color.darkgreen
-	
-		var floating_text_instance = floating_text.instance()
-		floating_text_instance.initialize(str(health_change), border_color)
-		add_child(floating_text_instance)
+	var health_change = display_floating_health(value)
 
 	# Handle health change
 	if hit_timer.is_stopped() and value < current_health:
@@ -252,9 +235,31 @@ func update_health(value):
 	else:
 		current_health = value
 
-
 	current_health = int(clamp(current_health, 0, get_max_health())) # Casting to int to alleviate 'narrowing conversion' warning
 	UiSignals.emit_signal("update_health", current_health, get_max_health())
+
+
+func display_floating_health(value) -> int:
+	var border_color = Color.black
+	var health_change = value - current_health
+
+	# Verify effect of defense
+	if health_change < 0:
+		health_change = min(health_change + get_defense(), -1)
+
+	# If change is 0 it is probably the setget firing during ready
+	if not health_change == 0:
+		# Determine border color
+		if health_change < 0:
+			border_color = Color.red
+		else:
+			border_color = Color.darkgreen
+
+		var floating_text_instance = floating_text.instance()
+		floating_text_instance.initialize(str(health_change), border_color)
+		add_child(floating_text_instance)
+
+	return health_change
 
 
 func get_max_health():

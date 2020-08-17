@@ -195,6 +195,11 @@ func damage_taken(direction):
 	
 	connect_animation_signal()
 
+	# Ensure that the player receives agro for damaging a target that hasn't detected them
+	# The contents of this method should probably be reorganized if I'm calling it this way
+	if not target:
+		_on_Aggro_body_entered(Globals.player)
+
 
 func _on_Aggro_body_entered(body):
 	if state == HIDDEN:
@@ -251,24 +256,11 @@ func _on_Weapon_body_exited(body):
 func update_health(value):
 	if hit_timer.is_stopped() and value <= current_health:
 		# Set and display floating text
-		var border_color = Color.black
-		var health_change = value - current_health
-	
-		# If change is 0 it is probably the setget firing during ready
-		if not health_change == 0:
-			# Determine border color
-			if health_change < 0:
-				border_color = Color.red
-			else:
-				border_color = Color.darkgreen
-		
-			var floating_text_instance = floating_text.instance()
-			floating_text_instance.initialize(str(health_change), border_color)
-			add_child(floating_text_instance)
+		display_floating_health(value)
 
 		current_health = value
 
-		var knockback_direction: Vector2
+		var knockback_direction: Vector2 = Vector2.ZERO
 
 		if attacker_direction:
 			knockback_direction = attacker_direction
@@ -280,3 +272,21 @@ func update_health(value):
 		
 		if not state == DEATH:
 			stun()
+
+
+func display_floating_health(value):
+	# Set and display floating text
+	var border_color = Color.black
+	var health_change = value - current_health
+
+	# If change is 0 it is probably the setget firing during ready
+	if not health_change == 0:
+		# Determine border color
+		if health_change < 0:
+			border_color = Color.red
+		else:
+			border_color = Color.darkgreen
+
+		var floating_text_instance = floating_text.instance()
+		floating_text_instance.initialize(str(health_change), border_color)
+		add_child(floating_text_instance)

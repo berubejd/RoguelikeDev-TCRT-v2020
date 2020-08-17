@@ -7,7 +7,7 @@ class_name Item
 # Money for recycled items?
 # Animated textures?
 
-# const FIREBALL = preload("res://Effects/Fireball/Fireball.tscn")
+const FIREBALL = preload("res://Effects/Fireball/FireballSpell.tscn")
 const LIGHTNING = preload("res://Effects/Lightning/Lightning.tscn")
 
 # Inventory Item Example
@@ -196,6 +196,12 @@ func action_lightning(params) -> bool:
 	return true
 
 
-func action_fireball(_params = null) -> bool:
-	# Params = distance, damage
-	return false
+func action_fireball(params = null) -> bool:
+	# Params = duration, damage
+	var fireball_instance = FIREBALL.instance()
+	fireball_instance.spell_damage = Globals.player.spell_power
+	fireball_instance.initialize(Globals.player.find_node("Spell").get_global_position(), Globals.player.weapon.rotation_degrees, params["duration"])
+	
+	effects.add_child(fireball_instance)
+	
+	return true

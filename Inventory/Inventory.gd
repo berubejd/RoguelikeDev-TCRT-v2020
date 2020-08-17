@@ -55,9 +55,6 @@ func pickup_item(item_id, autoequip = true, save = true):
 func award_initial_inventory():
 	# Create inventory items on a new game
 	yield(pickup_item("slightly bent dagger", true, false), "completed")
-	yield(pickup_item("staff of striking", true, false), "completed")
-	yield(pickup_item("one-half ring", true, false), "completed")
-	yield(pickup_item("call lightning", true, false), "completed")
 	SaveGame.emit_signal("save_game")
 
 

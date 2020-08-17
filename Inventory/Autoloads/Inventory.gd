@@ -119,7 +119,7 @@ const ITEMS = {
 		"bonus_amount": null
 	},
 	"fireball": {
-		"icon": "res://Inventory/Sprites/fireball.png",
+		"icon": "res://Inventory/Sprites/fire.png",
 		"type": SlotType.SLOT_SPELL,
 		"stackable": false,
 		"stack_limit": 1,
@@ -127,7 +127,7 @@ const ITEMS = {
 		"value": 10,
 		"click": [
 			"action_fireball", {
-				"distance": 30,
+				"duration": 0.5,
 				"damage": 4
 				}
 			],
