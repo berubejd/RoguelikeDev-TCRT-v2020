@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Entities/Items/item.gd" type="Script" id=1]
-[ext_resource path="res://Entities/Items/Sprite/gem_topped_scepter.png" type="Texture" id=2]
+[ext_resource path="res://Entities/Items/Sprite/padded_vest.png" type="Texture" id=2]
 [ext_resource path="res://Entities/Items/Sprite/SmallShadow.png" type="Texture" id=3]
 [ext_resource path="res://Lights/Light.tscn" type="PackedScene" id=5]
 

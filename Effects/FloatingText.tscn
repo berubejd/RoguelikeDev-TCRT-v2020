@@ -28,7 +28,6 @@ custom_fonts/font = SubResource( 1 )
 text = "- 11"
 align = 1
 valign = 1
-clip_text = true
 __meta__ = {
 "_edit_use_anchors_": false
 }

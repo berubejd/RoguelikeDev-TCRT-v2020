@@ -68,16 +68,34 @@ const EXIT = preload("res://Entities/Items/Exit.tscn")
 # Monsters
 const GENERIC_MOB = preload("res://Entities/Mobs/Mob.tscn")
 
-# Items
+# Potions
 const POTION_HEALTH = preload("res://Entities/Items/potion_health.tscn")
-const SCROLLS = [
-	preload("res://Entities/Items/scroll_fireball.tscn"),
-	preload("res://Entities/Items/scroll_lightning.tscn")
-]
-const RANDOM_LOOT = [
-	preload("res://Entities/Items/one_half_ring.tscn"),
-	preload("res://Entities/Items/staff_of_striking.tscn")
-]
+
+# Scrolls
+const SCROLL_FIREBALL = preload("res://Entities/Items/scroll_fireball.tscn")
+const SCROLLS_LIGHTNING = preload("res://Entities/Items/scroll_lightning.tscn")
+
+# Rings
+const RING_ONE_HALF = preload("res://Entities/Items/one_half_ring.tscn")
+const RING = preload("res://Entities/Items/ring.tscn")
+
+# Weapons
+const STAFF_STRIKING = preload("res://Entities/Items/staff_of_striking.tscn")
+const SPEAR_BOAR = preload("res://Entities/Items/boar_spear.tscn")
+const SCEPTER = preload("res://Entities/Items/gem_topped_scepter.tscn")
+const SWORD_SHORT = preload("res://Entities/Items/short_sword.tscn")
+
+# Helm
+const SKULLCAP = preload("res://Entities/Items/leather_skullcap.tscn")
+
+# Food - Not Implemented
+const MEAT = preload("res://Entities/Items/meat.tscn")
+
+# Chest
+const VEST = preload("res://Entities/Items/padded_vest.tscn")
+
+# Feet
+const BOOTS = preload("res://Entities/Items/worn_boots.tscn")
 
 # Entity group pointers
 onready var decorations = $Entities/Decorations
@@ -287,60 +305,59 @@ func _populate_room(room: Rect2, add_mobs = true):
 					match room_type:
 						"ruins":
 							if not near_corridor:
-								var chance = rng.randi_range(1, 100)
 
 								if near_wall:
+									var chance = rng.randi_range(1, 100)
 									if chance <= 10:
 										ROCKS.shuffle()
 										_place_object(ROCKS[0], decorations, Vector2(x, y))
 
 								else:
-									if chance == 100:
-										# Still to common so cut it in half again rather than increase the random range
-										if rng.randf() > 0.5:
-											_place_object(FOUNTAIN, decorations, Vector2(x, y))
+									var chances = {"fountain": 1, "rocks": 5, "bones": 10, "nothing": 80}
+									var decoration_type = _random_choice_from_dict(chances)
 
-										continue
+									match decoration_type:
+										"fountain":
+											# Still to common so cut it in half again rather than increase the random range
+											if rng.randf() > 0.5:
+												_place_object(FOUNTAIN, decorations, Vector2(x, y))
 
-									elif chance <= 6:
-										ROCKS.shuffle()
-										_place_object(ROCKS[0], decorations, Vector2(x, y))
-										continue
+										"rocks":
+											ROCKS.shuffle()
+											_place_object(ROCKS[0], decorations, Vector2(x, y))
 
-									elif chance <= 16:
+
+										"bones":
+											BONES.shuffle()
+
+											# Flips some bone decorations for variety
+											var flip = false
+											if rng.randf() > 0.5:
+												flip = true
+
+											_place_object(BONES[0], bones, Vector2(x, y), flip)
+
+						"storage":
+							if not near_corridor and not near_wall:
+								var chances = {"storage": 10, "bones": 5, "nothing": 85}
+								var decoration_type = _random_choice_from_dict(chances)
+
+								match decoration_type:
+									"storage":
+										STORAGE.shuffle()
+										_place_object(STORAGE[0], decorations, Vector2(x, y))
+
+									"bones":
 										BONES.shuffle()
 
 										# Flips some bone decorations for variety
 										var flip = false
 										if rng.randf() > 0.5:
 											flip = true
-
 										_place_object(BONES[0], bones, Vector2(x, y), flip)
-
-						"storage":
-							if not near_corridor and not near_wall:
-								var chance = rng.randi_range(1, 100)
-								
-								if chance <= 10:
-									STORAGE.shuffle()
-									_place_object(STORAGE[0], decorations, Vector2(x, y))
-									continue
-
-								elif chance <= 13:
-									BONES.shuffle()
-
-									# Flips some bone decorations for variety
-									var flip = false
-
-									if rng.randf() > 0.5:
-										flip = true
-
-									_place_object(BONES[0], bones, Vector2(x, y), flip)
 
 						"lab":
 							if not near_corridor:
-								var chance = rng.randi_range(1, 100)
-
 								if not near_wall:
 									if room.size.y > 5 and room.size.x > 5:
 										if (
@@ -358,7 +375,7 @@ func _populate_room(room: Rect2, add_mobs = true):
 										if x == room.position.x + int(room.size.x / 2) - 1 and y == room.position.y + int(room.size.y / 2):
 											if _is_clear(Vector2(x + 1, y)):
 												_place_object(TABLE_LARGE, decorations, Vector2(x, y))
-										elif chance <= 4:
+										elif rng.randi_range(1, 100) <= 4:
 											_place_object(CANDLEHOLDER, decorations, Vector2(x, y))
 											continue
 
@@ -442,10 +459,10 @@ func _populate_room(room: Rect2, add_mobs = true):
 								else:
 									if _is_clear(map_to_world(Vector2(x, y)) + Vector2(8, 8)):
 										var flip = false
-									
+
 										if rng.randf() > 0.85:
 											flip = true
-										
+
 										_place_object(BOOKSHELF, decorations, Vector2(x, y), flip)
 
 				TILE_IDX_WALL:
@@ -470,29 +487,47 @@ func _populate_room(room: Rect2, add_mobs = true):
 							_add_torch(Vector2(x - 1, y), "w")
 
 	# Determine monstors and items for room types
+	var item_type = null
+
 	match room_type:
-		"ruins", "empty":
+		"empty":
 			room_monsters = {GENERIC_MOB: 100}
+		"ruins":
+			room_monsters = {GENERIC_MOB: 100}
+			var item_chance = { 
+				RING_ONE_HALF: _from_dungeon_level([[10, 2], [3, 5]], Globals.dungeon_level),
+				RING: _from_dungeon_level([[7, 5]], Globals.dungeon_level),
+				null: 90
+				}
+			item_type = _random_choice_from_dict(item_chance)
+
 		"storage":
 			room_monsters = {GENERIC_MOB: 100}
 
 			# Place a single item in storage 10% of the time
-			var chance = rng.randi_range(1, 100)
-			if chance <= 10:
-				var _cell = _get_random_floor_cell(room, true)
-				RANDOM_LOOT.shuffle()
-				_place_object(RANDOM_LOOT[0], items, _cell)
-				print("Placed random loot")
+			var item_chance = {
+				STAFF_STRIKING: _from_dungeon_level([[5, 1], [0, 5]], Globals.dungeon_level),
+				SWORD_SHORT: _from_dungeon_level([[5, 1], [2, 3], [0, 6]], Globals.dungeon_level),
+				BOOTS: _from_dungeon_level([[5, 2]], Globals.dungeon_level),
+				SKULLCAP: _from_dungeon_level([[5, 3]], Globals.dungeon_level),	
+				SPEAR_BOAR: _from_dungeon_level([[3, 3], [5, 6]], Globals.dungeon_level),
+				SCEPTER: _from_dungeon_level([[5, 6]], Globals.dungeon_level),	
+				VEST: _from_dungeon_level([[5, 8]], Globals.dungeon_level),
+				null: 90
+				}
+			item_type = _random_choice_from_dict(item_chance)
+
 		"library":
 			room_monsters = {GENERIC_MOB: 100}
 
 			# Place a single scroll in libraries 20% of the time
-			var chance = rng.randi_range(1, 100)
-			if chance <= 20:
-				var _cell = _get_random_floor_cell(room, true)
-				SCROLLS.shuffle()
-				_place_object(SCROLLS[0], items, _cell)
-				print("Placed scroll")
+			var item_chance = {
+				SCROLLS_LIGHTNING : _from_dungeon_level([[10, 5]], Globals.dungeon_level),
+				SCROLL_FIREBALL: _from_dungeon_level([[20, 2], [10, 5]], Globals.dungeon_level),
+				null: 90
+				}
+			item_type = _random_choice_from_dict(item_chance)
+
 		"lab":
 			room_monsters = {GENERIC_MOB: 100}
 
@@ -505,6 +540,11 @@ func _populate_room(room: Rect2, add_mobs = true):
 			# Place a single potion as well
 			_cell = _get_random_floor_cell(room, true)
 			_place_object(POTION_HEALTH, items, _cell)
+
+	if item_type:
+		print("Placing item in ", room_type)
+		var _cell = _get_random_floor_cell(room, true)
+		_place_object(item_type, items, _cell)
 
 	# Populate room with monsters
 	if add_mobs:

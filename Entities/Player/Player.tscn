@@ -23,15 +23,15 @@ shader_param/active = false
 
 [sub_resource type="SpriteFrames" id=3]
 animations = [ {
-"frames": [ ExtResource( 2 ), ExtResource( 6 ), ExtResource( 1 ), ExtResource( 5 ) ],
-"loop": true,
-"name": "Walk",
-"speed": 5.0
-}, {
 "frames": [ ExtResource( 3 ), ExtResource( 4 ) ],
 "loop": true,
 "name": "Idle",
 "speed": 2.0
+}, {
+"frames": [ ExtResource( 2 ), ExtResource( 6 ), ExtResource( 1 ), ExtResource( 5 ) ],
+"loop": true,
+"name": "Walk",
+"speed": 5.0
 } ]
 
 [sub_resource type="Animation" id=4]
@@ -207,6 +207,7 @@ shape = SubResource( 1 )
 material = SubResource( 2 )
 frames = SubResource( 3 )
 animation = "Idle"
+frame = 1
 playing = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]

@@ -377,7 +377,9 @@ func equip_item(item):
 			"defense":
 				defense_bonus += item.bonus_amount
 			"health":
+				# Signal UI after health increase to update health bar
 				max_health_bonus += item.bonus_amount
+				UiSignals.emit_signal("update_health", current_health, get_max_health())
 			"speed":
 				max_speed_bonus += item.bonus_amount
 

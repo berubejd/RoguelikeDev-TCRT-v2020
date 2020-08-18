@@ -202,7 +202,7 @@ const ITEMS = {
 		"bonus_amount": 1
 	},
 	"leather skullcap": {
-		"icon": "res://Inventory/Sprites/skull_cap.png",
+		"icon": "res://Inventory/Sprites/skullcap.png",
 		"type": SlotType.SLOT_HEAD,
 		"stackable": false,
 		"stack_limit": 1,
@@ -229,7 +229,7 @@ const ITEMS = {
 	},
 	"worn boots": {
 		"icon": "res://Inventory/Sprites/worn_boots.png",
-		"type": SlotType.SLOT_HEAD,
+		"type": SlotType.SLOT_FEET,
 		"stackable": false,
 		"stack_limit": 1,
 		"description": "A well-worn, but well cares for, pair of leather boots.",
