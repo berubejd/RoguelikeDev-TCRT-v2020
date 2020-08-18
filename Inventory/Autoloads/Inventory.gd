@@ -29,7 +29,7 @@ enum KeyBind {
 
 const ITEMS = {
 	"slightly bent dagger": {
-		"icon": "res://Inventory/Sprites/Item_00.png",
+		"icon": "res://Inventory/Sprites/dagger.png",
 		"type": SlotType.SLOT_MAIN_HAND,
 		"stackable": false,
 		"stack_limit": 1,
@@ -42,7 +42,7 @@ const ITEMS = {
 		"bonus_amount": 1
 	},
 	"staff of striking": {
-		"icon": "res://Inventory/Sprites/Item_23.png",
+		"icon": "res://Inventory/Sprites/staff.png",
 		"type": SlotType.SLOT_MAIN_HAND,
 		"stackable": false,
 		"stack_limit": 1,
@@ -55,7 +55,7 @@ const ITEMS = {
 		"bonus_amount": 1
 	},
 	"one-half ring": {
-		"icon": "res://Inventory/Sprites/Item_40.png",
+		"icon": "res://Inventory/Sprites/ring.png",
 		"type": SlotType.SLOT_RING,
 		"stackable": false,
 		"stack_limit": 1,
@@ -64,11 +64,11 @@ const ITEMS = {
 		"click": null,
 		"damage": null,
 		"cooldown": null,
-		"bonus": "defense",
-		"bonus_amount": 1
+		"bonus": "health",
+		"bonus_amount": 5
 	},
 	"meat": {
-		"icon": "res://Inventory/Sprites/Item_58.png",
+		"icon": "res://Inventory/Sprites/meat.png",
 		"type": SlotType.SLOT_FOOD,
 		"stackable": true,
 		"stack_limit": 5,
@@ -128,13 +128,117 @@ const ITEMS = {
 		"click": [
 			"action_fireball", {
 				"duration": 0.5,
-				"damage": 4
+				"damage": 6
 				}
 			],
 		"damage": null,
-		"cooldown": 7.0,
+		"cooldown": 4.0,
 		"bonus": null,
 		"bonus_amount": null
+	},
+	"ring": {
+		"icon": "res://Inventory/Sprites/gem_ring.png",
+		"type": SlotType.SLOT_RING,
+		"stackable": false,
+		"stack_limit": 1,
+		"description": "Twice the ring as other rings.",
+		"value": 10,
+		"click": null,
+		"damage": null,
+		"cooldown": null,
+		"bonus": "health",
+		"bonus_amount": 10
+	},
+	"gem topped scepter": {
+		"icon": "res://Inventory/Sprites/gem_topped_scepter.png",
+		"type": SlotType.SLOT_MAIN_HAND,
+		"stackable": false,
+		"stack_limit": 1,
+		"description": "The gem atop this scepter glows faintly from within.",
+		"value": 10,
+		"click": null,
+		"damage": 4,
+		"cooldown": 1.2,
+		"bonus": "spell_power",
+		"bonus_amount": 2
+	},
+	"hooded novice cloak": {
+		"icon": "res://Inventory/Sprites/hooded_novice_cloak.png",
+		"type": SlotType.SLOT_BACK,
+		"stackable": false,
+		"stack_limit": 1,
+		"description": "Years of abuse can be seen.. and smelled... in this cloak",
+		"value": 10,
+		"click": null,
+		"damage": null,
+		"cooldown": null,
+		"bonus": null,
+		"bonus_amount": null
+	},
+	"padded vest": {
+		"icon": "res://Inventory/Sprites/padded_vest.png",
+		"type": SlotType.SLOT_CHEST,
+		"stackable": false,
+		"stack_limit": 1,
+		"description": "This vest is better than nothing, at least.",
+		"value": 10,
+		"click": null,
+		"damage": null,
+		"cooldown": null,
+		"bonus": "defense",
+		"bonus_amount": 1
+	},
+	"short sword": {
+		"icon": "res://Inventory/Sprites/short_sword.png",
+		"type": SlotType.SLOT_MAIN_HAND,
+		"stackable": false,
+		"stack_limit": 1,
+		"description": "A light and fast sword.",
+		"value": 10,
+		"click": null,
+		"damage": 3,
+		"cooldown": 1.0,
+		"bonus": "power",
+		"bonus_amount": 1
+	},
+	"leather skullcap": {
+		"icon": "res://Inventory/Sprites/skull_cap.png",
+		"type": SlotType.SLOT_HEAD,
+		"stackable": false,
+		"stack_limit": 1,
+		"description": "A stylish leather bean cover.",
+		"value": 10,
+		"click": null,
+		"damage": null,
+		"cooldown": null,
+		"bonus": "defense",
+		"bonus_amount": 1
+	},
+	"boar spear": {
+		"icon": "res://Inventory/Sprites/spear.png",
+		"type": SlotType.SLOT_MAIN_HAND,
+		"stackable": false,
+		"stack_limit": 1,
+		"description": "A razor-sharp blade adorns this stout staff.",
+		"value": 10,
+		"click": null,
+		"damage": 5,
+		"cooldown": 1.1,
+		"bonus": "defense",
+		"bonus_amount": 1
+	},
+	"worn boots": {
+		"icon": "res://Inventory/Sprites/worn_boots.png",
+		"type": SlotType.SLOT_HEAD,
+		"stackable": false,
+		"stack_limit": 1,
+		"description": "A well-worn, but well cares for, pair of leather boots.",
+		"value": 10,
+		"click": null,
+		"damage": null,
+		"cooldown": null,
+		"bonus": "speed",
+		"bonus_amount": 5
 	},
 }
 

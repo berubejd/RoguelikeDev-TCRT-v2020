@@ -13,7 +13,6 @@ var dungeon
 
 # Dungeon complexity
 export (int) var complexity: = 1
-export (int) var level_scale: = 3
 
 # Room size range
 export (int) var min_room_size: = 4
@@ -98,10 +97,10 @@ var entities = null
 func _ready():
 	pause_mode = Node.PAUSE_MODE_STOP
 	
-	max_monsters_per_room = _from_dungeon_level([[2, 0], [3, 4], [5, 6]], Globals.dungeon_level)
+	max_monsters_per_room = _from_dungeon_level([[2, 0], [3, 4], [4, 7]], Globals.dungeon_level)
 
 # warning-ignore:integer_division
-	var scaled_complexity = complexity + floor(Globals.dungeon_level / level_scale)
+	var scaled_complexity = complexity + _from_dungeon_level([[1, 2], [2, 5], [3, 10], [4, 20]], Globals.dungeon_level)
 
 	rng.randomize()
 	dungeon = Dungeon_Builder.new()
@@ -121,6 +120,7 @@ func _ready():
 			var _new_room = dungeon.add_random_corridor(dungeon.get_random_room(), rng.randi_range(10, 20), true)
 	
 		# "Completed" dungeon generation
+		print("Dungeon Level: ", Globals.dungeon_level)
 		print("Total rooms created: " + str(dungeon.rooms.size()))
 		print("Total corridor tiles created: " + str(dungeon.corridors.size()))
 	else:
@@ -340,7 +340,7 @@ func _populate_room(room: Rect2, add_mobs = true):
 						"lab":
 							if not near_corridor:
 								var chance = rng.randi_range(1, 100)
-								
+
 								if not near_wall:
 									if room.size.y > 5 and room.size.x > 5:
 										if (
@@ -594,7 +594,7 @@ func _nearby_wall(position: Vector2):
 # Place object on the map
 func _place_object(object_scene, object_group, position: Vector2, flip: bool = false):
 	if not _is_clear(map_to_world(position) + Vector2(8, 8)):
-		print("Blocking placement from _place_object")
+		# print("Blocking placement from _place_object")
 		return false
 
 	var new_object = object_scene.instance()

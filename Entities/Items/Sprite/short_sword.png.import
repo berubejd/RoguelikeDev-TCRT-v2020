@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Item_00.png-7b8d132db374b38ef376c89cd87a0c2f.stex"
+path="res://.import/short_sword.png-54abf4dfe1d7e44b616807ade014e479.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Inventory/Sprites/Item_00.png"
-dest_files=[ "res://.import/Item_00.png-7b8d132db374b38ef376c89cd87a0c2f.stex" ]
+source_file="res://Entities/Items/Sprite/short_sword.png"
+dest_files=[ "res://.import/short_sword.png-54abf4dfe1d7e44b616807ade014e479.stex" ]
 
 [params]
 

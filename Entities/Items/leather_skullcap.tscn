@@ -1,0 +1,69 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://Entities/Items/item.gd" type="Script" id=1]
+[ext_resource path="res://Entities/Items/Sprite/skullcap.png" type="Texture" id=2]
+[ext_resource path="res://Entities/Items/Sprite/SmallShadow.png" type="Texture" id=3]
+[ext_resource path="res://Lights/Light.tscn" type="PackedScene" id=5]
+
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [ ExtResource( 2 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="CapsuleShape2D" id=2]
+radius = 5.0
+height = 6.0
+
+[sub_resource type="Animation" id=3]
+resource_name = "Idle"
+length = 2.0
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Item:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5, 1.25, 1.75 ),
+"transitions": PoolRealArray( 0.5, 2, 0.5, 2 ),
+"update": 0,
+"values": [ Vector2( 8, 8 ), Vector2( 8, 6 ), Vector2( 8, 6 ), Vector2( 8, 8 ) ]
+}
+
+[node name="LeatherSkullcap" type="Area2D"]
+collision_layer = 8
+collision_mask = 2
+script = ExtResource( 1 )
+item_id = "leather skullcap"
+
+[node name="Item" type="AnimatedSprite" parent="."]
+position = Vector2( 8, 7.82 )
+scale = Vector2( 0.8, 0.8 )
+frames = SubResource( 1 )
+playing = true
+
+[node name="Shadow" type="Sprite" parent="."]
+self_modulate = Color( 1, 1, 1, 0.8 )
+show_behind_parent = true
+position = Vector2( 8, 14 )
+scale = Vector2( 0.7, 0.5 )
+texture = ExtResource( 3 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 8, 9 )
+shape = SubResource( 2 )
+
+[node name="Light" parent="." instance=ExtResource( 5 )]
+visible = false
+position = Vector2( 8, 10 )
+texture_scale = 0.01
+color = Color( 0.901961, 0.145098, 0.145098, 1 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "Idle"
+anims/Idle = SubResource( 3 )
+[connection signal="body_entered" from="." to="." method="_on_item_body_entered"]

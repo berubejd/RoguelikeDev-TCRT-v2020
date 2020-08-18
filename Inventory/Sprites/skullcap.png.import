@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Item_23.png-c9d53d51313610e32402a3b27c685168.stex"
+path="res://.import/skullcap.png-58dd6febd15fcff829d70c6fb7222d2b.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Inventory/Sprites/Item_23.png"
-dest_files=[ "res://.import/Item_23.png-c9d53d51313610e32402a3b27c685168.stex" ]
+source_file="res://Inventory/Sprites/skullcap.png"
+dest_files=[ "res://.import/skullcap.png-58dd6febd15fcff829d70c6fb7222d2b.stex" ]
 
 [params]
 
