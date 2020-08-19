@@ -5,6 +5,7 @@ antialiased = false
 font_path = "res://Fonts/ThaleahFat.ttf"
 
 [resource]
+resource_local_to_scene = true
 outline_size = 1
 outline_color = Color( 0, 0, 0, 1 )
 font_data = SubResource( 1 )

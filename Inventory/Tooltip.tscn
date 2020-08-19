@@ -4,6 +4,7 @@
 [ext_resource path="res://Inventory/Tooltip.gd" type="Script" id=2]
 
 [node name="Tooltip" type="Popup"]
+visible = true
 self_modulate = Color( 0.376471, 0.407843, 0.419608, 1 )
 margin_left = 226.0
 margin_top = 131.0
@@ -58,7 +59,7 @@ __meta__ = {
 
 [node name="Label_description" type="Label" parent="Panel"]
 margin_left = 4.0
-margin_top = 20.0
+margin_top = 17.0
 margin_right = 209.0
 margin_bottom = 60.0
 rect_min_size = Vector2( 205, 43 )
@@ -69,6 +70,22 @@ custom_fonts/font = ExtResource( 1 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 text = "Short Description Here"
 autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label_damage" type="Label" parent="Panel"]
+margin_left = 4.0
+margin_top = 31.0
+margin_right = 211.0
+margin_bottom = 46.0
+rect_scale = Vector2( 0.4, 0.4 )
+size_flags_horizontal = 3
+size_flags_vertical = 6
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+text = "Damage: XX Speed: X.XX"
+align = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -85,6 +102,24 @@ size_flags_vertical = 6
 custom_fonts/font = ExtResource( 1 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 text = "Value: 10 g"
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label_bonus" type="Label" parent="Panel"]
+margin_left = 4.0
+margin_top = 38.0
+margin_right = 280.0
+margin_bottom = 53.0
+rect_min_size = Vector2( 276, 8 )
+rect_scale = Vector2( 0.3, 0.3 )
+size_flags_horizontal = 3
+size_flags_vertical = 6
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+text = "Bonus +99"
+align = 2
 autowrap = true
 __meta__ = {
 "_edit_use_anchors_": false

@@ -4,6 +4,7 @@
 [ext_resource path="res://Effects/FloatingText.gd" type="Script" id=2]
 
 [sub_resource type="DynamicFont" id=1]
+resource_local_to_scene = true
 outline_size = 1
 outline_color = Color( 0, 0, 0, 1 )
 font_data = ExtResource( 1 )
