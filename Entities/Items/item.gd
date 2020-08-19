@@ -1,6 +1,6 @@
 extends Area2D
 
-const floating_text = preload("res://Effects/FloatingText.tscn")
+const fading_text = preload("res://Effects/FadingText.tscn")
 
 export (String) var item_id
 
@@ -12,12 +12,15 @@ func _ready():
 func _on_item_body_entered(_body):
 	set_deferred("monitoring", false)
 	InventorySignals.emit_signal("pickup_item", item_id)
-	display_floating_text()
+	# Should this be here or in the actual pickup method of inventory?
+	display_fading_text()
 	queue_free()
 
 
-func display_floating_text():
-	var border_color = Color.blue
-	var floating_text_instance = floating_text.instance()
-	floating_text_instance.initialize(item_id, border_color)
-	Globals.player.add_child(floating_text_instance)
+func display_fading_text():
+	var fading_text_instance = fading_text.instance()
+	var message = "Found "+ item_id + "!"
+	var duration = 2.0
+	
+	fading_text_instance.initialize(message, duration)
+	get_tree().get_root().find_node("StatusTextAnchor", true, false).add_child(fading_text_instance)

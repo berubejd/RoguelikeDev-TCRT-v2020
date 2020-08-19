@@ -238,7 +238,6 @@ wait_time = 2.0
 autostart = true
 
 [node name="ExitArrow" type="Control" parent="."]
-visible = false
 anchor_left = 0.5
 anchor_right = 0.5
 margin_left = -8.0
@@ -255,6 +254,19 @@ rect_min_size = Vector2( 16, 16 )
 rect_scale = Vector2( 0.75, 0.75 )
 rect_pivot_offset = Vector2( 8, 8 )
 texture = ExtResource( 13 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="StatusTextAnchor" type="Control" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_top = -53.0
+margin_bottom = -53.0
+grow_horizontal = 2
+grow_vertical = 2
 __meta__ = {
 "_edit_use_anchors_": false
 }

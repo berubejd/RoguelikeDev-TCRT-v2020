@@ -1,5 +1,7 @@
 extends CanvasLayer
 
+const fading_text = preload("res://Effects/FadingText.tscn")
+
 export (int) var life_width = 14
 
 onready var addstat = $Experience/AddStat
@@ -13,6 +15,7 @@ onready var experience_label = $Experience/Label
 onready var max_health_container = $Health/MaxHealth
 onready var player = Globals.player
 onready var save_player = $SaveIndicator/AnimationPlayer
+onready var status_text = $StatusTextAnchor
 
 # Fake Item attributes to use the inventory tooltip
 var id = "Congrats!"
@@ -80,8 +83,19 @@ func update_health(current_health, max_health):
 
 
 func display_exit_arrow(position):
-	exit_arrow.visible = true
-	exit_position = position
+	if not exit_arrow.visible == true:
+		exit_arrow.visible = true
+		exit_position = position
+		display_exit_notification()
+
+
+func display_exit_notification():
+	var fading_text_instance = fading_text.instance()
+	var message = "Exit discovered!"
+	var duration = 2.0
+	
+	fading_text_instance.initialize(message, duration)
+	status_text.add_child(fading_text_instance)
 
 
 func hide_exit_arrow():

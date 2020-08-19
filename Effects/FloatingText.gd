@@ -13,7 +13,7 @@ var mass = 50
 var velocity = Vector2.ZERO
 
 
-func initialize(new_text, color = border_color):
+func initialize(new_text: String, color: Color = border_color):
 	$Value.text = new_text
 	$Value.get_font("font").set_outline_color(color)
 
