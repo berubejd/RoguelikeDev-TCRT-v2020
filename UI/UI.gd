@@ -12,6 +12,7 @@ onready var experience_bar = $Experience/ProgressBar
 onready var experience_label = $Experience/Label
 onready var max_health_container = $Health/MaxHealth
 onready var player = Globals.player
+onready var save_player = $SaveIndicator/AnimationPlayer
 
 # Fake Item attributes to use the inventory tooltip
 var id = "Congrats!"
@@ -34,7 +35,8 @@ func _ready():
 	UiSignals.connect("display_exit_arrow", self, "display_exit_arrow")
 # warning-ignore:return_value_discarded
 	UiSignals.connect("hide_exit_arrow", self, "hide_exit_arrow")
-
+# warning-ignore:return_value_discarded
+	SaveGame.connect("save_game", self, "enable_save_indicator")
 
 func _physics_process(_delta):
 	if exit_position:
@@ -85,6 +87,10 @@ func display_exit_arrow(position):
 func hide_exit_arrow():
 	exit_arrow.visible = false
 	exit_position = null
+
+
+func enable_save_indicator():
+	save_player.play("Blink")
 
 
 func _on_AddStat_mouse_entered():
