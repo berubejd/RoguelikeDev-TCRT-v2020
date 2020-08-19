@@ -50,7 +50,7 @@ AudioManager="*res://Sound/AudioManager.tscn"
 Inventory="*res://Inventory/Autoloads/Inventory.gd"
 InventorySignals="*res://Inventory/Autoloads/InventorySignals.gd"
 SaveGame="*res://Save/SaveGame.gd"
-UiSignals="*res://UI/UISignals.gd"
+UiSignals="*res://UI/Autoloads/UISignals.gd"
 
 [debug]
 

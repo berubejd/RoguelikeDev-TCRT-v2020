@@ -15,3 +15,9 @@ signal display_pausemenu
 signal update_health(current_health, max_health)
 #warning-ignore:unused_signal
 signal update_experience(level, current_xp, needed_xp)
+
+# Toggle display of exit arrow
+#warning-ignore:unused_signal
+signal display_exit_arrow
+#warning-ignore:unused_signal
+signal hide_exit_arrow

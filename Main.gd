@@ -93,6 +93,9 @@ func level_transition():
 	# Pause the game and fade out
 	yield(level_fade_out(), "completed")
 
+	# Hide the exit arrow
+	UiSignals.emit_signal("hide_exit_arrow")
+
 	# Create the new map and reset player
 	if Globals.player.state == 0: # 0 is the DEATH state
 		Globals.player.queue_free()

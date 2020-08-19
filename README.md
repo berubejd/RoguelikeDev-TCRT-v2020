@@ -16,9 +16,9 @@ The schedule of the current code-along, started on 16 June 2020, is:
 - [x] [Week 4 - Parts 6 & 7: Combat damage and building the interface](https://old.reddit.com/r/roguelikedev/comments/hmn5tb/week_4_parts_6_7_combat_damage_and_building_the/)
 - [x] [Week 5 - Parts 8 & 9: Items, inventory and ranged targeting](https://old.reddit.com/r/roguelikedev/comments/hqtl8e/roguelikedev_does_the_complete_roguelike_tutorial/)
 - [x] [Week 6 - Parts 10 & 11: Save/load and leveling up](https://old.reddit.com/r/roguelikedev/comments/huzu88/roguelikedev_does_the_complete_roguelike_tutorial/)
-- [ ] Week 7 - Parts 12 & 13: Monster/item progression and equipment
-- [ ] Week 8: Sharing your game
-- [ ] Summary
+- [x] [Week 7 - Parts 12 & 13: Monster/item progression and equipment](https://old.reddit.com/r/roguelikedev/comments/hz8ni9/roguelikedev_does_the_complete_roguelike_tutorial/)
+- [x] [Week 8: Sharing your game](https://old.reddit.com/r/roguelikedev/comments/i3chaq/roguelikedev_does_the_complete_roguelike_tutorial/)
+- [x] Summary
 
 ## Latest Screenshots
 
@@ -45,6 +45,10 @@ Week 5
 Week 6
 
 ![Week6](Images/week6.png?raw=true)
+
+Week 7
+
+![Week7](Images/week7.png?raw=true)
 
 ## Demo
 
@@ -74,5 +78,7 @@ Everything used during this code-along is properly licensed for use.
 - [Simple Dungeon Crawler 16x16 Pixel Art Asset Pack by o_lobster](https://o-lobster.itch.io/simple-dungeon-crawler-16x16-pixel-pack)
 - [16x16 RPG Item Pack by Alex's Assets](https://alexs-assets.itch.io/16x16-rpg-item-pack)
 - [16x16 RPG Item Pack 2 by Alex's Assets](https://alexs-assets.itch.io/16x16-rpg-item-pack-2)
+- [Wowie Resource Pack by Jonas Tyroller](https://jonas-tyroller.itch.io/wowie-pack)
 - [Fantasy Icon Pack by Ghazi](https://ghazi.itch.io/fantasy-icon-pack)
+- [Interface Pack by Kenney Vleugels](https://www.kenney.nl)
 - Additional custom assets by Irina Petrukevich

@@ -6,6 +6,8 @@ onready var addstat = $Experience/AddStat
 onready var addstat_animation = $Experience/AddStat/AnimationPlayer
 onready var addstat_background = $Experience/AddStat/ColorRect
 onready var current_health_container = $Health/CurrentHealth
+onready var exit_arrow = $ExitArrow
+onready var exit_arrow_pointer = $ExitArrow/Arrow
 onready var experience_bar = $Experience/ProgressBar
 onready var experience_label = $Experience/Label
 onready var max_health_container = $Health/MaxHealth
@@ -15,6 +17,8 @@ onready var player = Globals.player
 var id = "Congrats!"
 var type_description = "Level Up"
 var description = "You have level points to spend!  Click me!"
+
+var exit_position = null
 
 
 func _ready():
@@ -26,6 +30,18 @@ func _ready():
 	UiSignals.connect("update_experience", self, "update_experience")
 # warning-ignore:return_value_discarded
 	UiSignals.connect("update_health", self, "update_health")
+# warning-ignore:return_value_discarded
+	UiSignals.connect("display_exit_arrow", self, "display_exit_arrow")
+# warning-ignore:return_value_discarded
+	UiSignals.connect("hide_exit_arrow", self, "hide_exit_arrow")
+
+
+func _physics_process(_delta):
+	if exit_position:
+		exit_arrow_pointer.rect_rotation = rad2deg(Globals.player.global_position.angle_to_point(exit_position + Vector2(8, 8))) - 90
+	else:
+		# Ensure the arrow stays hidden even though the displau_ui method may try to enable it
+		exit_arrow.visible = false
 
 
 func display_ui():
@@ -59,6 +75,16 @@ func update_experience_indicator():
 func update_health(current_health, max_health):
 	current_health_container.rect_size.x = (current_health / 10.0) * float(life_width)
 	max_health_container.rect_size.x = (max_health / 10.0) * float(life_width)
+
+
+func display_exit_arrow(position):
+	exit_arrow.visible = true
+	exit_position = position
+
+
+func hide_exit_arrow():
+	exit_arrow.visible = false
+	exit_position = null
 
 
 func _on_AddStat_mouse_entered():
