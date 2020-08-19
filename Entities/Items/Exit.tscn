@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Entities/Items/Sprite/stair_nextlevel.png" type="Texture" id=1]
 [ext_resource path="res://Entities/Items/Exit.gd" type="Script" id=2]
@@ -6,16 +6,36 @@
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 4, 4 )
 
+[sub_resource type="CircleShape2D" id=2]
+radius = 99.3262
+
 [node name="Exit" type="Area2D"]
 collision_layer = 0
 collision_mask = 2
 script = ExtResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="."]
-position = Vector2( 8, 8 )
 texture = ExtResource( 1 )
+centered = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( 7.97683, 8 )
 shape = SubResource( 1 )
+
+[node name="DetectionRadius" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionRadius"]
+position = Vector2( 8, 8 )
+shape = SubResource( 2 )
+
+[node name="DetectionRadius2" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionRadius2"]
+position = Vector2( 8, 8 )
+shape = SubResource( 2 )
 [connection signal="body_entered" from="." to="." method="_on_Exit_body_entered"]
+[connection signal="body_entered" from="DetectionRadius2" to="." method="_on_DetectionRadius2_body_entered"]

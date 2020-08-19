@@ -106,7 +106,6 @@ height = 5.80199
 radius = 56.5849
 
 [node name="Mob" type="KinematicBody2D"]
-position = Vector2( 8, 8 )
 collision_layer = 4
 collision_mask = 3
 script = ExtResource( 10 )
@@ -115,7 +114,7 @@ __meta__ = {
 }
 
 [node name="Collision" type="CollisionShape2D" parent="."]
-position = Vector2( 0, 3.1327 )
+position = Vector2( 8, 11.133 )
 rotation = -1.57079
 shape = SubResource( 1 )
 
@@ -123,8 +122,9 @@ shape = SubResource( 1 )
 material = SubResource( 2 )
 frames = SubResource( 15 )
 animation = "Idle"
-frame = 1
+frame = 4
 playing = true
+centered = false
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/Hit = SubResource( 16 )
@@ -134,11 +134,13 @@ wait_time = 3.0
 one_shot = true
 
 [node name="Light" parent="." instance=ExtResource( 1 )]
+offset = Vector2( 8, 8 )
 texture_scale = 0.02
 color = Color( 0.113725, 0.831373, 0.105882, 1 )
 energy = 1.15
 
 [node name="Weapon" type="Node2D" parent="."]
+position = Vector2( 8, 8 )
 
 [node name="WeaponPivot" type="Position2D" parent="Weapon"]
 position = Vector2( 0, 3 )
@@ -164,6 +166,7 @@ one_shot = true
 
 [node name="HitBox" type="Area2D" parent="."]
 visible = false
+position = Vector2( 8, 8 )
 collision_layer = 4
 collision_mask = 64
 
@@ -175,6 +178,7 @@ one_shot = true
 
 [node name="Aggro" type="Area2D" parent="."]
 visible = false
+position = Vector2( 8, 8 )
 collision_layer = 0
 collision_mask = 2
 
@@ -185,6 +189,7 @@ shape = SubResource( 19 )
 one_shot = true
 
 [node name="Bubble" parent="." instance=ExtResource( 4 )]
+position = Vector2( 8, 8 )
 
 [node name="HitTimer" type="Timer" parent="."]
 one_shot = true

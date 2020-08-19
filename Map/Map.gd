@@ -697,7 +697,15 @@ func load_entities(data):
 		var new_group = find_node(current_entity["group"])
 		var new_position = world_to_map(Vector2(current_entity["position"]["x"], current_entity["position"]["y"]))
 
-		_place_object(new_entity, new_group, new_position, current_entity["flip"])
+		# Placing large tables up from their original position are placing them up a tile when calling world_to_map
+		# So, place them directly due to the offset on the y position
+		if current_entity["resource"].ends_with("TableLarge.tscn"):
+			var new_object = new_entity.instance()
+
+			new_object.position = Vector2(current_entity["position"]["x"], current_entity["position"]["y"])
+			new_group.add_child(new_object)
+		else:
+			_place_object(new_entity, new_group, new_position, current_entity["flip"])
 
 
 func save_state():

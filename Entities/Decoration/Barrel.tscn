@@ -13,8 +13,8 @@ polygon = PoolVector2Array( 3.285, 3.402, 5.293, 1.316, 9.545, 1.355, 11.593, 3.
 [node name="Barrel" type="StaticBody2D"]
 
 [node name="Sprite" type="Sprite" parent="."]
-position = Vector2( 8, 8 )
 texture = ExtResource( 1 )
+centered = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( 7.213, 9.421 )

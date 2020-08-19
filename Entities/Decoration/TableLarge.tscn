@@ -12,11 +12,10 @@ polygon = PoolVector2Array( -14.0445, -6.65609, 13.8988, -6.65609, 13.8988, 3.80
 [node name="TableLarge" type="StaticBody2D"]
 
 [node name="Sprite" type="Sprite" parent="."]
-position = Vector2( 16, 8 )
 texture = ExtResource( 1 )
+centered = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
 position = Vector2( 16, 10.119 )
 shape = SubResource( 1 )
 
