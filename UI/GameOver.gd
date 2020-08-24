@@ -2,10 +2,11 @@ extends CanvasLayer
 
 onready var animation = $TransitionLayer/AnimationPlayer
 onready var continue_button = $ContinueButton
+onready var progress_label = $ProgressLabel
 
 
 func _ready():
-	pass
+	progress_label.text = "You reached level " + str(Globals.dungeon_level) + " in the dungeon while earning " + str(Globals.end_game["total_xp"]) + " xp and " + str(Globals.end_game["gold"]) + " gold."
 
 
 func _input(event):

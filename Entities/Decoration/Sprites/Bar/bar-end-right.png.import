@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/fountain.png-08b6eebc09ae5f4930efdd61ad6e4876.stex"
+path="res://.import/bar-end-right.png-5e2aef190dc70a5b49313d76e2a7c157.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Entities/Decoration/Sprites/Other/fountain.png"
-dest_files=[ "res://.import/fountain.png-08b6eebc09ae5f4930efdd61ad6e4876.stex" ]
+source_file="res://Entities/Decoration/Sprites/Bar/bar-end-right.png"
+dest_files=[ "res://.import/bar-end-right.png-5e2aef190dc70a5b49313d76e2a7c157.stex" ]
 
 [params]
 

@@ -3,7 +3,7 @@ extends TextureRect
 # Fake Item attributes
 var id = "Item Grinder"
 var type_description = "Recycling"
-var description = "Items dropped here will one day award you gold.  Today, though, they just disappear."
+var description = "Items dropped here, somehow, turn into gold and disappear..."
 
 
 

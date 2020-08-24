@@ -12,6 +12,7 @@ onready var exit_arrow = $ExitArrow
 onready var exit_arrow_pointer = $ExitArrow/Arrow
 onready var experience_bar = $Experience/ProgressBar
 onready var experience_label = $Experience/Label
+onready var gold_label = $Gold/HBoxContainer/Label
 onready var max_health_container = $Health/MaxHealth
 onready var player = Globals.player
 onready var save_player = $SaveIndicator/AnimationPlayer
@@ -26,20 +27,25 @@ var exit_position = null
 
 
 func _ready():
-# warning-ignore:return_value_discarded
+	# warning-ignore:return_value_discarded
 	UiSignals.connect("display_ui", self, "display_ui")
-# warning-ignore:return_value_discarded
+	# warning-ignore:return_value_discarded
 	UiSignals.connect("hide_ui", self, "hide_ui")
-# warning-ignore:return_value_discarded
+	# warning-ignore:return_value_discarded
 	UiSignals.connect("update_experience", self, "update_experience")
-# warning-ignore:return_value_discarded
+	# warning-ignore:return_value_discarded
 	UiSignals.connect("update_health", self, "update_health")
-# warning-ignore:return_value_discarded
+	# warning-ignore:return_value_discarded
+	UiSignals.connect("update_gold", self, "update_gold")
+	# warning-ignore:return_value_discarded
 	UiSignals.connect("display_exit_arrow", self, "display_exit_arrow")
-# warning-ignore:return_value_discarded
+	# warning-ignore:return_value_discarded
 	UiSignals.connect("hide_exit_arrow", self, "hide_exit_arrow")
-# warning-ignore:return_value_discarded
+	# warning-ignore:return_value_discarded
 	SaveGame.connect("save_game", self, "enable_save_indicator")
+	# warning-ignore:return_value_discarded
+	UiSignals.connect("display_message", self, "display_fading_text")
+
 
 func _physics_process(_delta):
 	if exit_position:
@@ -82,6 +88,11 @@ func update_health(current_health, max_health):
 	max_health_container.rect_size.x = (max_health / 10.0) * float(life_width)
 
 
+func update_gold(gold):
+	print(gold)
+	gold_label.text = str(gold)
+
+
 func display_exit_arrow(position):
 	if not exit_arrow.visible == true:
 		exit_arrow.visible = true
@@ -90,12 +101,8 @@ func display_exit_arrow(position):
 
 
 func display_exit_notification():
-	var fading_text_instance = fading_text.instance()
 	var message = "Exit discovered!"
-	var duration = 2.0
-	
-	fading_text_instance.initialize(message, duration)
-	status_text.add_child(fading_text_instance)
+	display_fading_text(message)
 
 
 func hide_exit_arrow():
@@ -105,6 +112,14 @@ func hide_exit_arrow():
 
 func enable_save_indicator():
 	save_player.play("Blink")
+
+
+func display_fading_text(message):
+	var fading_text_instance = fading_text.instance()
+	var duration = 2.0
+
+	fading_text_instance.initialize(message, duration)
+	get_tree().get_root().find_node("StatusTextAnchor", true, false).add_child(fading_text_instance)
 
 
 func _on_AddStat_mouse_entered():

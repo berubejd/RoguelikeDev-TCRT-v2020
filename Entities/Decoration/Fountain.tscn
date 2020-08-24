@@ -3,7 +3,7 @@
 [ext_resource path="res://Lights/Light.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Entities/Decoration/Sprites/Other/SmallShadow.png" type="Texture" id=2]
 [ext_resource path="res://Entities/Decoration/Fountain.gd" type="Script" id=3]
-[ext_resource path="res://Entities/Decoration/Sprites/Other/fountain.png" type="Texture" id=4]
+[ext_resource path="res://Entities/Decoration/Sprites/Fountain/fountain-fancy.png" type="Texture" id=4]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 5.93288, 5.78033 )

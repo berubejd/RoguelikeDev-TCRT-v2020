@@ -1,7 +1,8 @@
 extends Control
 
 # Preloads
-var item_preload = preload("res://Inventory/Item.tscn")
+const fading_text = preload("res://Effects/FadingText.tscn")
+const item_preload = preload("res://Inventory/Item.tscn")
 
 # Inventory Containers
 onready var hotbar = $HotBar
@@ -22,7 +23,7 @@ func _process(_delta):
 	pass
 
 
-func pickup_item(item_id, autoequip = true, save = true):
+func pickup_item(item_id, autoequip = true, save = true, announce = true):
 	# Make this yieldable and avoid an item which is in progress and isn't completely slotted
 	yield(get_tree(), "idle_frame")
 
@@ -47,16 +48,25 @@ func pickup_item(item_id, autoequip = true, save = true):
 		if save:
 			SaveGame.emit_signal("save_game")
 
+		if announce:
+			var message = "Found "+ item_id + "!"
+			UiSignals.emit_signal("display_message", message)
+
 		return true
 	else:
+		var value = Inventory.get_item(item_id)["value"]
+		Globals.player.gold += value
+
+		var message = "Received " + str(value) + " gold for " + item_id + "!"
+		UiSignals.emit_signal("display_message", message)
+
 		return false
 
 
 func award_initial_inventory():
 	# Create inventory items on a new game
-	yield(pickup_item("slightly bent dagger", true, false), "completed")
-	yield(pickup_item("hooded novice cloak", true, false), "completed")
-#	yield(pickup_item("fireball", true, false), "completed")
+	yield(pickup_item("slightly bent dagger", true, false, false), "completed")
+	yield(pickup_item("hooded novice cloak", true, false, false), "completed")
 	SaveGame.emit_signal("save_game")
 
 

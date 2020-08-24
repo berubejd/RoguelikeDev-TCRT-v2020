@@ -10,14 +10,12 @@ cull_mode = 1
 polygon = PoolVector2Array( -6.63328, -6.84007, 6.72238, -6.922, 6.88625, -3.15292, -6.79715, -3.15292 )
 
 [node name="Crate_2" type="StaticBody2D"]
-position = Vector2( 93.2216, 95.8 )
 
 [node name="Sprite" type="Sprite" parent="."]
 position = Vector2( 8, 8 )
 texture = ExtResource( 1 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
 position = Vector2( 8, 11.219 )
 shape = SubResource( 1 )
 

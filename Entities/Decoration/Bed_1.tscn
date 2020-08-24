@@ -1,0 +1,25 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Entities/Decoration/Sprites/Bed/bed-1.png" type="Texture" id=1]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 7.05013, 4.24194 )
+
+[sub_resource type="OccluderPolygon2D" id=2]
+cull_mode = 1
+polygon = PoolVector2Array( -6, -11, 6, -11, 6, -13, 7.014, -13, 7, -3, 6, -3, -6, -3, -7, -3, -7, -13, -6, -13 )
+
+[node name="Bed_1" type="StaticBody2D"]
+
+[node name="Sprite" type="Sprite" parent="."]
+position = Vector2( 8, 8 )
+texture = ExtResource( 1 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+position = Vector2( 8, 11 )
+shape = SubResource( 1 )
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+position = Vector2( 8, 15 )
+occluder = SubResource( 2 )

@@ -6,3 +6,4 @@ var map: TileMap
 var save_data: Dictionary
 
 var dungeon_level: int = 0
+var end_game: Dictionary = {}

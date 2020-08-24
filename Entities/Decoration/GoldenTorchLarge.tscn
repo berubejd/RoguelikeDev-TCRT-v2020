@@ -1,0 +1,38 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://Entities/Decoration/Sprites/GoldenTorch/torch-standing-golden-large-2.png" type="Texture" id=1]
+[ext_resource path="res://Entities/Decoration/Sprites/GoldenTorch/torch-standing-golden-large-4.png" type="Texture" id=2]
+[ext_resource path="res://Entities/Decoration/Sprites/GoldenTorch/torch-standing-golden-large-1.png" type="Texture" id=3]
+[ext_resource path="res://Entities/Decoration/Sprites/GoldenTorch/torch-standing-golden-large-3.png" type="Texture" id=4]
+[ext_resource path="res://Entities/Decoration/Flame.gd" type="Script" id=5]
+[ext_resource path="res://Lights/Light.tscn" type="PackedScene" id=6]
+
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [ ExtResource( 3 ), ExtResource( 1 ), ExtResource( 4 ), ExtResource( 2 ) ],
+"loop": true,
+"name": "default",
+"speed": 3.0
+} ]
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 4, 3.42194 )
+
+[node name="GoldenTorchLarge" type="StaticBody2D"]
+script = ExtResource( 5 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+position = Vector2( 8, 8 )
+frames = SubResource( 1 )
+frame = 3
+playing = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+position = Vector2( 7.41601, 12.6719 )
+shape = SubResource( 2 )
+
+[node name="Light" parent="." instance=ExtResource( 6 )]
+position = Vector2( 8, 1.75043 )
+texture_scale = 0.07
+color = Color( 0.882353, 0.533333, 0.411765, 1 )

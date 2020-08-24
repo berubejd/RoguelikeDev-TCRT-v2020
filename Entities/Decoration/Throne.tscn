@@ -1,0 +1,50 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://Entities/Decoration/Sprites/Throne/throne.png" type="Texture" id=1]
+[ext_resource path="res://Lights/Light.tscn" type="PackedScene" id=2]
+
+[sub_resource type="CapsuleShape2D" id=1]
+radius = 7.60437
+height = 17.0929
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 4.24347, 7.64998 )
+
+[sub_resource type="OccluderPolygon2D" id=2]
+cull_mode = 1
+polygon = PoolVector2Array( 1.22117, 2.28225, 3.29043, 2.24915, 3.30699, 3.20928, 5.29348, 3.20928, 5.27686, 2.24223, 6.25362, 2.23259, 6.28673, 1.28901, 8.24011, 1.27245, 8.27322, 2.19948, 9.26647, 2.19948, 9.28302, 3.19273, 11.3357, 3.20928, 11.3026, 2.21604, 13.3057, 2.23259, 13.1874, 12.2313, 11.3319, 12.2364, 11.3317, 15.1018, 3.33166, 15.1643, 3.33175, 12.2585, 1.20225, 12.2644 )
+
+[node name="Throne" type="StaticBody2D"]
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 1 )
+centered = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+position = Vector2( 16.088, 24.921 )
+rotation = -1.56722
+shape = SubResource( 1 )
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
+visible = false
+position = Vector2( 16.0255, 13.046 )
+rotation = -1.56722
+shape = SubResource( 3 )
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+visible = false
+position = Vector2( 8.73084, -0.235969 )
+occluder = SubResource( 2 )
+
+[node name="LightOccluder2D2" type="LightOccluder2D" parent="."]
+position = Vector2( 8.73084, -0.235969 )
+occluder = SubResource( 2 )
+
+[node name="Light" parent="." instance=ExtResource( 2 )]
+position = Vector2( 7.4375, 9 )
+energy = 0.8
+
+[node name="Light2" parent="." instance=ExtResource( 2 )]
+position = Vector2( 24.4375, 8.875 )
+energy = 0.8

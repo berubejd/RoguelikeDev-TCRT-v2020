@@ -57,6 +57,7 @@ var max_speed_bonus: int = 0
 var level: int = 1
 var level_points: int = 0
 var xp: int = 0 setget add_xp
+var gold: int = 0 setget update_gold
 
 # Equipped combat items
 var equipped_weapon = null
@@ -77,17 +78,18 @@ func _ready():
 		InventorySignals.emit_signal("init_inventory")
 
 	update_health(current_health)
+	update_gold(gold)
 
 	# Signal UI to update
 	UiSignals.emit_signal("update_health", current_health, get_max_health())
 	UiSignals.emit_signal("update_experience", level, xp, experience_to_next_level())
 
-# warning-ignore:return_value_discarded
+	# warning-ignore:return_value_discarded
 	connect("spell_result", self, "spell_result")
 
-# warning-ignore:return_value_discarded
+	# warning-ignore:return_value_discarded
 	InventorySignals.connect("item_equipped", self, "equip_item")
-# warning-ignore:return_value_discarded
+	# warning-ignore:return_value_discarded
 	InventorySignals.connect("item_removed", self, "remove_item")
 
 
@@ -178,11 +180,18 @@ func _physics_process(_delta):
 
 func add_xp(value):
 	xp += value
-	
+
+	# Signal UI to display experience gain - Too spammy?
+	# var message = "You have gained " + str(value) + " experience"
+	# UiSignals.emit_signal("display_message", message)
+
 	if xp >= experience_to_next_level():
 		xp -= experience_to_next_level()
 		level += 1
 		level_points += 1
+
+		# Signal UI to display level up message
+		UiSignals.emit_signal("display_message", "Congratulations!  You have leveled up!")
 
 		# Signal SaveGame that there is a player change that needs to trigger a save
 		SaveGame.emit_signal("save_game")
@@ -318,11 +327,18 @@ func set_defense(value):
 
 
 func get_max_speed():
-		return max_speed_base + max_speed_bonus
+	return max_speed_base + max_speed_bonus
 
 
 func set_max_speed(value):
 	max_speed_base = value - max_speed_bonus
+
+
+func update_gold(value):
+	gold = value
+
+	# Signal UI for gold update
+	UiSignals.emit_signal("update_gold", gold)
 
 
 func has_bonus(stat: String) -> int:
@@ -348,10 +364,15 @@ func transition(_anim="None"):
 		# Prevent death animation from replaying
 		state = TRANSITION
 
+		# Set end_game information
+		Globals.end_game["level"] = level
+		Globals.end_game["total_xp"] = level_up_base + ((level - 1) * level_up_factor) + xp
+		Globals.end_game["gold"] = gold
+
 		# Fade out and load game over screen
 		transition_player.play("Fade")
 		yield(transition_player, "animation_finished")
-# warning-ignore:return_value_discarded
+		# warning-ignore:return_value_discarded
 		get_tree().change_scene("res://UI/GameOver.tscn")
 
 
@@ -399,19 +420,19 @@ func remove_item(item):
 	if item.bonus:
 		match item.bonus:
 			"power":
-# warning-ignore:narrowing_conversion
+				# warning-ignore:narrowing_conversion
 				power_bonus = max(0, power_bonus - item.bonus_amount)
 			"spell_power":
-# warning-ignore:narrowing_conversion
+				# warning-ignore:narrowing_conversion
 				spell_power_bonus = max(0, spell_power_bonus - item.bonus_amount)
 			"defense":
-# warning-ignore:narrowing_conversion
+				# warning-ignore:narrowing_conversion
 				defense_bonus = max(0, defense_bonus - item.bonus_amount)
 			"health":
-# warning-ignore:narrowing_conversion
+				# warning-ignore:narrowing_conversion
 				max_health_bonus = max(0, max_health_bonus - item.bonus_amount)
 			"speed":
-# warning-ignore:narrowing_conversion
+				# warning-ignore:narrowing_conversion
 				max_speed_bonus = max(0, max_speed_bonus - item.bonus_amount)
 
 
@@ -429,7 +450,8 @@ func save_state():
 		"max_speed_base": max_speed_base,
 		"power_base": power_base,
 		"spell_power_base": spell_power_base,
-		"xp": xp
+		"xp": xp,
+		"gold": gold
 	}
 
 	return data

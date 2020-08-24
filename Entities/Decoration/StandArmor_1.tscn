@@ -1,0 +1,24 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Entities/Decoration/Sprites/Armory/stand-armor-1.png" type="Texture" id=1]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 5.34538, 2.59789 )
+
+[sub_resource type="OccluderPolygon2D" id=2]
+cull_mode = 1
+polygon = PoolVector2Array( -0.897961, -5.85402, 0.885849, -5.89118, 1.97459, -4.92796, 1.99428, -3.96333, 2.93922, -3.90427, 3.96291, -2.8609, 3.96291, -0.951332, 2.99823, -0.950425, 2.03365, -1.95533, 0.997337, -0.948542, -0.897961, -0.948542, -2.00203, -1.91596, -3.00603, -0.950468, -3.95097, -0.951332, -3.95097, -2.90027, -2.96666, -3.92396, -2.0414, -3.94364, -2.00203, -4.90827 )
+
+[node name="StandArmor_1" type="StaticBody2D"]
+
+[node name="Sprite" type="Sprite" parent="."]
+position = Vector2( 8, 8 )
+texture = ExtResource( 1 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 8, 12.119 )
+shape = SubResource( 1 )
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+position = Vector2( 8, 7.94598 )
+occluder = SubResource( 2 )

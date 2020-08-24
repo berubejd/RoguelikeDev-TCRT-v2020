@@ -1,0 +1,24 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Entities/Decoration/Sprites/Other/crate-bag-3.png" type="Texture" id=1]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 7.05013, 4.24194 )
+
+[sub_resource type="OccluderPolygon2D" id=2]
+cull_mode = 1
+polygon = PoolVector2Array( -6.95133, -5.79434, 1.95821, -5.7768, 2.05815, -0.859384, 6.96892, -0.806768, 6.96378, 2.17045, 0.0412254, 2.13969, 0.0938416, -0.824307, 1.93538, -0.859384, 1.91784, -1.94677, -6.95133, -1.95341 )
+
+[node name="Crate_5" type="StaticBody2D"]
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 1 )
+centered = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 8, 11.219 )
+shape = SubResource( 1 )
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+position = Vector2( 8, 6.84057 )
+occluder = SubResource( 2 )

@@ -18,7 +18,7 @@ The schedule of the current code-along, started on 16 June 2020, is:
 - [x] [Week 6 - Parts 10 & 11: Save/load and leveling up](https://old.reddit.com/r/roguelikedev/comments/huzu88/roguelikedev_does_the_complete_roguelike_tutorial/)
 - [x] [Week 7 - Parts 12 & 13: Monster/item progression and equipment](https://old.reddit.com/r/roguelikedev/comments/hz8ni9/roguelikedev_does_the_complete_roguelike_tutorial/)
 - [x] [Week 8: Sharing your game](https://old.reddit.com/r/roguelikedev/comments/i3chaq/roguelikedev_does_the_complete_roguelike_tutorial/)
-- [x] Summary
+- [x] [Summary](https://old.reddit.com/r/roguelikedev/comments/i7nf15/roguelikedev_tutorial_tuesday_2020_a_summary/)
 
 ## Latest Screenshots
 

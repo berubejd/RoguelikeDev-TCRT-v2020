@@ -55,12 +55,19 @@ const FOUNTAIN = preload("res://Entities/Decoration/Fountain.tscn")
 const STORAGE = [
 	preload("res://Entities/Decoration/Barrel.tscn"),
 	preload("res://Entities/Decoration/Crate_1.tscn"),
-	preload("res://Entities/Decoration/Crate_2.tscn")
+	preload("res://Entities/Decoration/Crate_2.tscn"),
+	preload("res://Entities/Decoration/Crate_3.tscn"),
+	preload("res://Entities/Decoration/Crate_4.tscn"),
+	preload("res://Entities/Decoration/Crate_5.tscn")
 	]
 const BOOKSHELF = preload("res://Entities/Decoration/Bookshelf.tscn")
 const TABLE_LARGE = preload("res://Entities/Decoration/TableLarge.tscn")
 const TABLE_SMALL = preload("res://Entities/Decoration/TableSmall.tscn")
 const CAULDRON = preload("res://Entities/Decoration/Cauldron.tscn")
+const BEDS = [
+	preload("res://Entities/Decoration/Bed_1.tscn"),
+	preload("res://Entities/Decoration/Bed_2.tscn")
+	]
 
 # Exit
 const EXIT = preload("res://Entities/Items/Exit.tscn")

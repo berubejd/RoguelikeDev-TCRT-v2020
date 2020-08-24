@@ -125,7 +125,14 @@ func _gui_input(event):
 
 				# Check if dropped on recycle icon
 				if recycle.get_global_rect().has_point(get_global_mouse_position()):
-					print("Poof!")
+					# Display recycling message
+					var message = "Broke down " + id + " for " + str(value) + " gold!"
+					UiSignals.emit_signal("display_message", message)
+
+					# Credit player for value
+					Globals.player.gold += value
+
+					# Clean up after item
 					owner.clear_slot()
 					clear_item()
 					queue_free()
