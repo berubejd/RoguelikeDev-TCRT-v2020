@@ -89,7 +89,6 @@ func update_health(current_health, max_health):
 
 
 func update_gold(gold):
-	print(gold)
 	gold_label.text = str(gold)
 
 

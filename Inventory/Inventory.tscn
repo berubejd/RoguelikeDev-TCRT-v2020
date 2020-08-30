@@ -218,10 +218,10 @@ custom_styles/panel = SubResource( 2 )
 slotType = 7
 
 [node name="Slot" parent="HotBar" instance=ExtResource( 5 )]
-self_modulate = Color( 1, 1, 1, 0.6 )
 margin_left = 38.0
 margin_right = 56.0
 custom_styles/panel = SubResource( 3 )
+slotType = 10
 
 [node name="Potion" parent="HotBar" instance=ExtResource( 5 )]
 margin_left = 57.0

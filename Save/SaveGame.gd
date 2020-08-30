@@ -28,8 +28,8 @@ func save_game():
 		# Save the requested node's information under a key representing their node path
 		save_dict[node.name] = node.save_state()
 
-		if node.name == "Inventory":
-			print(save_dict[node.name])
+		# if node.name == "Inventory":
+			# print(save_dict[node.name])
 
 	# Store the collected information into the file in JSON format
 	save_file.store_line(to_json(save_dict))

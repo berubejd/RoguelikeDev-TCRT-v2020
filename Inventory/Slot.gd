@@ -1,6 +1,8 @@
 extends Panel
 class_name Slot
 
+const INV_ERROR = -1
+
 export(Inventory.SlotType) var slotType = Inventory.SlotType.SLOT_DEFAULT;
 export(Inventory.KeyBind) var keyBind = null
 export(Color) var clickColor = Color(1, 1, 1, 1)
@@ -18,9 +20,9 @@ onready var progress = $ZIndexController/CooldownDisplay
 
 
 func _ready():
-# warning-ignore:return_value_discarded
+	# warning-ignore:return_value_discarded
 	connect("mouse_entered", self, "mouse_enter_slot")
-# warning-ignore:return_value_discarded
+	# warning-ignore:return_value_discarded
 	connect("mouse_exited", self, "mouse_exit_slot")
 	
 	# Setup labels
@@ -34,6 +36,11 @@ func _ready():
 
 	# Save original border color
 	orig_color = stylebox.border_color
+
+	# Handle "disabled" slots
+	if slotType == Inventory.SlotType.SLOT_DISABLED:
+		self_modulate = Color(1.0, 1.0, 1.0, 0.6)
+		set_process_unhandled_key_input(false)
 
 
 func _process(_delta):
@@ -100,21 +107,33 @@ func activate_item_cooldown() -> bool:
 	return true
 
 
-func add_item(new_item):
+func add_item(new_item, override = false) -> int:
 	# Make this yieldable
 	yield(get_tree(), "idle_frame")
 
 	# Return if this is the wrong slot type for the item
-	if not slotType == Inventory.SlotType.SLOT_DEFAULT and not slotType == new_item.type:
-		return false
+	if not override and not slotType == Inventory.SlotType.SLOT_DEFAULT and not slotType == new_item.type:
+		return INV_ERROR
 
 	# Return immediately if the item to be added is already in this slot
 	if item == new_item:
-		return false
+		return INV_ERROR
 
-	# If slot is occupied move current item to a different free slot first
 	if item:
-		return swap_slots(item, new_item)
+		# If items have the same id but are not the same item then attempt to combine them
+		if item.id == new_item.id and item.stackable:
+			var original_stack_size = item.stack_size
+			item.stack_size = min(item.stack_size + new_item.stack_size, item.stack_limit)
+			new_item.stack_size -= item.stack_size - original_stack_size
+
+			if not new_item.owner or new_item.stack_size == 0:
+				new_item.queue_free()
+
+			return 0 if not new_item.get("stack_size") else new_item.stack_size
+
+		# If slot is occupied by a different item move current item to a different free slot first
+		else:
+			return swap_slots(item, new_item)
 
 	# Clear out the older owner information if this was previously slotted
 	if new_item.owner:
@@ -125,12 +144,17 @@ func add_item(new_item):
 	item.set_owner(self)
 
 	# Reset position in case item was dragged to a new slot
-	item.rect_position = Vector2(1, 1)
+	item.reset_position()
 
 	if not slotType == Inventory.SlotType.SLOT_DEFAULT:
 		InventorySignals.emit_signal("item_equipped", self.item)
 
-	return true
+	if new_item.stack_size > new_item.stack_limit:
+		var trim = new_item.stack_size - new_item.stack_limit
+		new_item.stack_size = new_item.stack_limit
+		return trim
+	else:
+		return 0
 
 
 func clear_slot():
@@ -167,19 +191,22 @@ func swap_slots(current_item, new_item):
 		current_item_destination = new_item.owner
 	else:
 		# if new_item is somewhere other than the bag then find a new slot in the bag if available
-		current_item_destination = bag.get_free_slot()
+		current_item_destination = bag.get_free_slot(current_item.id)
 
 		if not current_item_destination:
-			return false
+			return INV_ERROR
 
 	# Clean up slot and item
 	current_item_handle.clear_item()
 	clear_slot()
 
 	# Add new item to this slot
-	add_item(new_item)
+	var new_item_remaining_count = yield(add_item(new_item), "completed")
 
 	# Add original item to the newly opened slot
-	current_item_destination.add_item(current_item_handle)
+	var current_item_remaining_count = yield(current_item_destination.add_item(current_item_handle), "completed")
 
-	return true
+	if new_item_remaining_count != 0 or current_item_remaining_count != 0:
+		print("WTF?")
+
+	return 0

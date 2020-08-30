@@ -10,7 +10,8 @@ enum SlotType {
 	SLOT_MAIN_HAND,
 	SLOT_SPELL,
 	SLOT_POTION,
-	SLOT_FOOD
+	SLOT_FOOD,
+	SLOT_DISABLED
 }
 
 enum KeyBind {
@@ -34,7 +35,7 @@ const ITEMS = {
 		"stackable": false,
 		"stack_limit": 1,
 		"description": "It's sharp enough... I guess.",
-		"value": 10,
+		"value": 7,
 		"click": null,
 		"damage": 2,
 		"cooldown": .75,
@@ -47,7 +48,7 @@ const ITEMS = {
 		"stackable": false,
 		"stack_limit": 1,
 		"description": "Well, it's a fancy stick.",
-		"value": 10,
+		"value": 13,
 		"click": null,
 		"damage": 4,
 		"cooldown": 1.2,
@@ -60,7 +61,7 @@ const ITEMS = {
 		"stackable": false,
 		"stack_limit": 1,
 		"description": "A rather plain looking ring.",
-		"value": 10,
+		"value": 20,
 		"click": null,
 		"damage": null,
 		"cooldown": null,
@@ -106,7 +107,7 @@ const ITEMS = {
 		"stackable": false,
 		"stack_limit": 1,
 		"description": "Sort of like static electricity.",
-		"value": 10,
+		"value": 113,
 		"click": [
 			"action_lightning", {
 				"distance": 50,
@@ -124,7 +125,7 @@ const ITEMS = {
 		"stackable": false,
 		"stack_limit": 1,
 		"description": "Who doesn't like setting things on fire?",
-		"value": 10,
+		"value": 89,
 		"click": [
 			"action_fireball", {
 				"duration": 0.5,
@@ -142,7 +143,7 @@ const ITEMS = {
 		"stackable": false,
 		"stack_limit": 1,
 		"description": "Twice the ring as other rings.",
-		"value": 10,
+		"value": 55,
 		"click": null,
 		"damage": null,
 		"cooldown": null,
@@ -155,7 +156,7 @@ const ITEMS = {
 		"stackable": false,
 		"stack_limit": 1,
 		"description": "The gem atop this scepter glows faintly from within.",
-		"value": 10,
+		"value": 65,
 		"click": null,
 		"damage": 4,
 		"cooldown": 1.2,
@@ -168,7 +169,7 @@ const ITEMS = {
 		"stackable": false,
 		"stack_limit": 1,
 		"description": "Years of abuse can be seen.. and smelled... in this cloak",
-		"value": 10,
+		"value": 3,
 		"click": null,
 		"damage": null,
 		"cooldown": null,
@@ -181,7 +182,7 @@ const ITEMS = {
 		"stackable": false,
 		"stack_limit": 1,
 		"description": "This vest is better than nothing, at least.",
-		"value": 10,
+		"value": 45,
 		"click": null,
 		"damage": null,
 		"cooldown": null,
@@ -194,7 +195,7 @@ const ITEMS = {
 		"stackable": false,
 		"stack_limit": 1,
 		"description": "A light and fast sword.",
-		"value": 10,
+		"value": 18,
 		"click": null,
 		"damage": 3,
 		"cooldown": 1.0,
@@ -207,7 +208,7 @@ const ITEMS = {
 		"stackable": false,
 		"stack_limit": 1,
 		"description": "A stylish leather bean cover.",
-		"value": 10,
+		"value": 29,
 		"click": null,
 		"damage": null,
 		"cooldown": null,
@@ -220,7 +221,7 @@ const ITEMS = {
 		"stackable": false,
 		"stack_limit": 1,
 		"description": "A razor-sharp blade adorns this stout staff.",
-		"value": 10,
+		"value": 39,
 		"click": null,
 		"damage": 5,
 		"cooldown": 1.1,
@@ -233,7 +234,7 @@ const ITEMS = {
 		"stackable": false,
 		"stack_limit": 1,
 		"description": "A well-worn, but well cares for, pair of leather boots.",
-		"value": 10,
+		"value": 22,
 		"click": null,
 		"damage": null,
 		"cooldown": null,
@@ -263,5 +264,6 @@ func get_type(slot_type):
 		7: description = "Spell"
 		8: description = "Potion"
 		9: description = "Food"
+		10: description = ""
 
 	return description
